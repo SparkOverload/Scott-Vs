@@ -21,7 +21,7 @@ public class HomeScreen extends Screen{
 
   
 
-  private final TestScreen testScreen;
+  private final HowtoScreen howtoscreen;
   private ScreenStack ss;
   private Root root;
   private final Image bgImage;
@@ -31,7 +31,7 @@ public class HomeScreen extends Screen{
 
   public HomeScreen(final ScreenStack ss) {
     this.ss = ss;
-    this.testScreen = new TestScreen(ss);
+    this.howtoscreen = new HowtoScreen(ss);
     this.bgImage = assets().getImage("images/screen01.png");
     this.bg = graphics().createImageLayer(bgImage);
 
@@ -41,7 +41,7 @@ public class HomeScreen extends Screen{
     backbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
-             ss.push(testScreen);
+             ss.push(howtoscreen);
           }
 
 

@@ -11,13 +11,13 @@ import tripleplay.game.*;
 import java.lang.Override;
 
 
-public class TestScreen extends Screen{
+public class HowtoScreen extends Screen{
 
   private final ScreenStack ss;
   private final ImageLayer bg;
     private final ImageLayer backbutton;
 
-  public TestScreen(final ScreenStack ss) {
+  public HowtoScreen(final ScreenStack ss) {
     this.ss = ss;
       Image bgImage = assets().getImage("images/screen02.png");
       this.bg = graphics().createImageLayer(bgImage);
