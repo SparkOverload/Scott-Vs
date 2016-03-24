@@ -19,12 +19,12 @@ public class HowtoScreen extends Screen{
 
   public HowtoScreen(final ScreenStack ss) {
     this.ss = ss;
-      Image bgImage = assets().getImage("images/screen02.png");
+      Image bgImage = assets().getImage("images/screen03.png");
       this.bg = graphics().createImageLayer(bgImage);
 
       Image backImage = assets().getImage("images/backbutton.png");
       this.backbutton = graphics().createImageLayer(backImage);
-      backbutton.setTranslation(280,230);
+      backbutton.setTranslation(10,10);
 
       backbutton.addListener(new Mouse.LayerAdapter(){
           @Override
