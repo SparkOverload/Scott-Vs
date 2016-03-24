@@ -9,15 +9,15 @@ import tripleplay.game.*;
 import java.lang.Override;
 
 
-public class HowtoScreen extends Screen{
+public class Gameplay00 extends Screen{
 
   private final ScreenStack ss;
   private final ImageLayer bg;
     private final ImageLayer backbutton;
 
-  public HowtoScreen(final ScreenStack ss) {
+  public Gameplay00(final ScreenStack ss) {
     this.ss = ss;
-      Image bgImage = assets().getImage("images/screen03.png");
+      Image bgImage = assets().getImage("images/screen00.png");
       this.bg = graphics().createImageLayer(bgImage);
 
       Image backImage = assets().getImage("images/backbutton.png");
