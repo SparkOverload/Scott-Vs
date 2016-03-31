@@ -6,6 +6,7 @@ import playn.core.ImageLayer;
 import playn.core.Mouse;
 import react.UnitSlot;
 import spark.game01.core.character.Zento;
+import spark.game01.core.character.Scott;
 import tripleplay.game.*;
 import java.lang.Override;
 
@@ -16,6 +17,7 @@ public class Gameplay00 extends Screen{
   private final ImageLayer bg;
     private final ImageLayer backbutton;
     private Zento z;
+    private Scott scott;
 
   public Gameplay00(final ScreenStack ss) {
     this.ss = ss;
@@ -45,7 +47,8 @@ public class Gameplay00 extends Screen{
       z = new Zento(540f,400f);
       this.layer.add(z.layer());
 
-
+      scott = new Scott(320f,400f);
+      this.layer.add(scott.layer());
 
 
   }
@@ -53,6 +56,7 @@ public class Gameplay00 extends Screen{
     @Override
     public void update(int delta) {
         this.z.update(delta);
+        this.scott.update(delta);
     }
 
 
