@@ -14,14 +14,14 @@
     <orderEntry type="library" name="Maven: com.samskivert:pythagoras:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: com.threerings:tripleplay:1.9" level="project" />
     <orderEntry type="library" name="Maven: com.threerings:react:1.4.1" level="project" />
-    <orderEntry type="module" module-name="game01-assets" />
-    <orderEntry type="library" name="Maven: com.googlecode.playn:playn-java:1.9" level="project" />
-    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.jinput:jinput:2.0.5" level="project" />
     <orderEntry type="library" name="Maven: net.java.jutils:jutils:1.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-linux:2.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-windows:2.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.jinput:jinput-platform:natives-osx:2.0.5" level="project" />
+    <orderEntry type="module" module-name="game01-assets" />
+    <orderEntry type="library" name="Maven: com.googlecode.playn:playn-java:1.9" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl_util:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl.lwjgl:lwjgl-platform:natives-windows:2.9.0" level="project" />
