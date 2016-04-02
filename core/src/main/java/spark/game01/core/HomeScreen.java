@@ -49,7 +49,7 @@ public class HomeScreen extends UIScreen{
 
     this.startImage = assets().getImage("images/startbutton.png");
     this.startbutton = graphics().createImageLayer(startImage);
-    startbutton.setTranslation(185,170);
+    startbutton.setTranslation(155,170);
     startbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
@@ -62,7 +62,7 @@ public class HomeScreen extends UIScreen{
 
     this.howtoImage = assets().getImage("images/howbutton.png");
     this.howbutton = graphics().createImageLayer(howtoImage);
-    howbutton.setTranslation(185,250);
+    howbutton.setTranslation(155,250);
     howbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
@@ -74,7 +74,7 @@ public class HomeScreen extends UIScreen{
 
     this.topImage = assets().getImage("images/topscorebutton.png");
     this.topbutton = graphics().createImageLayer(topImage);
-    topbutton.setTranslation(185,330);
+    topbutton.setTranslation(155,330);
     topbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){

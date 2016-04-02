@@ -94,15 +94,13 @@ public class Scott {
 
 
             }
-            System.out.println("ssssssssssssssss  = "+spriteIndex);
-
             if(state == State.IDLE){
                 spriteIndex = offset + ((spriteIndex + 1) % xx);
             }else{
                 spriteIndex = offset + (((spriteIndex + 1)%yy) % xx);
             }
 
-            System.out.println("= "+spriteIndex);
+           // System.out.println("= "+spriteIndex);
             sprite1.setSprite(spriteIndex);
             e=0;
         }
