@@ -2,6 +2,7 @@ package spark.game01.core.character;
 
 
 import playn.core.Key;
+import playn.core.*;
 import playn.core.Keyboard;
 import playn.core.Layer;
 import playn.core.PlayN;
@@ -19,7 +20,7 @@ public class Scott {
 
 
     public enum State{
-        IDLE,RUN,WALK,JUMP,DODGE
+        IDLE,RUN,WALK,JUMP,DODGE,ATTK1,ATTK2,ATTK3
     };
 
     private State state = State.IDLE;
@@ -46,9 +47,19 @@ public class Scott {
                     case SPACE:
                         state = State.JUMP;
                         break;
+                    case A:
+                        state = State.ATTK1;
+                        break;
+                    case S:
+                        state = State.ATTK2;
+                        break;
+                    case D:
+                        state = State.ATTK3;
+                        break;
                 }
             }
         });
+
         sprite = SpriteLoader.getSprite("images/scott.json");
         sprite.addCallback(new Callback<Sprite>() {
             @Override
@@ -79,65 +90,70 @@ public class Scott {
                 case IDLE:
                     if(!(spriteIndex>=0 && spriteIndex<=7)){
                         spriteIndex=0;
-                    }else{
-                        offset = 0;
-                        xx=8;
-                        spriteIndex = offset + ((spriteIndex + 1) % xx);
                     }
-                    System.out.println("Idle = "+spriteIndex);
+                    System.out.println("Scott Idle = "+spriteIndex);
                     break;
                 case WALK:
                     if(!(spriteIndex>=16 && spriteIndex<=21)){
                         spriteIndex=16;
-                    }else{
-                        offset = 16;
-                        xx=6;
-                        yy=16;
-                        spriteIndex = offset + (((spriteIndex + 1)%yy) % xx);
                     }
-                    System.out.println("Walk = "+spriteIndex);
+                    System.out.println("Scott Walk = "+spriteIndex);
                     break;
                 case RUN:
                     if(!(spriteIndex>=8 && spriteIndex<=15)){
                         spriteIndex=8;
-                    }else{
-                        offset = 8;
-                        xx=8;
-                        spriteIndex = offset + ((spriteIndex + 1) % xx);
                     }
-                    System.out.println("Run = "+spriteIndex);
+                    System.out.println("Scott Run = "+spriteIndex);
                     break;
                 case JUMP:
                     if(!(spriteIndex>=22 && spriteIndex<=34)){
                         spriteIndex=22;
-                    }else{
-                        offset = 22;
-                        yy=22;
-                        xx=13;
-                        spriteIndex = offset + (((spriteIndex + 1)%yy) % xx);
                     }
                     if(spriteIndex==34){
                         state = State.IDLE;
                     }
-                    System.out.println("Jump = "+spriteIndex);
+                    System.out.println("Scott Jump = "+spriteIndex);
                     break;
                 case DODGE:
                     if(!(spriteIndex>=35 && spriteIndex<=40)){
                         spriteIndex=35;
-                    }else{
-                        offset = 35;
-                        yy=35;
-                        xx=6;
-                        spriteIndex = offset + (((spriteIndex + 1)%yy) % xx);
                     }
                     if(spriteIndex==40){
                         state = State.IDLE;
                     }
-                    System.out.println("DODGE = "+spriteIndex);
+                    System.out.println("Scott DODGE = "+spriteIndex);
+                    break;
+                case ATTK1:
+                    if(!(spriteIndex>=41 && spriteIndex<=44)){
+                        spriteIndex=41;
+                    }
+                    if(spriteIndex==44){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott ATTK1 = "+spriteIndex);
+                    break;
+                case ATTK2:
+                    if(!(spriteIndex>=45 && spriteIndex<=50)){
+                        spriteIndex=45;
+                    }
+                    if(spriteIndex==50){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott ATTK2 = "+spriteIndex);
+                    break;
+                case ATTK3:
+                    if(!(spriteIndex>=51 && spriteIndex<=57)){
+                        spriteIndex=51;
+                    }
+                    if(spriteIndex==57){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott ATTK3 = "+spriteIndex);
                     break;
 
             }
             sprite.setSprite(spriteIndex);
+            spriteIndex++;
             e=0;
         }
     }
