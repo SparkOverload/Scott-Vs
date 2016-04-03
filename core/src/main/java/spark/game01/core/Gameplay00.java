@@ -5,7 +5,7 @@ import playn.core.*;
 import playn.core.ImageLayer;
 import playn.core.Mouse;
 import react.UnitSlot;
-import spark.game01.core.character.Scott;
+import spark.game01.core.character.*;
 import tripleplay.game.*;
 import java.lang.Override;
 
@@ -16,7 +16,8 @@ public class Gameplay00 extends Screen{
   private final ImageLayer bg;
   private final ImageLayer gndfight;
   private final ImageLayer backbutton;
-  private Scott scott;
+  private Scott scott = new Scott(250f,360f);
+    private Tom tom = new Tom(350f,360f);
 
   public Gameplay00(final ScreenStack ss) {
       this.ss = ss;
@@ -49,15 +50,16 @@ public class Gameplay00 extends Screen{
     this.layer.add(gndfight);
 
 
-      scott = new Scott(320f,360f);
+      ///////////////////////////////////////// SpriteLayer
       this.layer.add(scott.layer());
-
+      this.layer.add(tom.layer());
 
   }
 
     @Override
     public void update(int delta) {
         this.scott.update(delta);
+        this.tom.update(delta);
     }
 
 
