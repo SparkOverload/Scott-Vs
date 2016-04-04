@@ -1,5 +1,5 @@
 #surefire
-#Sun Apr 03 12:57:39 ICT 2016
+#Tue Apr 05 03:44:20 ICT 2016
 enableAssertions=true
 testSuiteDefinitionTestSourceDirectory=C\:\\Scott-Vs\\java\\src\\test\\java
 surefireClassPathUrl.1=C\:\\Users\\SPARK.O\\.m2\\repository\\org\\apache\\maven\\surefire\\surefire-api\\2.10\\surefire-api-2.10.jar

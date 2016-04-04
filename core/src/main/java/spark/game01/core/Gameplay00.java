@@ -16,7 +16,7 @@ public class Gameplay00 extends Screen{
   private final ImageLayer bg;
   private final ImageLayer gndfight;
   private final ImageLayer backbutton;
-  private Scott scott = new Scott(250f,360f);
+  private Scott scott = new Scott(250f,320f);
     private Tom tom = new Tom(350f,360f);
 
   public Gameplay00(final ScreenStack ss) {
