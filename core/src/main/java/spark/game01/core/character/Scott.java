@@ -20,7 +20,10 @@ public class Scott {
 
 
     public enum State{
-        IDLE,RUN,WALK,JUMP,DODGE,ATTK1,ATTK2,ATTK3
+        IDLE,RUN,WALK,JUMP,DODGE,ATTK1,ATTK2,ATTK3,
+        KICK1,KICK2,JKICK,ULTIK,ULTIB1,ULTIB2,CHARGE,
+        DEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LOSE,COMEBACK,
+        WASATK1,WASATK2,WASATK3,SLEEP
     };
 
     private State state = State.IDLE;
@@ -41,6 +44,9 @@ public class Scott {
                     case RIGHT:
                         state = State.WALK;
                         break;
+                    case NP0:
+                        state = State.RUN;
+                        break;
                     case DOWN:
                         state = State.DODGE;
                         break;
@@ -53,9 +59,67 @@ public class Scott {
                     case S:
                         state = State.ATTK2;
                         break;
-                    case D:
+                    case Z:
                         state = State.ATTK3;
                         break;
+                    case D:
+                        state = State.DEF;
+                        break;
+                    case NP1:
+                        state = State.CEL1;
+                        break;
+                    case NP2:
+                        state = State.CEL2;
+                        break;
+                    case NP3:
+                        state = State.CEL3;
+                        break;
+                    case NP5:
+                        state = State.GUITAR;
+                        break;
+                    case K:
+                        state = State.ULTIK;
+                        break;
+                    case L:
+                        state = State.KICK1;
+                        break;
+                    case SEMICOLON:
+                        state = State.KICK2;
+                        break;
+                    case I:
+                        state = State.JKICK;
+                        break;
+                    case O:
+                        state = State.ULTIB1;
+                        break;
+                    case P:
+                        state = State.ULTIB2;
+                        break;
+                    case C:
+                        state = State.CHARGE;
+                        break;
+                    case H:
+                        state = State.HEADBUTT;
+                        break;
+                    case NP7:
+                        state = State.LOSE;
+                        break;
+                    case B:
+                        state = State.COMEBACK;
+                        break;
+                    case NP8:
+                        state = State.WASATK1;
+                        break;
+                    case NP9:
+                        state = State.WASATK2;
+                        break;
+                    case NP6:
+                        state = State.WASATK3;
+                        break;
+                    case T:
+                        state = State.SLEEP;
+                        break;
+
                 }
             }
         });
@@ -85,7 +149,7 @@ public class Scott {
     public void update(int delta) {
         if(hasLoaded == false) return;
         e = e + delta;
-        if(e > 70){
+        if(e > 60){
             switch (state) {
                 case IDLE:
                     if(!(spriteIndex>=0 && spriteIndex<=7)){
@@ -149,6 +213,168 @@ public class Scott {
                         state = State.IDLE;
                     }
                     System.out.println("Scott ATTK3 = "+spriteIndex);
+                    break;
+                case DEF:
+                    if(!(spriteIndex>=58 && spriteIndex<=64)){
+                        spriteIndex=58;
+                    }
+                    if(spriteIndex==64){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott DEF = "+spriteIndex);
+                    break;
+                case CEL2:
+                    if(!(spriteIndex>=65 && spriteIndex<=79)){
+                        spriteIndex=65;
+                    }
+                    if(spriteIndex==79){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott Cel2 = "+spriteIndex);
+                    break;
+                case GUITAR:
+                    if(!(spriteIndex>=80 && spriteIndex<=85)){
+                        spriteIndex=80;
+                    }
+                    System.out.println("Scott Guitar = "+spriteIndex);
+                    break;
+                case CEL1:
+                    if(!(spriteIndex>=86 && spriteIndex<=92)){
+                        spriteIndex=86;
+                    }
+                    if(spriteIndex==92){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott CEL1 = "+spriteIndex);
+                    break;
+                case CEL3:
+                    if(!(spriteIndex>=93 && spriteIndex<=110)){
+                        spriteIndex=93;
+                    }
+                    if(spriteIndex==110){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott Cel3 = "+spriteIndex);
+                    break;
+                case ULTIK:
+                    if(!(spriteIndex>=111 && spriteIndex<=122)){
+                        spriteIndex=111;
+                    }
+                    if(spriteIndex==122){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott Ultikick = "+spriteIndex);
+                    break;
+                case KICK1:
+                    if(!(spriteIndex>=123 && spriteIndex<=129)){
+                        spriteIndex=123;
+                    }
+                    if(spriteIndex==129){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott kick1 = "+spriteIndex);
+                    break;
+                case KICK2:
+                    if(!(spriteIndex>=130 && spriteIndex<=136)){
+                        spriteIndex=130;
+                    }
+                    if(spriteIndex==136){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott kick2 = "+spriteIndex);
+                    break;
+                case JKICK:
+                    if(!(spriteIndex>=137 && spriteIndex<=143)){
+                        spriteIndex=137;
+                    }
+                    if(spriteIndex==143){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott jumpkick = "+spriteIndex);
+                    break;
+                case ULTIB1:
+                    if(!(spriteIndex>=144 && spriteIndex<=155)){
+                        spriteIndex=144;
+                    }
+                    if(spriteIndex==155){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott ULTIBOOM1 = "+spriteIndex);
+                    break;
+                case ULTIB2:
+                    if(!(spriteIndex>=156 && spriteIndex<=174)){
+                        spriteIndex=156;
+                    }
+                    if(spriteIndex==174){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott ULTIBOOM2 = "+spriteIndex);
+                    break;
+                case CHARGE:
+                    if(!(spriteIndex>=175 && spriteIndex<=191)){
+                        spriteIndex=175;
+                    }
+                    if(spriteIndex==191){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott ULTIBOOM2 = "+spriteIndex);
+                    break;
+                case HEADBUTT:
+                    if(!(spriteIndex>=192 && spriteIndex<=201)){
+                        spriteIndex=192;
+                    }
+                    if(spriteIndex==201){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott HEADBUTT = "+spriteIndex);
+                    break;
+                case LOSE:
+                    if(!(spriteIndex>=202 && spriteIndex<=205)){
+                        spriteIndex=202;
+                    }
+                    System.out.println("Scott lose = "+spriteIndex);
+                    break;
+                case COMEBACK:
+                    if(!(spriteIndex>=206 && spriteIndex<=212)){
+                        spriteIndex=206;
+                    }
+                    if(spriteIndex==212){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott Comeback = "+spriteIndex);
+                    break;
+                case WASATK1:
+                    if(!(spriteIndex>=213 && spriteIndex<=217)){
+                        spriteIndex=213;
+                    }
+                    if(spriteIndex==217){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott wasatkf = "+spriteIndex);
+                    break;
+                case WASATK2:
+                    if(!(spriteIndex>=218 && spriteIndex<=221)){
+                        spriteIndex=218;
+                    }
+                    if(spriteIndex==221){
+                        state = State.IDLE;
+                    }
+                    System.out.println("Scott wasatkb = "+spriteIndex);
+                    break;
+                case WASATK3:
+                    if(!(spriteIndex>=222 && spriteIndex<=235)){
+                        spriteIndex=222;
+                    }
+                    if(spriteIndex==235){
+                        state = State.SLEEP;
+                    }
+                    System.out.println("Scott wasatk3 = "+spriteIndex);
+                    break;
+                case SLEEP:
+                    if(!(spriteIndex>=236 && spriteIndex<=237)){
+                        spriteIndex=236;
+                    }
+                    System.out.println("Scott sleep = "+spriteIndex);
                     break;
 
             }
