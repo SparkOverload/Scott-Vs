@@ -1,5 +1,5 @@
 #surefire
-#Tue Apr 05 03:44:20 ICT 2016
+#Fri Apr 08 00:57:35 ICT 2016
 testClassesDirectory=C\:\\Scott-Vs\\core\\target\\test-classes
 classPathUrl.4=C\:\\Users\\SPARK.O\\.m2\\repository\\com\\threerings\\tripleplay\\1.9\\tripleplay-1.9.jar
 forkMode=once

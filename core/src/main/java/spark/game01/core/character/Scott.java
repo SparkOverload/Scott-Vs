@@ -20,6 +20,10 @@ public class Scott {
     private boolean hasLoaded = false;
     private int xx;
     private  int yy;
+    private  int eventstate;
+    private  int count=0;
+
+
 
 
     public enum State{
@@ -36,34 +40,83 @@ public class Scott {
 
     public Scott(final float x, final float y){
 
-
         PlayN.keyboard().setListener(new Keyboard.Adapter() {
             @Override
             public void onKeyDown(Keyboard.Event event) {
                switch (event.key()) {
                     case UP:
-                        state = State.IDLE;
+                        if(state == State.CHARGE){
+                            state = State.ULTIB1;
+                        }
+                        if(state == State.SLEEP){
+                            state = State.COMEBACK;
+                        }
+                        if(state == State.ATTK2){
+                            state = State.ULTIB1;
+                        }
                         break;
                     case RIGHT:
-                        state = State.WALK;
+                        if(count<3){
+                            state = State.RUN;
+                        }
+                        if(state == State.IDLE && eventstate ==0){
+                            state = State.WALK;
+                        }
+                        if(state == State.IDLE && eventstate == 1){
+                            state = State.DODGE;
+                            eventstate = 0;
+                        }
+
                         break;
                     case DOWN:
-                        state = State.DODGE;
+                        if(state == State.WALK || state == State.RUN){
+                            state = State.DODGE;
+                        }
+                        if(state == State.IDLE){
+                             eventstate = 1;
+                        }
                         break;
                     case SPACE:
-                        state = State.JUMP;
+                        if(state == State.WALK || state == State.RUN || state == State.IDLE){
+                            state = State.JUMP;
+                        }
+                        if(state == State.JUMP && (spriteIndex >= 28 && spriteIndex <=32)){
+                            state=State.ULTIK;
+                        }
                         break;
                     case A:
-                        state = State.ATTK1;
+                        if(state == State.ATTK2 && (spriteIndex>=48 && spriteIndex<=50)){
+                            state = State.ATTK3;
+                        }
+                        if(state == State.ATTK1 && (spriteIndex>=41 && spriteIndex<=44)){
+                            state = State.ATTK2;
+                        }
+                        if(state == State.IDLE || state == State.WALK||state == State.RUN){
+                            state = State.ATTK1;
+                        }
+                        if(eventstate==1){
+                            state = State.HEADBUTT;
+                            eventstate=0;
+                        }
                         break;
                     case S:
-                        state = State.ATTK2;
-                        break;
-                    case Z:
-                        state = State.ATTK3;
+                        if(state == State.RUN){
+                            state = State.JKICK;
+                        }
+                        if(state == State.KICK1 && (spriteIndex>=127 && spriteIndex<=129)){
+                            state = State.KICK2;
+                        }
+                        if(state == State.IDLE || state == State.WALK){
+                            state = State.KICK1;
+                        }
+                        if(state == State.ATTK1){
+                            state=State.CHARGE;
+                        }
                         break;
                     case D:
-                        state = State.DEF;
+                        if(state == State.IDLE || state == State.WALK || state == State.RUN ){
+                            state = State.DEF;
+                        }
                         break;
                     case NP1:
                         state = State.CEL1;
@@ -77,35 +130,8 @@ public class Scott {
                     case NP5:
                         state = State.GUITAR;
                         break;
-                    case K:
-                        state = State.ULTIK;
-                        break;
-                    case L:
-                        state = State.KICK1;
-                        break;
-                    case SEMICOLON:
-                        state = State.KICK2;
-                        break;
-                    case I:
-                        state = State.JKICK;
-                        break;
-                    case O:
-                        state = State.ULTIB1;
-                        break;
-                    case P:
-                        state = State.ULTIB2;
-                        break;
-                    case C:
-                        state = State.CHARGE;
-                        break;
-                    case H:
-                        state = State.HEADBUTT;
-                        break;
                     case NP7:
                         state = State.LOSE;
-                        break;
-                    case B:
-                        state = State.COMEBACK;
                         break;
                     case NP8:
                         state = State.WASATK1;
@@ -116,11 +142,27 @@ public class Scott {
                     case NP6:
                         state = State.WASATK3;
                         break;
-                    case T:
-                        state = State.SLEEP;
-                        break;
                }
+            }
 
+            @Override
+            public void onKeyUp(Keyboard.Event event){
+                switch (event.key()) {
+                    case RIGHT:
+                        if(state == State.WALK && eventstate == 0){
+                            state = State.IDLE;
+                            count=0;
+                        }
+                        if(state == State.RUN){
+                            state = State.IDLE;
+                        }
+                        break;
+                    case D:
+                        if(state == State.DEF){
+                            state = State.IDLE;
+                        }
+                        break;
+                }
             }
         });
 
@@ -157,6 +199,7 @@ public class Scott {
                         spriteIndex=0;
                     }
                     System.out.println("Scott Idle = "+spriteIndex);
+                    count++;
                     break;
                 case WALK:
                     if(!(spriteIndex>=16 && spriteIndex<=21)){
@@ -219,8 +262,8 @@ public class Scott {
                     if(!(spriteIndex>=58 && spriteIndex<=64)){
                         spriteIndex=58;
                     }
-                    if(spriteIndex==64){
-                        state = State.IDLE;
+                    if(spriteIndex>=59){
+                        spriteIndex=59;
                     }
                     System.out.println("Scott DEF = "+spriteIndex);
                     break;

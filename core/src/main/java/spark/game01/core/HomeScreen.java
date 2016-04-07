@@ -17,8 +17,6 @@ import java.lang.Override;
 
 public class HomeScreen extends UIScreen{
 
-  private final HowtoScreen howtoscreen;
-  private final TopScore topscore;
   private ScreenStack ss;
 
   private final Image bgImage;
@@ -34,9 +32,6 @@ public class HomeScreen extends UIScreen{
 
   public HomeScreen(final ScreenStack ss) {
     this.ss = ss;
-    this.howtoscreen = new HowtoScreen(ss);
-    this.topscore = new TopScore(ss);
-
     this.bgImage = assets().getImage("images/screen05.png");
     this.bg = graphics().createImageLayer(bgImage);
 
@@ -47,16 +42,13 @@ public class HomeScreen extends UIScreen{
     this.startImage = assets().getImage("images/startbutton.png");
     this.startbutton = graphics().createImageLayer(startImage);
     startbutton.setTranslation(155,170);
-
     startbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
+              ss.remove(ss.top());
              ss.push(new Gameplay00(ss));
           }
-
-
       });
-
 
     this.howtoImage = assets().getImage("images/howbutton.png");
     this.howbutton = graphics().createImageLayer(howtoImage);
@@ -64,7 +56,8 @@ public class HomeScreen extends UIScreen{
     howbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
-             ss.push(howtoscreen);
+              ss.remove(ss.top());
+             ss.push(new HowtoScreen(ss));
           }
 
 
@@ -76,7 +69,8 @@ public class HomeScreen extends UIScreen{
     topbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
-             ss.push(topscore);
+              ss.remove(ss.top());
+             ss.push(new TopScore(ss));
           }
 
 

@@ -27,7 +27,9 @@ public class HowtoScreen extends Screen{
       backbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
-              ss.remove(ss.top());
+            ss.remove(ss.top());
+            ss.push(new HomeScreen(ss));
+            System.out.println("2 = "+ss.size());
           }
 
 
