@@ -16,10 +16,11 @@ public class Gameplay00 extends Screen{
   private final ImageLayer bg;
   private final ImageLayer gndfight;
   private final ImageLayer backbutton;
-  private Scott scott = new Scott(250f,320f);
+  private Scott scott;
     private Tom tom = new Tom(350f,360f);
 
   public Gameplay00(final ScreenStack ss) {
+      this.scott = new Scott(250f,320f);
       this.ss = ss;
       Image bgImage = assets().getImage("images/screen00.png");
       this.bg = graphics().createImageLayer(bgImage);
@@ -35,11 +36,15 @@ public class Gameplay00 extends Screen{
       backbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
+
               ss.remove(ss.top());
+              ss.push(new HomeScreen(ss));
+
           }
 
 
       });
+
   }
 
   @Override

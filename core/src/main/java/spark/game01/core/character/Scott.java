@@ -10,6 +10,9 @@ import playn.core.util.Callback;
 import spark.game01.core.sprite.Sprite;
 import spark.game01.core.sprite.SpriteLoader;
 
+
+import static playn.core.PlayN.keyboard;
+
 public class Scott {
 
     private Sprite sprite;
@@ -37,15 +40,12 @@ public class Scott {
         PlayN.keyboard().setListener(new Keyboard.Adapter() {
             @Override
             public void onKeyDown(Keyboard.Event event) {
-                switch (event.key()) {
+               switch (event.key()) {
                     case UP:
                         state = State.IDLE;
                         break;
                     case RIGHT:
                         state = State.WALK;
-                        break;
-                    case NP0:
-                        state = State.RUN;
                         break;
                     case DOWN:
                         state = State.DODGE;
@@ -119,10 +119,11 @@ public class Scott {
                     case T:
                         state = State.SLEEP;
                         break;
+               }
 
-                }
             }
         });
+
 
         sprite = SpriteLoader.getSprite("images/scott.json");
         sprite.addCallback(new Callback<Sprite>() {
