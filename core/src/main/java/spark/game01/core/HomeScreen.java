@@ -17,11 +17,9 @@ import java.lang.Override;
 
 public class HomeScreen extends UIScreen{
 
-  private final Gameplay00 gameplay00;
   private final HowtoScreen howtoscreen;
   private final TopScore topscore;
   private ScreenStack ss;
-  private Root root;
 
   private final Image bgImage;
   private final ImageLayer bg;
@@ -36,7 +34,6 @@ public class HomeScreen extends UIScreen{
 
   public HomeScreen(final ScreenStack ss) {
     this.ss = ss;
-    this.gameplay00 = new Gameplay00(ss);
     this.howtoscreen = new HowtoScreen(ss);
     this.topscore = new TopScore(ss);
 
@@ -50,10 +47,11 @@ public class HomeScreen extends UIScreen{
     this.startImage = assets().getImage("images/startbutton.png");
     this.startbutton = graphics().createImageLayer(startImage);
     startbutton.setTranslation(155,170);
+
     startbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
-             ss.push(gameplay00);
+             ss.push(new Gameplay00(ss));
           }
 
 
