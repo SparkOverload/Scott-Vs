@@ -109,6 +109,9 @@ public class Scott {
                         if(state == State.IDLE || state == State.WALK){
                             state = State.KICK1;
                         }
+                        if(state == State.ATTK2){
+                            state=State.ULTIB2;
+                        }
                         if(state == State.ATTK1){
                             state=State.CHARGE;
                         }
