@@ -18,16 +18,18 @@ public class Scott {
     private Sprite sprite;
     private int spriteIndex = 0;
     private boolean hasLoaded = false;
-    private int xx;
-    private  int yy;
     private  int eventstate;
-    private  int count=0;
-
+    private  int rcount=10;
+    private  int lcount=10;
+    private float x;
+    private float y;
+    private float z = 24f;
+    private int move;
 
 
 
     public enum State{
-        IDLE,RUN,WALK,JUMP,DODGE,ATTK1,ATTK2,ATTK3,
+        IDLE,LIDLE,RUN,LRUN,WALK,LWALK,JUMP,DODGE,ATTK1,ATTK2,ATTK3,
         KICK1,KICK2,JKICK,ULTIK,ULTIB1,ULTIB2,CHARGE,
         DEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LOSE,COMEBACK,
         WASATK1,WASATK2,WASATK3,SLEEP
@@ -39,7 +41,8 @@ public class Scott {
     private int offset = 8;
 
     public Scott(final float x, final float y){
-
+        this.x=x;
+        this.y=y;
         PlayN.keyboard().setListener(new Keyboard.Adapter() {
             @Override
             public void onKeyDown(Keyboard.Event event) {
@@ -55,18 +58,34 @@ public class Scott {
                             state = State.ULTIB1;
                         }
                         break;
+                   case LEFT:
+                       if(lcount<3&& state == State.LIDLE){
+                           state = State.LRUN;
+                       }
+                       if(state == State.LIDLE && eventstate ==0 || state == State.IDLE && eventstate ==0 || state == State.WALK){
+                           state = State.LWALK;
+                           lcount=10;
+                           rcount=10;
+                       }
+                       break;
                     case RIGHT:
-                        if(count<3){
+                        if(rcount<3 && state == State.IDLE){
                             state = State.RUN;
+                            move=1;
                         }
-                        if(state == State.IDLE && eventstate ==0){
+                        if(state == State.IDLE && eventstate ==0 || state == State.LIDLE && eventstate ==0 || state == State.LWALK){
                             state = State.WALK;
+                            lcount=10;
+                            rcount=10;
+                            move=1;
                         }
                         if(state == State.IDLE && eventstate == 1){
                             state = State.DODGE;
                             eventstate = 0;
                         }
-
+                        if(state == State.JUMP){
+                            move = 1;
+                        }
                         break;
                     case DOWN:
                         if(state == State.WALK || state == State.RUN){
@@ -80,8 +99,11 @@ public class Scott {
                         if(state == State.WALK || state == State.RUN || state == State.IDLE){
                             state = State.JUMP;
                         }
-                        if(state == State.JUMP && (spriteIndex >= 28 && spriteIndex <=32)){
+                        if(state == State.JUMP && (spriteIndex >= 26 && spriteIndex <=30)){
                             state=State.ULTIK;
+                        }
+                        if(state == State.SLEEP){
+                            state = State.COMEBACK;
                         }
                         break;
                     case A:
@@ -100,13 +122,13 @@ public class Scott {
                         }
                         break;
                     case S:
-                        if(state == State.RUN){
+                        if(state == State.JUMP){
                             state = State.JKICK;
                         }
                         if(state == State.KICK1 && (spriteIndex>=127 && spriteIndex<=129)){
                             state = State.KICK2;
                         }
-                        if(state == State.IDLE || state == State.WALK){
+                        if(state == State.IDLE || state == State.WALK || state == State.RUN){
                             state = State.KICK1;
                         }
                         if(state == State.ATTK2){
@@ -145,6 +167,7 @@ public class Scott {
                     case NP6:
                         state = State.WASATK3;
                         break;
+
                }
             }
 
@@ -154,16 +177,27 @@ public class Scott {
                     case RIGHT:
                         if(state == State.WALK && eventstate == 0){
                             state = State.IDLE;
-                            count=0;
+                            rcount=0;
                         }
                         if(state == State.RUN){
                             state = State.IDLE;
                         }
+                        move=0;
                         break;
                     case D:
                         if(state == State.DEF){
                             state = State.IDLE;
                         }
+                        break;
+                    case LEFT:
+                        if(state == State.LWALK && eventstate == 0){
+                            state = State.LIDLE;
+                            lcount=0;
+                        }
+                        if(state == State.LRUN){
+                            state = State.LIDLE;
+                        }
+                        move=0;
                         break;
                 }
             }
@@ -201,8 +235,8 @@ public class Scott {
                     if(!(spriteIndex>=0 && spriteIndex<=7)){
                         spriteIndex=0;
                     }
+                    rcount++;
                     System.out.println("Scott Idle = "+spriteIndex);
-                    count++;
                     break;
                 case WALK:
                     if(!(spriteIndex>=16 && spriteIndex<=21)){
@@ -219,9 +253,6 @@ public class Scott {
                 case JUMP:
                     if(!(spriteIndex>=22 && spriteIndex<=34)){
                         spriteIndex=22;
-                    }
-                    if(spriteIndex==34){
-                        state = State.IDLE;
                     }
                     System.out.println("Scott Jump = "+spriteIndex);
                     break;
@@ -306,9 +337,6 @@ public class Scott {
                 case ULTIK:
                     if(!(spriteIndex>=111 && spriteIndex<=122)){
                         spriteIndex=111;
-                    }
-                    if(spriteIndex==122){
-                        state = State.IDLE;
                     }
                     System.out.println("Scott Ultikick = "+spriteIndex);
                     break;
@@ -423,12 +451,128 @@ public class Scott {
                     }
                     System.out.println("Scott sleep = "+spriteIndex);
                     break;
+                case LIDLE:
+                    if(!(spriteIndex>=238 && spriteIndex<=245)){
+                        spriteIndex=238;
+                    }
+                    lcount++;
+                    System.out.println("Scott lidle = "+spriteIndex);
+                    break;
+                case LWALK:
+                    if(!(spriteIndex>=246 && spriteIndex<=251)){
+                        spriteIndex=246;
+                    }
+                    System.out.println("Scott lwalk = "+spriteIndex);
+                    break;
+                case LRUN:
+                    if(!(spriteIndex>=252 && spriteIndex<=259)){
+                        spriteIndex=252;
+                    }
+                    System.out.println("Scott lrun = "+spriteIndex);
+                    break;
 
             }
             sprite.setSprite(spriteIndex);
             spriteIndex++;
             e=0;
         }
-    }
+////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
+        switch(state){
+            case WALK:
+                x += 5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case LWALK:
+                x-=5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case RUN:
+                x+=10f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case LRUN:
+                x-=10f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case ATTK1:
+                x+=0.5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case ATTK2:
+                x+=0.5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case ATTK3:
+                x+=0.5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case JKICK:
+                x+=8f;
+                y = y - z;
+                z = z - 2f;
+                if(y==320f){
+                    z = 24f;
+                    state = State.IDLE;
+                }
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case JUMP:
+                if(spriteIndex >= 24) {
+                    y = y - z;
+                    z = z - 2f;
+                    if (y == 320f) {
+                        z = 24f;
+                        state = State.IDLE;
+                    }
+                    if(move==1){
+                        x+=8f;
+                    }
+                    sprite.layer().setTranslation(x, y + 13f);
+                }
+                break;
+            case DODGE:
+                x+=6f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case ULTIK:
+                x+=10f;
+                y = y - z;
+                z = z - 2f;
+                if(y==320f){
+                    z = 24f;
+                    state = State.IDLE;
+                }
+                    sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case KICK1:
+                x+=0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case KICK2:
+                x+=2.5f;
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case CHARGE:
+                if(spriteIndex>=189 && spriteIndex <=191){
+                    x+=5f;
+                }
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case HEADBUTT:
+                if(spriteIndex==197){
+                    x+=10f;
+                }
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case ULTIB2:
+                x+=1f;
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+        }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
+
+
+    }
 }
