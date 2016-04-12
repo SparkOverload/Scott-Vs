@@ -26,6 +26,7 @@ public class Gameplay00 extends Screen{
       Image bgImage = assets().getImage("images/screen00.png");
       this.bg = graphics().createImageLayer(bgImage);
 
+
       Image gndfightImage = assets().getImage("images/gndfight.png");
       this.gndfight = graphics().createImageLayer(gndfightImage);
       gndfight.setTranslation(0,360);
@@ -64,7 +65,8 @@ public class Gameplay00 extends Screen{
     public void update(int delta) {
         this.scott.update(delta);
         this.tom.update(delta);
-    }
+        }
+
 
 
   }
