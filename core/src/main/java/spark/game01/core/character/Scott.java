@@ -19,6 +19,7 @@ public class Scott {
     private int spriteIndex = 0;
     private boolean hasLoaded = false;
     private  int eventstate;
+    private  int eventwarp=0;
     private  int rcount=10;
     private  int lcount=10;
     private float x;
@@ -29,9 +30,10 @@ public class Scott {
 
 
     public enum State{
-        IDLE,LIDLE,RUN,LRUN,WALK,LWALK,JUMP,DODGE,ATTK1,ATTK2,ATTK3,
-        KICK1,KICK2,JKICK,ULTIK,ULTIB1,ULTIB2,CHARGE,
-        DEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LOSE,COMEBACK,
+        IDLE,LIDLE,RUN,LRUN,WALK,LWALK,JUMP,LJUMP,DODGE,LDODGE,ATTK1,ATTK2,ATTK3,
+        LATTK1,LATTK2,LATTK3,KICK1,LKICK1,KICK2,LKICK2,JKICK,LJKICK,ULTIK,LULTIK,
+        ULTIB1,LULTIB1,ULTIB2,LULTIB2,CHARGE,LCHARGE,
+        DEF,LDEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LHEADBUTT,LOSE,COMEBACK,
         WASATK1,WASATK2,WASATK3,SLEEP
     };
 
@@ -48,24 +50,29 @@ public class Scott {
             public void onKeyDown(Keyboard.Event event) {
                switch (event.key()) {
                     case UP:
-                        if(state == State.CHARGE){
-                            state = State.ULTIB1;
-                        }
                         if(state == State.SLEEP){
                             state = State.COMEBACK;
                         }
                         if(state == State.ATTK2){
                             state = State.ULTIB1;
                         }
+                        if(state == State.LATTK2){
+                            state = State.LULTIB1;
+                        }
                         break;
                    case LEFT:
                        if(lcount<3&& state == State.LIDLE){
                            state = State.LRUN;
+                           move = 1;
                        }
-                       if(state == State.LIDLE && eventstate ==0 || state == State.IDLE && eventstate ==0 || state == State.WALK){
+                       if(state == State.LIDLE || state == State.IDLE || state == State.WALK){
                            state = State.LWALK;
                            lcount=10;
                            rcount=10;
+                           move = 1;
+                       }
+                       if(state == State.LJUMP){
+                           move = 1;
                        }
                        break;
                     case RIGHT:
@@ -73,15 +80,11 @@ public class Scott {
                             state = State.RUN;
                             move=1;
                         }
-                        if(state == State.IDLE && eventstate ==0 || state == State.LIDLE && eventstate ==0 || state == State.LWALK){
+                        if(state == State.IDLE || state == State.LIDLE || state == State.LWALK){
                             state = State.WALK;
                             lcount=10;
                             rcount=10;
                             move=1;
-                        }
-                        if(state == State.IDLE && eventstate == 1){
-                            state = State.DODGE;
-                            eventstate = 0;
                         }
                         if(state == State.JUMP){
                             move = 1;
@@ -91,8 +94,11 @@ public class Scott {
                         if(state == State.WALK || state == State.RUN){
                             state = State.DODGE;
                         }
-                        if(state == State.IDLE){
-                             eventstate = 1;
+                        if(state == State.LWALK || state == State.LRUN){
+                            state = State.LDODGE;
+                        }
+                        if(state == State.IDLE || state == State.LIDLE){
+                            eventstate=1;
                         }
                         break;
                     case SPACE:
@@ -102,28 +108,51 @@ public class Scott {
                         if(state == State.JUMP && (spriteIndex >= 26 && spriteIndex <=30)){
                             state=State.ULTIK;
                         }
+                        if(state == State.LJUMP && (spriteIndex >= 264 && spriteIndex <=268)){
+                            state=State.LULTIK;
+                        }
                         if(state == State.SLEEP){
                             state = State.COMEBACK;
                         }
+                        if(state == State.LWALK || state == State.LRUN || state == State.LIDLE){
+                            state = State.LJUMP;
+                        }
                         break;
                     case A:
-                        if(state == State.ATTK2 && (spriteIndex>=48 && spriteIndex<=50)){
-                            state = State.ATTK3;
-                        }
-                        if(state == State.ATTK1 && (spriteIndex>=41 && spriteIndex<=44)){
-                            state = State.ATTK2;
-                        }
-                        if(state == State.IDLE || state == State.WALK||state == State.RUN){
-                            state = State.ATTK1;
-                        }
-                        if(eventstate==1){
-                            state = State.HEADBUTT;
-                            eventstate=0;
-                        }
+                            if (eventstate == 1 && state == State.IDLE) {
+                                state = State.HEADBUTT;
+                                eventstate = 0;
+                            }
+                            if (eventstate == 1 && state == State.LIDLE) {
+                                state = State.LHEADBUTT;
+                                eventstate = 0;
+                            }
+                            if (state == State.ATTK2 && (spriteIndex >= 48 && spriteIndex <= 50)) {
+                                state = State.ATTK3;
+                            }
+                            if (state == State.ATTK1) {
+                                state = State.ATTK2;
+                            }
+                            if (state == State.IDLE || state == State.WALK || state == State.RUN) {
+                                state = State.ATTK1;
+                            }
+
+                            if (state == State.LATTK2 && (spriteIndex >= 305 && spriteIndex <= 307)) {
+                            state = State.LATTK3;
+                             }
+                            if (state == State.LATTK1) {
+                            state = State.LATTK2;
+                             }
+                            if (state == State.LIDLE || state == State.LWALK || state == State.LRUN) {
+                            state = State.LATTK1;
+                            }
                         break;
                     case S:
                         if(state == State.JUMP){
                             state = State.JKICK;
+                        }
+                        if(state == State.LJUMP){
+                            state = State.LJKICK;
                         }
                         if(state == State.KICK1 && (spriteIndex>=127 && spriteIndex<=129)){
                             state = State.KICK2;
@@ -131,16 +160,32 @@ public class Scott {
                         if(state == State.IDLE || state == State.WALK || state == State.RUN){
                             state = State.KICK1;
                         }
+
+                        if(state == State.LKICK1 && (spriteIndex>=319 && spriteIndex<=321)){
+                            state = State.LKICK2;
+                        }
+                        if(state == State.LIDLE || state == State.LWALK || state == State.LRUN){
+                            state = State.LKICK1;
+                        }
                         if(state == State.ATTK2){
                             state=State.ULTIB2;
                         }
+                        if(state == State.LATTK2){
+                            state=State.LULTIB2;
+                        }
                         if(state == State.ATTK1){
                             state=State.CHARGE;
+                        }
+                        if(state == State.LATTK1){
+                            state=State.LCHARGE;
                         }
                         break;
                     case D:
                         if(state == State.IDLE || state == State.WALK || state == State.RUN ){
                             state = State.DEF;
+                        }
+                        if(state == State.LIDLE || state == State.LWALK || state == State.LRUN ){
+                            state = State.LDEF;
                         }
                         break;
                     case NP1:
@@ -167,7 +212,6 @@ public class Scott {
                     case NP6:
                         state = State.WASATK3;
                         break;
-
                }
             }
 
@@ -175,7 +219,7 @@ public class Scott {
             public void onKeyUp(Keyboard.Event event){
                 switch (event.key()) {
                     case RIGHT:
-                        if(state == State.WALK && eventstate == 0){
+                        if(state == State.WALK){
                             state = State.IDLE;
                             rcount=0;
                         }
@@ -188,9 +232,12 @@ public class Scott {
                         if(state == State.DEF){
                             state = State.IDLE;
                         }
+                        if(state == State.LDEF){
+                            state = State.LIDLE;
+                        }
                         break;
                     case LEFT:
-                        if(state == State.LWALK && eventstate == 0){
+                        if(state == State.LWALK){
                             state = State.LIDLE;
                             lcount=0;
                         }
@@ -241,6 +288,10 @@ public class Scott {
                 case WALK:
                     if(!(spriteIndex>=16 && spriteIndex<=21)){
                         spriteIndex=16;
+                    }
+                    if(eventwarp>=1){
+                        x-=51f;
+                        eventwarp=0;
                     }
                     System.out.println("Scott Walk = "+spriteIndex);
                     break;
@@ -362,8 +413,8 @@ public class Scott {
                     if(!(spriteIndex>=137 && spriteIndex<=143)){
                         spriteIndex=137;
                     }
-                    if(spriteIndex==143){
-                        state = State.IDLE;
+                    if(spriteIndex>=141 && spriteIndex<=143){
+                        spriteIndex=141;
                     }
                     System.out.println("Scott jumpkick = "+spriteIndex);
                     break;
@@ -462,6 +513,10 @@ public class Scott {
                     if(!(spriteIndex>=246 && spriteIndex<=251)){
                         spriteIndex=246;
                     }
+                    if(eventwarp==0){
+                        x+=51f;
+                        eventwarp++;
+                    }
                     System.out.println("Scott lwalk = "+spriteIndex);
                     break;
                 case LRUN:
@@ -469,6 +524,126 @@ public class Scott {
                         spriteIndex=252;
                     }
                     System.out.println("Scott lrun = "+spriteIndex);
+                    break;
+                case LJUMP:
+                    if(!(spriteIndex>=260 && spriteIndex<=272)){
+                        spriteIndex=260;
+                    }
+                    System.out.println("Scott LJump = "+spriteIndex);
+                    break;
+                case LDODGE:
+                    if(!(spriteIndex>=273 && spriteIndex<=278)){
+                        spriteIndex=273;
+                    }
+                    if(spriteIndex==278){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LDODGE = "+spriteIndex);
+                    break;
+                case LDEF:
+                    if(!(spriteIndex>=279 && spriteIndex<=285)){
+                        spriteIndex=279;
+                    }
+                    if(spriteIndex>=280){
+                        spriteIndex=280;
+                    }
+                    System.out.println("Scott LDEF = "+spriteIndex);
+                    break;
+                case LULTIK:
+                    if(!(spriteIndex>=286 && spriteIndex<=297)){
+                        spriteIndex=286;
+                    }
+                    System.out.println("Scott LUltikick = "+spriteIndex);
+                    break;
+                case LATTK1:
+                    if(!(spriteIndex>=298 && spriteIndex<=301)){
+                        spriteIndex=298;
+                    }
+                    if(spriteIndex==301){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LATK1 = "+spriteIndex);
+                    break;
+                case LATTK2:
+                    if(!(spriteIndex>=302 && spriteIndex<=307)){
+                        spriteIndex=302;
+                    }
+                    if(spriteIndex==307){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LATK2 = "+spriteIndex);
+                    break;
+                case LATTK3:
+                    if(!(spriteIndex>=308 && spriteIndex<=314)){
+                        spriteIndex=308;
+                    }
+                    if(spriteIndex==314){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LATK3 = "+spriteIndex);
+                    break;
+                case LKICK1:
+                    if(!(spriteIndex>=315 && spriteIndex<=321)){
+                        spriteIndex=315;
+                    }
+                    if(spriteIndex==321){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott lkick1 = "+spriteIndex);
+                    break;
+                case LKICK2:
+                    if(!(spriteIndex>=322 && spriteIndex<=328)){
+                        spriteIndex=322;
+                    }
+                    if(spriteIndex==328){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott lkick2 = "+spriteIndex);
+                    break;
+                case LJKICK:
+                    if(!(spriteIndex>=329 && spriteIndex<=335)){
+                        spriteIndex=329;
+                    }
+                    if(spriteIndex>=333 && spriteIndex<=335){
+                        spriteIndex=333;
+                    }
+                    System.out.println("Scott ljumpkick = "+spriteIndex);
+                    break;
+                case LULTIB1:
+                    if(!(spriteIndex>=336 && spriteIndex<=347)){
+                        spriteIndex=336;
+                    }
+                    if(spriteIndex==347){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LULTIBOOM1 = "+spriteIndex);
+                    break;
+                case LULTIB2:
+                    if(!(spriteIndex>=348 && spriteIndex<=366)){
+                        spriteIndex=348;
+                    }
+                    if(spriteIndex==366){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LULTIBOOM2 = "+spriteIndex);
+                    break;
+                case LCHARGE:
+                    if(!(spriteIndex>=367 && spriteIndex<=383)){
+                        spriteIndex=367;
+                    }
+                    if(spriteIndex==383){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott lcharge = "+spriteIndex);
+                    break;
+                case LHEADBUTT:
+                    if(!(spriteIndex>=384 && spriteIndex<=393)){
+                        spriteIndex=384;
+                    }
+                    if(spriteIndex==393){
+                        state = State.LIDLE;
+                    }
+                    System.out.println("Scott LHEADBUTT = "+spriteIndex);
                     break;
 
             }
@@ -498,12 +673,24 @@ public class Scott {
                 x+=0.5f;
                 sprite.layer().setTranslation(x,y+13f);
                 break;
+            case LATTK1:
+                x-=0.5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
             case ATTK2:
                 x+=0.5f;
                 sprite.layer().setTranslation(x,y+13f);
                 break;
+            case LATTK2:
+                x-=0.5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
             case ATTK3:
                 x+=0.5f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case LATTK3:
+                x-=0.5f;
                 sprite.layer().setTranslation(x,y+13f);
                 break;
             case JKICK:
@@ -513,6 +700,16 @@ public class Scott {
                 if(y==320f){
                     z = 24f;
                     state = State.IDLE;
+                }
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case LJKICK:
+                x-=8f;
+                y = y - z;
+                z = z - 2f;
+                if(y==320f){
+                    z = 24f;
+                    state = State.LIDLE;
                 }
                 sprite.layer().setTranslation(x,y+13f);
                 break;
@@ -530,8 +727,26 @@ public class Scott {
                     sprite.layer().setTranslation(x, y + 13f);
                 }
                 break;
+            case LJUMP:
+                if(spriteIndex >= 262) {
+                    y = y - z;
+                    z = z - 2f;
+                    if (y == 320f) {
+                        z = 24f;
+                        state = State.LIDLE;
+                    }
+                    if(move==1){
+                        x-=8f;
+                    }
+                    sprite.layer().setTranslation(x, y + 13f);
+                }
+                break;
             case DODGE:
                 x+=6f;
+                sprite.layer().setTranslation(x,y+13f);
+                break;
+            case LDODGE:
+                x-=6f;
                 sprite.layer().setTranslation(x,y+13f);
                 break;
             case ULTIK:
@@ -544,17 +759,41 @@ public class Scott {
                 }
                     sprite.layer().setTranslation(x, y + 13f);
                 break;
+            case LULTIK:
+                x-=10f;
+                y = y - z;
+                z = z - 2f;
+                if(y==320f){
+                    z = 24f;
+                    state = State.LIDLE;
+                }
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
             case KICK1:
                 x+=0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case LKICK1:
+                x-=0.5f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case KICK2:
                 x+=2.5f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
+            case LKICK2:
+                x-=2.5f;
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
             case CHARGE:
                 if(spriteIndex>=189 && spriteIndex <=191){
                     x+=5f;
+                }
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case LCHARGE:
+                if(spriteIndex>=381 && spriteIndex <=383){
+                    x-=5f;
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
@@ -564,8 +803,18 @@ public class Scott {
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
+            case LHEADBUTT:
+                if(spriteIndex==389){
+                    x-=10f;
+                }
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
             case ULTIB2:
                 x+=1f;
+                sprite.layer().setTranslation(x, y + 13f);
+                break;
+            case LULTIB2:
+                x-=1f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
         }
