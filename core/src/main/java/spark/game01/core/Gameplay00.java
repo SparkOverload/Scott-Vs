@@ -8,6 +8,7 @@ import react.UnitSlot;
 import spark.game01.core.character.*;
 import tripleplay.game.*;
 import java.lang.Override;
+import playn.core.util.Clock;
 
 
 public class Gameplay00 extends Screen{
@@ -66,6 +67,11 @@ public class Gameplay00 extends Screen{
         this.scott.update(delta);
         this.tom.update(delta);
         }
+
+    @Override
+    public void paint(Clock clock) {
+        this.scott.paint(clock);
+    }
 
 
 

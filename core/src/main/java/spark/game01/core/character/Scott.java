@@ -7,6 +7,7 @@ import playn.core.Keyboard;
 import playn.core.Layer;
 import playn.core.PlayN;
 import playn.core.util.Callback;
+import playn.core.util.Clock;
 import spark.game01.core.sprite.Sprite;
 import spark.game01.core.sprite.SpriteLoader;
 
@@ -652,176 +653,182 @@ public class Scott {
             e=0;
         }
 ////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
-        switch(state){
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
+
+    }
+
+
+    public void paint(Clock clock) {
+        switch (state) {
             case WALK:
                 x += 5f;
-                sprite.layer().setTranslation(x,y+13f);
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LWALK:
-                x-=5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x -= 5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case RUN:
-                x+=10f;
-                sprite.layer().setTranslation(x,y+13f);
+                x += 10f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LRUN:
-                x-=10f;
-                sprite.layer().setTranslation(x,y+13f);
+                x -= 10f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case ATTK1:
-                x+=0.5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x += 0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LATTK1:
-                x-=0.5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x -= 0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case ATTK2:
-                x+=0.5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x += 0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LATTK2:
-                x-=0.5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x -= 0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case ATTK3:
-                x+=0.5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x += 0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LATTK3:
-                x-=0.5f;
-                sprite.layer().setTranslation(x,y+13f);
+                x -= 0.5f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case JKICK:
-                x+=8f;
+                x += 8f;
                 y = y - z;
                 z = z - 2f;
-                if(y==320f){
+                if (y == 320f) {
                     z = 24f;
                     state = State.IDLE;
                 }
-                sprite.layer().setTranslation(x,y+13f);
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LJKICK:
-                x-=8f;
+                x -= 8f;
                 y = y - z;
                 z = z - 2f;
-                if(y==320f){
+                if (y == 320f) {
                     z = 24f;
                     state = State.LIDLE;
                 }
-                sprite.layer().setTranslation(x,y+13f);
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case JUMP:
-                if(spriteIndex >= 24) {
+                if (spriteIndex >= 24) {
                     y = y - z;
                     z = z - 2f;
                     if (y == 320f) {
                         z = 24f;
                         state = State.IDLE;
                     }
-                    if(move==1){
-                        x+=8f;
+                    if (move == 1) {
+                        x += 8f;
                     }
                     sprite.layer().setTranslation(x, y + 13f);
                 }
                 break;
             case LJUMP:
-                if(spriteIndex >= 262) {
+                if (spriteIndex >= 262) {
                     y = y - z;
                     z = z - 2f;
                     if (y == 320f) {
                         z = 24f;
                         state = State.LIDLE;
                     }
-                    if(move==1){
-                        x-=8f;
+                    if (move == 1) {
+                        x -= 8f;
                     }
                     sprite.layer().setTranslation(x, y + 13f);
                 }
                 break;
             case DODGE:
-                x+=6f;
-                sprite.layer().setTranslation(x,y+13f);
+                x += 6f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LDODGE:
-                x-=6f;
-                sprite.layer().setTranslation(x,y+13f);
+                x -= 6f;
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case ULTIK:
-                x+=10f;
+                x += 10f;
                 y = y - z;
                 z = z - 2f;
-                if(y==320f){
+                if (y == 320f) {
                     z = 24f;
                     state = State.IDLE;
                 }
-                    sprite.layer().setTranslation(x, y + 13f);
+                sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LULTIK:
-                x-=10f;
+                x -= 10f;
                 y = y - z;
                 z = z - 2f;
-                if(y==320f){
+                if (y == 320f) {
                     z = 24f;
                     state = State.LIDLE;
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case KICK1:
-                x+=0.5f;
+                x += 0.5f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LKICK1:
-                x-=0.5f;
+                x -= 0.5f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case KICK2:
-                x+=2.5f;
+                x += 2.5f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LKICK2:
-                x-=2.5f;
+                x -= 2.5f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case CHARGE:
-                if(spriteIndex>=189 && spriteIndex <=191){
-                    x+=5f;
+                if (spriteIndex >= 189 && spriteIndex <= 191) {
+                    x += 5f;
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LCHARGE:
-                if(spriteIndex>=381 && spriteIndex <=383){
-                    x-=5f;
+                if (spriteIndex >= 381 && spriteIndex <= 383) {
+                    x -= 5f;
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case HEADBUTT:
-                if(spriteIndex==197){
-                    x+=10f;
+                if (spriteIndex == 197) {
+                    x += 10f;
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LHEADBUTT:
-                if(spriteIndex==389){
-                    x-=10f;
+                if (spriteIndex == 389) {
+                    x -= 10f;
                 }
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case ULTIB2:
-                x+=1f;
+                x += 1f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
             case LULTIB2:
-                x-=1f;
+                x -= 1f;
                 sprite.layer().setTranslation(x, y + 13f);
                 break;
         }
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
-
-
     }
+
+
 }
