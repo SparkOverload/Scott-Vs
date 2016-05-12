@@ -2,11 +2,15 @@ package spark.game01.core;
 
 import static playn.core.PlayN.*;
 
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Contact;
 import playn.core.*;
 import playn.core.ImageLayer;
 import playn.core.Mouse;
@@ -14,6 +18,8 @@ import react.UnitSlot;
 import spark.game01.core.character.*;
 import tripleplay.game.*;
 import java.lang.Override;
+import java.util.HashMap;
+
 import playn.core.util.Clock;
 
 
@@ -31,6 +37,7 @@ public class Gameplay00 extends Screen{
     private Tom tom;
     private DebugDrawBox2D debugDraw;
     private Boolean showDebugDraw = true;
+    private static HashMap<Body, String> bodies = new HashMap<Body,String>();
 
   public Gameplay00(final ScreenStack ss) {
 
@@ -45,8 +52,9 @@ public class Gameplay00 extends Screen{
       ground.createFixture(groundShape,0.0f);
 
 
-      this.scott = new Scott(world,250f,0f);
-      this.tom = new Tom(world,350f,0f);
+      scott = new Scott(world,250f,300f);
+      bodies.put(scott.body,"scott");
+      tom = new Tom(world,350f,300f);
       this.ss = ss;
       Image bgImage = assets().getImage("images/screen00.png");
       this.bg = graphics().createImageLayer(bgImage);
@@ -71,6 +79,33 @@ public class Gameplay00 extends Screen{
 
       });
 
+      world.setContactListener(new ContactListener() {
+          @Override
+          public void beginContact(Contact contact) {
+
+              Body a = contact.getFixtureA().getBody();
+              Body b = contact.getFixtureB().getBody();
+
+
+
+          }
+
+          @Override
+          public void endContact(Contact contact) {
+
+          }
+
+          @Override
+          public void preSolve(Contact contact, Manifold manifold) {
+
+          }
+
+          @Override
+          public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+
+          }
+      });
+
   }
 
   @Override
@@ -79,8 +114,6 @@ public class Gameplay00 extends Screen{
       this.layer.add(bg);
       this.layer.add(backbutton);
       this.layer.add(gndfight);
-
-
       ///////////////////////////////////////// SpriteLayer
       this.layer.add(scott.layer());
       this.layer.add(tom.layer());
@@ -100,29 +133,6 @@ public class Gameplay00 extends Screen{
           debugDraw.setCamera(0,0,1f / Gameplay00.M_PER_PIXEL);
           world.setDebugDraw(debugDraw);
       }
-
-      mouse().setListener(new Mouse.Adapter(){
-          public void onMouseUp(Mouse.ButtonEvent event){
-
-              BodyDef bodyDef = new BodyDef();
-              bodyDef.type = BodyType.DYNAMIC;
-              bodyDef.position = new Vec2(
-                      event.x() * M_PER_PIXEL,
-                      event.y() * M_PER_PIXEL);
-
-              Body body = world.createBody(bodyDef);
-              CircleShape shape = new CircleShape();
-              shape.setRadius(0.4f);
-
-              FixtureDef fixtureDef = new FixtureDef();
-              fixtureDef.shape = shape;
-              fixtureDef.density = 1f;
-              fixtureDef.friction = 0.1f;
-              fixtureDef.restitution = 1f;
-
-              body.createFixture(fixtureDef);
-              body.setLinearDamping(0.2f);
-          }});
 
   }
 
