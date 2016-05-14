@@ -3,6 +3,7 @@ package spark.game01.core.character;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Contact;
 import playn.core.Key;
 import playn.core.*;
 import playn.core.Keyboard;
@@ -20,7 +21,7 @@ import static playn.core.PlayN.keyboard;
 public class Scott {
 
     private Sprite sprite;
-    private int spriteIndex = 0;
+    public int spriteIndex = 0;
     private boolean hasLoaded = false;
     private  int eventstate;
     private  int eventwarp=0;
@@ -31,6 +32,10 @@ public class Scott {
     private float z = 24f;
     private int move;
     public Body body;
+    private Body other;
+    public Boolean contacted = false;
+    private int contactCheck;
+
 
 
 
@@ -38,11 +43,11 @@ public class Scott {
         IDLE,LIDLE,RUN,LRUN,WALK,LWALK,JUMP,LJUMP,DODGE,LDODGE,ATTK1,ATTK2,ATTK3,
         LATTK1,LATTK2,LATTK3,KICK1,LKICK1,KICK2,LKICK2,JKICK,LJKICK,ULTIK,LULTIK,
         ULTIB1,LULTIB1,ULTIB2,LULTIB2,CHARGE,LCHARGE,
-        DEF,LDEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LHEADBUTT,LOSE,COMEBACK,
-        WASATK1,WASATK2,WASATK3,SLEEP
+        DEF,LDEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LHEADBUTT,LOSE,COMEBACK,LCOMEBACK,
+        WASATK1,LWASATK1,WASATK2,LWASATK2,WASATK3,LWASATK3,SLEEP,LSLEEP
     };
 
-    private State state = State.IDLE;
+    public State state = State.IDLE;
 
     private int e = 0;
 
@@ -255,12 +260,12 @@ public class Scott {
         });
 
 
-        sprite = SpriteLoader.getSprite("images/scott.json");
+        sprite = SpriteLoader.getSprite("images/scott_all/scott.json");
         sprite.addCallback(new Callback<Sprite>() {
             @Override
             public void onSuccess(Sprite result) {
                 sprite.setSprite(spriteIndex);
-                sprite.layer().setOrigin(sprite.width()/2f,sprite.height()/2f);
+                sprite.layer().setOrigin(sprite.width()/2f,(sprite.height()/2f) +40);
                 sprite.layer().setTranslation(x,y);
 
                 body = initPhysicsBody(world,
@@ -288,12 +293,12 @@ public class Scott {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width()+20)* Gameplay00.M_PER_PIXEL/2,
-                sprite.layer().height()*Gameplay00.M_PER_PIXEL/2);
+        shape.setAsBox((sprite.layer().width()-60)* Gameplay00.M_PER_PIXEL/2,
+                (sprite.layer().height()-70)*Gameplay00.M_PER_PIXEL/2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.3f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 0.1f;
         //fixtureDef.restitution = 1f;
 
@@ -313,7 +318,6 @@ public class Scott {
                         spriteIndex=0;
                     }
                     rcount++;
-                    System.out.println("Scott Idle = "+spriteIndex);
                     break;
                 case WALK:
                     if(!(spriteIndex>=16 && spriteIndex<=21)){
@@ -323,17 +327,18 @@ public class Scott {
                         x-=51f;
                         eventwarp=0;
                     }
-                    System.out.println("Scott Walk = "+spriteIndex);
                     break;
                 case RUN:
                     if(!(spriteIndex>=8 && spriteIndex<=15)){
                         spriteIndex=8;
                     }
-                    System.out.println("Scott Run = "+spriteIndex);
                     break;
                 case JUMP:
                     if(!(spriteIndex>=22 && spriteIndex<=34)){
                         spriteIndex=22;
+                    }
+                    if(spriteIndex>=32&&spriteIndex<=33){
+                        spriteIndex=32;
                     }
                     System.out.println("Scott Jump = "+spriteIndex);
                     break;
@@ -344,7 +349,6 @@ public class Scott {
                     if(spriteIndex==40){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott DODGE = "+spriteIndex);
                     break;
                 case ATTK1:
                     if(!(spriteIndex>=41 && spriteIndex<=44)){
@@ -380,7 +384,6 @@ public class Scott {
                     if(spriteIndex>=59){
                         spriteIndex=59;
                     }
-                    System.out.println("Scott DEF = "+spriteIndex);
                     break;
                 case CEL2:
                     if(!(spriteIndex>=65 && spriteIndex<=79)){
@@ -389,13 +392,11 @@ public class Scott {
                     if(spriteIndex==79){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott Cel2 = "+spriteIndex);
                     break;
                 case GUITAR:
                     if(!(spriteIndex>=80 && spriteIndex<=85)){
                         spriteIndex=80;
                     }
-                    System.out.println("Scott Guitar = "+spriteIndex);
                     break;
                 case CEL1:
                     if(!(spriteIndex>=86 && spriteIndex<=92)){
@@ -404,7 +405,6 @@ public class Scott {
                     if(spriteIndex==92){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott CEL1 = "+spriteIndex);
                     break;
                 case CEL3:
                     if(!(spriteIndex>=93 && spriteIndex<=110)){
@@ -413,7 +413,6 @@ public class Scott {
                     if(spriteIndex==110){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott Cel3 = "+spriteIndex);
                     break;
                 case ULTIK:
                     if(!(spriteIndex>=111 && spriteIndex<=122)){
@@ -473,7 +472,7 @@ public class Scott {
                     if(spriteIndex==191){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott ULTIBOOM2 = "+spriteIndex);
+                    System.out.println("Scott Charge = "+spriteIndex);
                     break;
                 case HEADBUTT:
                     if(!(spriteIndex>=192 && spriteIndex<=201)){
@@ -488,7 +487,6 @@ public class Scott {
                     if(!(spriteIndex>=202 && spriteIndex<=205)){
                         spriteIndex=202;
                     }
-                    System.out.println("Scott lose = "+spriteIndex);
                     break;
                 case COMEBACK:
                     if(!(spriteIndex>=206 && spriteIndex<=212)){
@@ -497,7 +495,6 @@ public class Scott {
                     if(spriteIndex==212){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott Comeback = "+spriteIndex);
                     break;
                 case WASATK1:
                     if(!(spriteIndex>=213 && spriteIndex<=217)){
@@ -506,7 +503,6 @@ public class Scott {
                     if(spriteIndex==217){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott wasatkf = "+spriteIndex);
                     break;
                 case WASATK2:
                     if(!(spriteIndex>=218 && spriteIndex<=221)){
@@ -515,7 +511,6 @@ public class Scott {
                     if(spriteIndex==221){
                         state = State.IDLE;
                     }
-                    System.out.println("Scott wasatkb = "+spriteIndex);
                     break;
                 case WASATK3:
                     if(!(spriteIndex>=222 && spriteIndex<=235)){
@@ -524,20 +519,17 @@ public class Scott {
                     if(spriteIndex==235){
                         state = State.SLEEP;
                     }
-                    System.out.println("Scott wasatk3 = "+spriteIndex);
                     break;
                 case SLEEP:
                     if(!(spriteIndex>=236 && spriteIndex<=237)){
                         spriteIndex=236;
                     }
-                    System.out.println("Scott sleep = "+spriteIndex);
                     break;
                 case LIDLE:
                     if(!(spriteIndex>=238 && spriteIndex<=245)){
                         spriteIndex=238;
                     }
                     lcount++;
-                    System.out.println("Scott lidle = "+spriteIndex);
                     break;
                 case LWALK:
                     if(!(spriteIndex>=246 && spriteIndex<=251)){
@@ -547,17 +539,18 @@ public class Scott {
                         x+=51f;
                         eventwarp++;
                     }
-                    System.out.println("Scott lwalk = "+spriteIndex);
                     break;
                 case LRUN:
                     if(!(spriteIndex>=252 && spriteIndex<=259)){
                         spriteIndex=252;
                     }
-                    System.out.println("Scott lrun = "+spriteIndex);
                     break;
                 case LJUMP:
                     if(!(spriteIndex>=260 && spriteIndex<=272)){
                         spriteIndex=260;
+                    }
+                    if(spriteIndex==272){
+                        state=State.LIDLE;
                     }
                     System.out.println("Scott LJump = "+spriteIndex);
                     break;
@@ -568,7 +561,6 @@ public class Scott {
                     if(spriteIndex==278){
                         state = State.LIDLE;
                     }
-                    System.out.println("Scott LDODGE = "+spriteIndex);
                     break;
                 case LDEF:
                     if(!(spriteIndex>=279 && spriteIndex<=285)){
@@ -577,7 +569,6 @@ public class Scott {
                     if(spriteIndex>=280){
                         spriteIndex=280;
                     }
-                    System.out.println("Scott LDEF = "+spriteIndex);
                     break;
                 case LULTIK:
                     if(!(spriteIndex>=286 && spriteIndex<=297)){
@@ -694,26 +685,68 @@ public class Scott {
         if(!hasLoaded) return;
         switch (state) {
             case WALK:
-                body.applyForce(new Vec2(100f,0f),body.getPosition());
+                body.applyForce(new Vec2(80f,0f),body.getPosition());
                 break;
             case LWALK:
-                body.applyForce(new Vec2(-100f,0f),body.getPosition());
+                body.applyForce(new Vec2(-80f,0f),body.getPosition());
                 break;
             case JUMP:
-                if(spriteIndex>=22&&spriteIndex<=32){
-                    body.applyForce(new Vec2(0f,-80f),body.getPosition());
+                if(spriteIndex==23){
+                    body.applyLinearImpulse(new Vec2(0f,-30f),body.getPosition());
+                    System.out.println(body);
                 }
-                if(spriteIndex==34){
-                    spriteIndex=33;
+                break;
+            case LJUMP:
+                if(spriteIndex==261){
+                    body.applyLinearImpulse(new Vec2(0f,-30f),body.getPosition());
                 }
-
-
+                break;
+            case CHARGE:
+                if(spriteIndex==189){
+                        body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
+                    if(contacted==true){
+                        other.applyLinearImpulse(new Vec2(50f, -20f), other.getPosition());
+                    }
+                }
                 break;
        }
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 (body.getPosition().y/Gameplay00.M_PER_PIXEL));
-        sprite.layer().setRotation(body.getAngle());
+        //sprite.layer().setRotation(body.getAngle());
+
+        //System.out.println(contacted);
+    }
+
+    public void contact(Contact contact) {
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
+
+        if(body==a && (Gameplay00.bodies.get(b))!= "ground"){
+            contacted = true;
+            other = contact.getFixtureB().getBody();
+        }else if(body==b && (Gameplay00.bodies.get(a))!= "ground"){
+            contacted = true;
+            other = contact.getFixtureA().getBody();
+        }
+
+        switch(state){
+            case JUMP:
+                state=State.IDLE;
+                break;
+            case LJUMP:
+                state=State.LIDLE;
+                break;
+            case CHARGE:
+                if (spriteIndex>=189&&spriteIndex<=191) {
+                    if (a == body) {
+                        b.applyLinearImpulse(new Vec2(100f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(100f, -50f), a.getPosition());
+                    }
+                }
+                break;
+        }
     }
 
 
