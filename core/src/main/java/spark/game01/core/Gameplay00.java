@@ -37,7 +37,7 @@ public class Gameplay00 extends Screen{
     private Tom tom;
     private DebugDrawBox2D debugDraw;
     private Boolean showDebugDraw = true;
-    private static HashMap<Body, String> bodies = new HashMap<Body,String>();
+    public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
 
   public Gameplay00(final ScreenStack ss) {
 
@@ -50,11 +50,13 @@ public class Gameplay00 extends Screen{
       EdgeShape groundShape = new EdgeShape();
       groundShape.set(new Vec2(2,height-2.5f),new Vec2(width,height-2.5f));
       ground.createFixture(groundShape,0.0f);
+      bodies.put(ground,"ground");
+
+      scott = new Scott(world,250f,350f);
+      tom = new Tom(world,350f,350f);
 
 
-      scott = new Scott(world,250f,300f);
-      bodies.put(scott.body,"scott");
-      tom = new Tom(world,350f,300f);
+
       this.ss = ss;
       Image bgImage = assets().getImage("images/screen00.png");
       this.bg = graphics().createImageLayer(bgImage);
@@ -79,6 +81,8 @@ public class Gameplay00 extends Screen{
 
       });
 
+
+
       world.setContactListener(new ContactListener() {
           @Override
           public void beginContact(Contact contact) {
@@ -86,12 +90,29 @@ public class Gameplay00 extends Screen{
               Body a = contact.getFixtureA().getBody();
               Body b = contact.getFixtureB().getBody();
 
+              System.out.println(bodies.get(a)+"dddddd"+bodies.get(b));
 
+              if(bodies.get(a)=="ground"&&b==scott.body || bodies.get(b)=="ground"&&a==scott.body){
+                  scott.contact(contact);
+              }
 
+              if(a==scott.body&&b==tom.body || b==scott.body&&a==tom.body){
+                  scott.contact(contact);
+                  tom.contact(contact);
+              }
           }
 
           @Override
           public void endContact(Contact contact) {
+
+
+
+              Body a = contact.getFixtureA().getBody();
+              Body b = contact.getFixtureB().getBody();
+              if(a==scott.body&&b==tom.body || b==scott.body&&a==tom.body){
+                  scott.contacted = false;
+                  tom.contacted = false;
+              }
 
           }
 
@@ -117,6 +138,7 @@ public class Gameplay00 extends Screen{
       ///////////////////////////////////////// SpriteLayer
       this.layer.add(scott.layer());
       this.layer.add(tom.layer());
+
       if(showDebugDraw){
           CanvasImage image = graphics().createImage(
                   (int) (width / Gameplay00.M_PER_PIXEL),

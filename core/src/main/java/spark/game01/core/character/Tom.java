@@ -3,6 +3,7 @@ package spark.game01.core.character;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.dynamics.contacts.Contact;
 import playn.core.Key;
 import playn.core.*;
 import playn.core.Keyboard;
@@ -16,16 +17,17 @@ import spark.game01.core.sprite.SpriteLoader;
 
 public class Tom {
     private Sprite sprite;
-    private int spriteIndex = 0;
+    public int spriteIndex = 0;
     private boolean hasLoaded = false;
-    private Body body;
+    public Body body;
+    public Boolean contacted = false;
 
 
     public enum State{
-        IDLE,WALK
+        IDLE,LIDLE,WALK,LWALK
     };
 
-    private State state = State.IDLE;
+    public State state = State.LIDLE;
 
     private int e = 0;
 
@@ -45,12 +47,12 @@ public class Tom {
                 }
             }
         });*/
-        sprite = SpriteLoader.getSprite("images/tom.json");
+        sprite = SpriteLoader.getSprite("images/tom_all/tom.json");
         sprite.addCallback(new Callback<Sprite>() {
             @Override
             public void onSuccess(Sprite result) {
                 sprite.setSprite(spriteIndex);
-                sprite.layer().setOrigin(sprite.width()/2f,sprite.height()/2f);
+                sprite.layer().setOrigin(sprite.width()/2f,sprite.height()/2f+40);
                 sprite.layer().setTranslation(x,y);
 
                 body = initPhysicsBody(world,
@@ -77,12 +79,12 @@ public class Tom {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width()-20)* Gameplay00.M_PER_PIXEL/2,
-                sprite.layer().height()*Gameplay00.M_PER_PIXEL/2);
+        shape.setAsBox((sprite.layer().width()-60)* Gameplay00.M_PER_PIXEL/2,
+                (sprite.layer().height()-70)*Gameplay00.M_PER_PIXEL/2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 40f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 0.1f;
         //fixtureDef.restitution = 1f;
 
@@ -102,13 +104,21 @@ public class Tom {
                     if(!(spriteIndex>=0 && spriteIndex<=3)){
                         spriteIndex=0;
                     }
-                   // System.out.println("Tom Idle = "+spriteIndex);
                     break;
                 case WALK:
                     if(!(spriteIndex>=4 && spriteIndex<=11)){
                         spriteIndex=4;
                     }
-                    System.out.println("Tom Walk = "+spriteIndex);
+                    break;
+                case LIDLE:
+                    if(!(spriteIndex>=12 && spriteIndex<=15)){
+                        spriteIndex=12;
+                    }
+                    break;
+                case LWALK:
+                    if(!(spriteIndex>=16 && spriteIndex<=23)){
+                        spriteIndex=16;
+                    }
                     break;
             }
             sprite.setSprite(spriteIndex);
@@ -123,5 +133,17 @@ public class Tom {
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 body.getPosition().y/Gameplay00.M_PER_PIXEL);
+    }
+
+    public void contact(Contact contact) {
+        contacted = true;
+
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
+
+        if(body==b){
+            state=State.WALK;
+        }
+
     }
 }
