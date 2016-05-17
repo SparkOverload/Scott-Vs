@@ -54,7 +54,8 @@ public class Scott {
     public Scott(final World world,final float x, final float y){
         this.x=x;
         this.y=y;
-        PlayN.keyboard().setListener(new Keyboard.Adapter() {
+
+        /*PlayN.keyboard().setListener(new Keyboard.Adapter() {
             @Override
             public void onKeyDown(Keyboard.Event event) {
                switch (event.key()) {
@@ -257,7 +258,7 @@ public class Scott {
                         break;
                 }
             }
-        });
+        });*/
 
 
         sprite = SpriteLoader.getSprite("images/scott_all/scott.json");

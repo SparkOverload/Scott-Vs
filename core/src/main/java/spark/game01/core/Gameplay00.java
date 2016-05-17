@@ -70,6 +70,7 @@ public class Gameplay00 extends Screen{
       this.backbutton = graphics().createImageLayer(backImage);
       backbutton.setTranslation(10,10);
 
+
       backbutton.addListener(new Mouse.LayerAdapter(){
           @Override
           public void onMouseUp(Mouse.ButtonEvent event){
@@ -77,8 +78,6 @@ public class Gameplay00 extends Screen{
               ss.push(new HomeScreen(ss));
               System.out.println("1 = "+ss.size());
           }
-
-
       });
 
 
@@ -96,7 +95,7 @@ public class Gameplay00 extends Screen{
                   scott.contact(contact);
               }
 
-              if(a==scott.body&&b==tom.body || b==scott.body&&a==tom.body){
+              if((a==scott.body&&b==tom.body) || (b==scott.body&&a==tom.body)){
                   scott.contact(contact);
                   tom.contact(contact);
               }
@@ -109,7 +108,7 @@ public class Gameplay00 extends Screen{
 
               Body a = contact.getFixtureA().getBody();
               Body b = contact.getFixtureB().getBody();
-              if(a==scott.body&&b==tom.body || b==scott.body&&a==tom.body){
+              if((a==scott.body&&b==tom.body) || (b==scott.body&&a==tom.body)){
                   scott.contacted = false;
                   tom.contacted = false;
               }
