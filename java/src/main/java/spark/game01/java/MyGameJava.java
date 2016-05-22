@@ -3,7 +3,7 @@ package spark.game01.java;
 import playn.core.PlayN;
 import playn.java.JavaPlatform;
 
-import spark.game01.core.MyGame;
+import spark.game01.core.Screen.MyGame;
 
 public class MyGameJava {
 
