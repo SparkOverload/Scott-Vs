@@ -90,26 +90,25 @@ public class Hpbar {
             spriteIndex++;
             e=0;
         }
-    }
 
-    public void paint(Clock clock){
-        if(Gameplay00.scoret <= 90f){
+        if(Gameplay00.score <= 90f){
             state=State.HP90;
         }
-        if(Gameplay00.scoret <= 70f){
+        if(Gameplay00.score <= 70f){
             state=State.HP70;
         }
-        if(Gameplay00.scoret <= 50f){
+        if(Gameplay00.score <= 50f){
             state=State.HP50;
         }
-        if(Gameplay00.scoret <= 30f){
+        if(Gameplay00.score <= 30f){
             state=State.HP30;
         }
-        if(Gameplay00.scoret <= 10f){
+        if(Gameplay00.score <= 10f){
             state=State.HP10;
         }
-        if(Gameplay00.scoret <= 0f){
+        if(Gameplay00.score <= 0f){
             state=State.HP0;
         }
     }
+
 }

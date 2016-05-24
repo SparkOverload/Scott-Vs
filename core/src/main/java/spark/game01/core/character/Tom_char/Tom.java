@@ -88,7 +88,7 @@ public class Tom {
     }
 
 
-    public void update(int delta) {
+    public void update(int delta,Scott scott) {
         if(hasLoaded == false) return;
         e = e + delta;
         if(e > 60){
@@ -257,19 +257,14 @@ public class Tom {
             spriteIndex++;
             e=0;
         }
-    }
-
-
-    public void paint(Clock clock,Scott scott) {
-        i++;
-        if(!hasLoaded) return;
-
         try{
-
-           if((scott.state== Scott.State.SLEEP)||(scott.state== Scott.State.LOSE)){
+            i++;
+            if((scott.state== Scott.State.SLEEP)||(scott.state== Scott.State.LOSE)){
                 state=State.LIDLE;
+                body.setActive(true);
             }else if(scott.state== Scott.State.LSLEEP){
                 state=State.IDLE;
+                body.setActive(true);
             }
             if((body.getPosition().x >= (scott.body.getPosition().x+4))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
@@ -277,7 +272,7 @@ public class Tom {
             }else if(((body.getPosition().x <= (scott.body.getPosition().x+3))
                     &&(body.getPosition().x >= (scott.body.getPosition().x)))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
-                if(i==80) {
+                if(i==30) {
                     switch (random.nextInt(4)) {
                         case 0:
                             state = State.LATTK1;
@@ -291,7 +286,7 @@ public class Tom {
                             }
                             break;
                         case 3:
-                                state = State.LIDLE;
+                            state = State.LIDLE;
                             break;
                     }
                 }
@@ -326,14 +321,14 @@ public class Tom {
                     body.applyLinearImpulse(new Vec2(10f,-50f),body.getPosition());
                 }
             }
-  //##########################  LEFT   ##########################################
+            //##########################  LEFT   ##########################################
             if((body.getPosition().x <= (scott.body.getPosition().x-4))
                     &&(state!=State.WASATTK2)&&(state!=State.LWASATTK2)){
                 state=State.WALK;
             }else if(((body.getPosition().x >= (scott.body.getPosition().x-3))&&
                     (body.getPosition().x <= (scott.body.getPosition().x)))
                     &&(state!=State.WASATTK2)&&(state!=State.LWASATTK2)){
-                if(i==80) {
+                if(i==30) {
                     switch (random.nextInt(4)) {
                         case 0:
                             state = State.ATTK1;
@@ -347,7 +342,7 @@ public class Tom {
                             }
                             break;
                         case 3:
-                                state = State.IDLE;
+                            state = State.IDLE;
                             break;
                     }
                 }
@@ -382,12 +377,10 @@ public class Tom {
                     body.applyLinearImpulse(new Vec2(-10f,-50f),body.getPosition());
 
                 }
+
             }
 
-
-
-
-            switch (state) {
+            switch (state){
                 case WALK:
                     body.applyForce(new Vec2(80f,0f),body.getPosition());
                     break;
@@ -408,7 +401,7 @@ public class Tom {
                     if(spriteIndex==98){
                         body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
                         if(contacted==true){
-                            other.applyLinearImpulse(new Vec2(-5f, -10f), other.getPosition());
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
                         }
                     }
                     break;
@@ -426,7 +419,7 @@ public class Tom {
                     if(spriteIndex==78){
                         body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
                         if(contacted==true){
-                           other.applyLinearImpulse(new Vec2(5f, -10f), other.getPosition());
+                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
                         }
                     }
                     break;
@@ -441,14 +434,14 @@ public class Tom {
                     }
                     break;
                 case LWASATTK2:
-                        if((i1>=1&&i1<=100)&&(Gameplay00.scoret>0)){
-                            i1--;
-                            if(i1==1){
-                                state=State.LCOMBACK;
-                                body.setActive(true);
-                                i1=0;
-                            }
+                    if((i1>=1&&i1<=100)&&(Gameplay00.scoret>0)){
+                        i1--;
+                        if(i1==1){
+                            state=State.LCOMBACK;
+                            body.setActive(true);
+                            i1=0;
                         }
+                    }
                     break;
                 case JUMP:
                     body.applyLinearImpulse(new Vec2(0f,-10f),body.getPosition());
@@ -457,16 +450,18 @@ public class Tom {
                     body.applyLinearImpulse(new Vec2(0f,-10f),body.getPosition());
                     break;
             }
-
-        }catch(Exception e){
+        }catch (Exception e){
 
         }
-
-        if(i>=80){
+        if(i>=30){
             i=0;
         }
-
         Gameplay00.debugSring1 = "HpScore = "+Gameplay00.scoret;
+    }
+
+
+    public void paint(Clock clock) {
+        if(!hasLoaded) return;
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 body.getPosition().y/Gameplay00.M_PER_PIXEL);
