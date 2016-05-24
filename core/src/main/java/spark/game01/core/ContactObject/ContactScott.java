@@ -6,6 +6,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 import spark.game01.core.Screen.Gameplay00;
 import spark.game01.core.Screen.Gameplay01;
+import spark.game01.core.Screen.Gameplay02;
 import spark.game01.core.character.Scott_char.Scott;
 import spark.game01.core.character.Tom_char.Tom;
 
@@ -31,6 +32,14 @@ public class ContactScott {
             scott.other = contact.getFixtureA().getBody();
         }
 
+        if(scott.body==a && (Gameplay02.bodies.get(b))!= "ground"){
+            scott.contacted = true;
+            scott.other = contact.getFixtureB().getBody();
+        }else if(scott.body==b && (Gameplay02.bodies.get(a))!= "ground"){
+            scott.contacted = true;
+            scott.other = contact.getFixtureA().getBody();
+        }
+
         switch(scott.state){
             case JUMP:
                 if((scott.body==a && (Gameplay00.bodies.get(b))== "ground")||
@@ -41,6 +50,10 @@ public class ContactScott {
                         (scott.body==b && (Gameplay01.bodies.get(a))== "ground")){
                     scott.state=Scott.State.IDLE;
                 }
+                if((scott.body==a && (Gameplay02.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay02.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
                 break;
             case LJUMP:
                 if((scott.body==a && (Gameplay00.bodies.get(b))== "ground")||
@@ -49,6 +62,10 @@ public class ContactScott {
                 }
                 if((scott.body==a && (Gameplay01.bodies.get(b))== "ground")||
                         (scott.body==b && (Gameplay01.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                if((scott.body==a && (Gameplay02.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay02.bodies.get(a))== "ground")){
                     scott.state=Scott.State.LIDLE;
                 }
                 break;
@@ -64,6 +81,26 @@ public class ContactScott {
                 break;
             case LJKICK:
                 if (scott.spriteIndex>=329&&scott.spriteIndex<=335) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                    }
+                }
+                scott.state=Scott.State.LIDLE;
+                break;
+            case ULTIK:
+                if (scott.spriteIndex>=111&&scott.spriteIndex<=122) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                    }
+                }
+                scott.state=Scott.State.IDLE;
+                break;
+            case LULTIK:
+                if (scott.spriteIndex>=286&&scott.spriteIndex<=297) {
                     if (a == scott.body) {
                         b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
                     } else {

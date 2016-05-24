@@ -2,7 +2,8 @@
   "urls": ["images/gideon_all/gideon_p1.png","images/gideon_all/gideon_p2.png","images/gideon_all/gideon_p3.png"
             ,"images/gideon_all/gideon_p4.png","images/gideon_all/gideon_p5.png","images/gideon_all/gideon_p6.png"
             ,"images/gideon_all/gideon_p7.png","images/gideon_all/gideon_p8.png","images/gideon_all/gideon_p9.png"
-            ,"images/gideon_all/gideon_p10.png"],
+            ,"images/gideon_all/gideon_p10.png","images/gideon_all/gideon_p11.png","images/gideon_all/gideon_p12.png"
+            ,"images/gideon_all/gideon_p13.png","images/gideon_all/gideon_p14.png"],
   "sprites":[
     {"id": "idle_0", "url": 0, "x": 0,   "y": 0, "w": 220, "h": 180},
     {"id": "idle_1", "url": 0, "x": 220,  "y": 0, "w": 220, "h": 180},
@@ -144,7 +145,74 @@
     {"id": "lATTK4_123", "url": 9, "x": 220, "y": 360, "w": 220, "h": 180},
     {"id": "lATTK4_124", "url": 9, "x": 440,   "y": 360, "w": 220, "h": 180},
     {"id": "lATTK4_125", "url": 9, "x": 660,  "y": 360, "w": 220, "h": 180},
-    {"id": "lATTK4_126", "url": 9, "x": 0,  "y": 540, "w": 220, "h": 180}
+    {"id": "lATTK4_126", "url": 9, "x": 0,  "y": 540, "w": 220, "h": 180},
+
+    {"id": "ATTK5_127", "url": 10, "x": 0,   "y": 0, "w": 220, "h": 180},
+    {"id": "ATTK5_128", "url": 10, "x": 220,  "y": 0, "w": 220, "h": 180},
+    {"id": "ATTK5_129", "url": 10, "x": 440,  "y": 0, "w": 220, "h": 180},
+    {"id": "ATTK5_130", "url": 10, "x": 660, "y": 0, "w": 220, "h": 180},
+    {"id": "ATTK5_131", "url": 10, "x": 0,   "y": 180, "w": 220, "h": 180},
+    {"id": "ATTK5_132", "url": 10, "x": 220,  "y": 180, "w": 220, "h": 180},
+    {"id": "ATTK5_133", "url": 10, "x": 440,  "y": 180, "w": 220, "h": 180},
+    {"id": "ATTK5_134", "url": 10, "x": 660, "y": 180, "w": 220, "h": 180},
+
+    {"id": "charge_135", "url": 10, "x": 0,  "y": 360, "w": 220, "h": 180},
+    {"id": "charge_136", "url": 10, "x": 220, "y": 360, "w": 220, "h": 180},
+    {"id": "charge_137", "url": 10, "x": 440,   "y": 360, "w": 220, "h": 180},
+    {"id": "charge_138", "url": 10, "x": 660,  "y": 360, "w": 220, "h": 180},
+    {"id": "charge_139", "url": 10, "x": 0,  "y": 540, "w": 220, "h": 180},
+    {"id": "charge_140", "url": 10, "x": 220, "y": 540, "w": 220, "h": 180},
+    {"id": "charge_141", "url": 10, "x": 440,  "y": 540, "w": 220, "h": 180},
+
+    {"id": "lATTK5_142", "url": 11, "x": 0,   "y": 0, "w": 220, "h": 180},
+    {"id": "lATTK5_143", "url": 11, "x": 220,  "y": 0, "w": 220, "h": 180},
+    {"id": "lATTK5_144", "url": 11, "x": 440,  "y": 0, "w": 220, "h": 180},
+    {"id": "lATTK5_145", "url": 11, "x": 660, "y": 0, "w": 220, "h": 180},
+    {"id": "lATTK5_146", "url": 11, "x": 0,   "y": 180, "w": 220, "h": 180},
+    {"id": "lATTK5_147", "url": 11, "x": 220,  "y": 180, "w": 220, "h": 180},
+    {"id": "lATTK5_148", "url": 11, "x": 440,  "y": 180, "w": 220, "h": 180},
+    {"id": "lATTK5_149", "url": 11, "x": 660, "y": 180, "w": 220, "h": 180},
+
+    {"id": "lcharge_150", "url": 11, "x": 0,  "y": 360, "w": 220, "h": 180},
+    {"id": "lcharge_151", "url": 11, "x": 220, "y": 360, "w": 220, "h": 180},
+    {"id": "lcharge_152", "url": 11, "x": 440,   "y": 360, "w": 220, "h": 180},
+    {"id": "lcharge_153", "url": 11, "x": 660,  "y": 360, "w": 220, "h": 180},
+    {"id": "lcharge_154", "url": 11, "x": 0,  "y": 540, "w": 220, "h": 180},
+    {"id": "lcharge_155", "url": 11, "x": 220, "y": 540, "w": 220, "h": 180},
+    {"id": "lcharge_156", "url": 11, "x": 440,  "y": 540, "w": 220, "h": 180},
+
+    {"id": "comeback_157", "url": 12, "x": 0,   "y": 0, "w": 220, "h": 180},
+    {"id": "comeback_158", "url": 12, "x": 220,  "y": 0, "w": 220, "h": 180},
+    {"id": "comeback_159", "url": 12, "x": 440,  "y": 0, "w": 220, "h": 180},
+    {"id": "comeback_160", "url": 12, "x": 660, "y": 0, "w": 220, "h": 180},
+    {"id": "comeback_161", "url": 12, "x": 0,   "y": 180, "w": 220, "h": 180},
+    {"id": "comeback_162", "url": 12, "x": 220,  "y": 180, "w": 220, "h": 180},
+    {"id": "comeback_163", "url": 12, "x": 440,  "y": 180, "w": 220, "h": 180},
+    {"id": "comeback_164", "url": 12, "x": 660, "y": 180, "w": 220, "h": 180},
+    {"id": "comeback_165", "url": 12, "x": 0,  "y": 360, "w": 220, "h": 180},
+    {"id": "comeback_166", "url": 12, "x": 220, "y": 360, "w": 220, "h": 180},
+    {"id": "comeback_167", "url": 12, "x": 440,   "y": 360, "w": 220, "h": 180},
+    {"id": "comeback_168", "url": 12, "x": 660,  "y": 360, "w": 220, "h": 180},
+
+    {"id": "lcomeback_169", "url": 13, "x": 0,   "y": 0, "w": 220, "h": 180},
+    {"id": "lcomeback_170", "url": 13, "x": 220,  "y": 0, "w": 220, "h": 180},
+    {"id": "lcomeback_171", "url": 13, "x": 440,  "y": 0, "w": 220, "h": 180},
+    {"id": "lcomeback_172", "url": 13, "x": 660, "y": 0, "w": 220, "h": 180},
+    {"id": "lcomeback_173", "url": 13, "x": 0,   "y": 180, "w": 220, "h": 180},
+    {"id": "lcomeback_174", "url": 13, "x": 220,  "y": 180, "w": 220, "h": 180},
+    {"id": "lcomeback_175", "url": 13, "x": 440,  "y": 180, "w": 220, "h": 180},
+    {"id": "lcomeback_176", "url": 13, "x": 660, "y": 180, "w": 220, "h": 180},
+    {"id": "lcomeback_177", "url": 13, "x": 0,  "y": 360, "w": 220, "h": 180},
+    {"id": "lcomeback_178", "url": 13, "x": 220, "y": 360, "w": 220, "h": 180},
+    {"id": "lcomeback_179", "url": 13, "x": 440,   "y": 360, "w": 220, "h": 180},
+    {"id": "lcomeback_180", "url": 13, "x": 660,  "y": 360, "w": 220, "h": 180},
+
+    {"id": "lwasattk1_181", "url": 3, "x": 220,  "y": 180, "w": 220, "h": 180},
+    {"id": "lwasattk1_182", "url": 3, "x": 440,  "y": 180, "w": 220, "h": 180},
+    {"id": "lwasattk1_183", "url": 3, "x": 660, "y": 180, "w": 220, "h": 180},
+    {"id": "lwasattk1_184", "url": 3, "x": 0,  "y": 360, "w": 220, "h": 180},
+    {"id": "lwasattk1_185", "url": 3, "x": 220, "y": 360, "w": 220, "h": 180}
+
 
   ]
 }
