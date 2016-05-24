@@ -37,10 +37,10 @@ public class Gameplay01 extends Screen{
     public  static ImageLayer gndfight;
     private ImageLayer tagew2;
     private ImageLayer scotthead;
-    private ImageLayer tomhead;
+    private ImageLayer matthead;
     private Hpbar hpscott = new Hpbar(135f,55f);
     private Scott scott;
-    private Hpbar hptom = new Hpbar(490f,55f);
+    private Hpbar hpmatt = new Hpbar(490f,55f);
     private Matt matt;
     private DebugDrawBox2D debugDraw;
     private Boolean showDebugDraw = true;
@@ -49,8 +49,6 @@ public class Gameplay01 extends Screen{
     public static String debugSring1 = "";
     public static float score=100;
     public static float scorem=100;
-    private float x = 0;
-    private float y =0;
 
     public Gameplay01(final ScreenStack ss){
         Vec2 gravity = new Vec2(0.0f,10.0f);
@@ -84,6 +82,14 @@ public class Gameplay01 extends Screen{
         scott = new Scott(ss,world,250f,350f);
         matt = new Matt(world,350f,350f);
 
+        Image hscottImage = assets().getImage("images/scott_all/scott_h.png");
+        scotthead = graphics().createImageLayer(hscottImage);
+        scotthead.setTranslation(20,20);
+
+        Image hmattImage = assets().getImage("images/matt_all/matt_h.png");
+        matthead = graphics().createImageLayer(hmattImage);
+        matthead.setTranslation(530,20);
+
         new ContactMotion2(world,bodies,scott,matt);
         debugSring = "HpScore tom = "+Gameplay01.score;
         debugSring1 = "HpScore scott = "+Gameplay01.scorem;
@@ -94,8 +100,12 @@ public class Gameplay01 extends Screen{
         super.wasShown();
         this.layer.add(bg);
         this.layer.add(gndfight);
-        //this.layer.add(tagew2);
+        this.layer.add(tagew2);
+        this.layer.add(matthead);
+        this.layer.add(scotthead);
         ///////////////////////////////////////// SpriteLayer
+        this.layer.add(hpscott.layer());
+        this.layer.add(hpmatt.layer());
         this.layer.add(matt.layer());
         this.layer.add(scott.layer());
 
@@ -121,9 +131,11 @@ public class Gameplay01 extends Screen{
     @Override
     public void update(int delta) {
         super.update(delta);
-        world.step(0.033f,10,10);
-        matt.update(delta);
-        scott.update(delta);
+        world.step(0.066f,10,10);
+        hpscott.update(delta);
+        hpmatt.update(delta);
+        matt.update(delta,scott);
+        scott.update(delta,matt);
 
     }
 
@@ -136,8 +148,8 @@ public class Gameplay01 extends Screen{
             debugDraw.getCanvas().drawText(debugSring1,200,100);
             world.drawDebugData();
         }
-        scott.paint(clock,matt);
-        matt.paint(clock,scott);
+        scott.paint(clock);
+        matt.paint(clock);
 
     }
 

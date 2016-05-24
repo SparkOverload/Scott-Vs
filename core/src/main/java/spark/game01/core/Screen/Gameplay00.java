@@ -129,11 +129,11 @@ public class Gameplay00 extends Screen{
     @Override
     public void update(int delta) {
         super.update(delta);
-        world.step(0.033f,10,10);
+        world.step(0.066f,10,10);
         hpscott.update(delta);
         hptom.update(delta);
-        scott.update(delta);
-        tom.update(delta);
+        scott.update(delta,tom);
+        tom.update(delta,scott);
         }
 
     @Override
@@ -145,10 +145,8 @@ public class Gameplay00 extends Screen{
             debugDraw.getCanvas().drawText(debugSring1,200,100);
             world.drawDebugData();
         }
-        hpscott.paint(clock);
-        hptom.paint(clock);
-        scott.paint(clock,tom);
-        tom.paint(clock,scott);
+        scott.paint(clock);
+        tom.paint(clock);
 
 
 //        switch(scott.state){

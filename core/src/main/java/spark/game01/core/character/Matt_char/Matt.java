@@ -59,32 +59,6 @@ public class Matt {
         });
 
 
-//        PlayN.keyboard().setListener(new Keyboard.Adapter() {
-//            @Override
-//            public void onKeyDown(Keyboard.Event event) {
-//                switch (event.key()){
-//                    case RIGHT:
-//                        state=State.WALK;
-//                        break;
-//                    case LEFT:
-//                        state=State.LWALK;
-//                        break;
-//                    case UP:
-//                        state=State.IDLE;
-//                        break;
-//                    case DOWN:
-//                        state=State.LIDLE;
-//                        break;
-//                    case A:
-//                        state=State.ULTI2;
-//                        break;
-//                    case S:
-//                        state=State.LULTI2;
-//                        break;
-//                }
-//            }
-//        });
-
     }
 
     public Layer layer(){
@@ -113,7 +87,7 @@ public class Matt {
         return body;
     }
 
-    public void update(int delta) {
+    public void update(int delta,Scott scott) {
         if(hasLoaded == false) return;
         e = e + delta;
         if(e > 60){
@@ -255,18 +229,15 @@ public class Matt {
             spriteIndex++;
             e=0;
         }
-    }
 
-
-    public void paint(Clock clock, Scott scott){
-        i++;
-        if(!hasLoaded) return;
         try{
-
+            i++;
             if((scott.state== Scott.State.SLEEP)||(scott.state== Scott.State.LOSE)){
                 state=State.LIDLE;
+                body.setActive(true);
             }else if(scott.state== Scott.State.LSLEEP){
                 state=State.IDLE;
+                body.setActive(true);
             }
             if((body.getPosition().x >= (scott.body.getPosition().x+4))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
@@ -274,7 +245,7 @@ public class Matt {
             }else if(((body.getPosition().x <= (scott.body.getPosition().x+3))
                     &&(body.getPosition().x >= (scott.body.getPosition().x)))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
-                if(i==80) {
+                if(i==30) {
                     switch (random.nextInt(4)) {
                         case 0:
                             state = State.LATTK1;
@@ -330,7 +301,7 @@ public class Matt {
             }else if(((body.getPosition().x >= (scott.body.getPosition().x-3))&&
                     (body.getPosition().x <= (scott.body.getPosition().x)))
                     &&(state!=State.WASATTK2)&&(state!=State.LWASATTK2)){
-                if(i==80) {
+                if(i==30) {
                     switch (random.nextInt(4)) {
                         case 0:
                             state = State.ATTK1;
@@ -381,12 +352,24 @@ public class Matt {
                 }
             }
 
-            switch (state) {
+            switch (state){
                 case WALK:
                     body.applyForce(new Vec2(80f,0f),body.getPosition());
                     break;
                 case LWALK:
                     body.applyForce(new Vec2(-80f,0f),body.getPosition());
+                    break;
+                case ATTK1:
+                    body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
+                    break;
+                case LATTK1:
+                    body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
+                    break;
+                case KICK:
+                    body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
+                    break;
+                case LKICK:
+                    body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
                     break;
                 case WASATTK2:
                     if((i1>=1&&i1<=100)&&(Gameplay01.scorem>0)){
@@ -408,23 +391,11 @@ public class Matt {
                         }
                     }
                     break;
-                case ATTK1:
-                    body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
-                    break;
-                case LATTK1:
-                    body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
-                    break;
-                case KICK:
-                    body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
-                    break;
-                case LKICK:
-                    body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
-                    break;
                 case ULTI1:
                     if(spriteIndex==63) {
                         body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
                         if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(5f, -10f), other.getPosition());
+                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
                         }
                     }
                     break;
@@ -432,7 +403,7 @@ public class Matt {
                     if(spriteIndex==74) {
                         body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
                         if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-5f, -10f), other.getPosition());
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
                         }
                     }
                     break;
@@ -440,7 +411,7 @@ public class Matt {
                     if(spriteIndex==136) {
                         body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
                         if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(5f, -10f), other.getPosition());
+                            other.applyLinearImpulse(new Vec2(15f, -20f), other.getPosition());
                         }
                     }
                     break;
@@ -448,22 +419,24 @@ public class Matt {
                     if(spriteIndex==148) {
                         body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
                         if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-5f, -10f), other.getPosition());
+                            other.applyLinearImpulse(new Vec2(-15f, -20f), other.getPosition());
                         }
                     }
                     break;
             }
-
-        }catch(Exception e){
+        }catch (Exception e){
 
         }
-
-        if(i>=80){
+        if(i>=30){
             i=0;
         }
-
         Gameplay01.debugSring1 = "HpScore = "+Gameplay01.scorem;
-        sprite.layer().setTranslation(
+    }
+
+
+    public void paint(Clock clock){
+        if(!hasLoaded) return;
+                sprite.layer().setTranslation(
                 (body.getPosition().x/ Gameplay01.M_PER_PIXEL),
                 body.getPosition().y/Gameplay01.M_PER_PIXEL);
 
