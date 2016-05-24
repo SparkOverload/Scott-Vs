@@ -101,6 +101,12 @@ public class ContactMatt {
         if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
             matt.state = Matt.State.WASATTK2;
         }
+        if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
+            matt.state = Matt.State.LWASATTK2;
+        }
+        if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
+            matt.state = Matt.State.WASATTK2;
+        }
         // ###################  WasAttk   ######################
 
     }

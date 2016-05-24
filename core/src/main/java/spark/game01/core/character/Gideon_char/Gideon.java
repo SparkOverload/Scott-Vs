@@ -7,7 +7,11 @@ import playn.core.Keyboard;
 import playn.core.Layer;
 import playn.core.PlayN;
 import playn.core.util.Callback;
+import playn.core.util.Clock;
+import spark.game01.core.Screen.Gameplay00;
 import spark.game01.core.Screen.Gameplay01;
+import spark.game01.core.Screen.Gameplay02;
+import spark.game01.core.character.Scott_char.Scott;
 import spark.game01.core.sprite.Sprite;
 import spark.game01.core.sprite.SpriteLoader;
 import java.util.Random;
@@ -25,10 +29,10 @@ public class Gideon {
 
     public enum State{
         IDLE,WALK,WASATTK2,WASATTK1,LIDLE,LWALK,LWASATTK2,ATTK1,ATTK2,LATTK1,LATTK2,
-        ATTK3,LATTK3,ATTK4,LATTK4
+        ATTK3,LATTK3,ATTK4,LATTK4,ATTK5,CHARGE,LATTK5,LCHARGE,COMEBACK,LCOMEBACK,LWASATTK1
     };
 
-    public State state = State.IDLE;
+    public State state = State.LIDLE;
     private int e = 0;
 
     public Gideon(final World world, final float x, final float y){
@@ -52,29 +56,6 @@ public class Gideon {
             }
         });
 
-        PlayN.keyboard().setListener(new Keyboard.Adapter() {
-            @Override
-            public void onKeyDown(Keyboard.Event event) {
-                switch (event.key()) {
-                    case RIGHT:
-                        state=State.WALK;
-                        break;
-                    case LEFT:
-                        state=State.LWALK;
-                        break;
-                    case UP:
-                        state=State.LIDLE;
-                        break;
-                    case A:
-                        state=State.ATTK4;
-                        break;
-                    case S:
-                        state=State.LATTK4;
-                        break;
-                }
-            }
-        });
-
     }
 
     public Layer layer(){
@@ -88,8 +69,8 @@ public class Gideon {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width())* Gameplay01.M_PER_PIXEL/2,
-                (sprite.layer().height())*Gameplay01.M_PER_PIXEL/2);
+        shape.setAsBox((sprite.layer().width()-145)* Gameplay01.M_PER_PIXEL/2,
+                (sprite.layer().height()-110)*Gameplay01.M_PER_PIXEL/2);
 
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -103,7 +84,7 @@ public class Gideon {
         return body;
     }
 
-    public void update(int delta){
+    public void update(int delta,Scott scott){
         if(hasLoaded == false) return;
         e = e + delta;
         if(e > 60){
@@ -132,6 +113,14 @@ public class Gideon {
                     }
                     if(spriteIndex==25){
                         state=State.IDLE;
+                    }
+                    break;
+                case LWASATTK1:
+                    if(!(spriteIndex>=181 && spriteIndex<=185)){
+                        spriteIndex=181;
+                    }
+                    if(spriteIndex==185){
+                        state=State.LIDLE;
                     }
                     break;
                 case LIDLE:
@@ -216,10 +205,302 @@ public class Gideon {
                         state=State.LIDLE;
                     }
                     break;
+                case ATTK5:
+                    if(!(spriteIndex>=127 && spriteIndex<=134)){
+                        spriteIndex=127;
+                    }
+                    if(spriteIndex==134){
+                        state=State.IDLE;
+                    }
+                    break;
+                case CHARGE:
+                    if(!(spriteIndex>=135 && spriteIndex<=141)){
+                        spriteIndex=135;
+                    }
+                    if(spriteIndex==141){
+                        state=State.IDLE;
+                    }
+                    break;
+                case LATTK5:
+                    if(!(spriteIndex>=142 && spriteIndex<=149)){
+                        spriteIndex=142;
+                    }
+                    if(spriteIndex==149){
+                        state=State.LIDLE;
+                    }
+                    break;
+                case LCHARGE:
+                    if(!(spriteIndex>=150 && spriteIndex<=156)){
+                        spriteIndex=150;
+                    }
+                    if(spriteIndex==156){
+                        state=State.LIDLE;
+                    }
+                    break;
+                case COMEBACK:
+                    if(!(spriteIndex>=157 && spriteIndex<=168)){
+                        spriteIndex=157;
+                    }
+                    if(spriteIndex==168){
+                        state=State.IDLE;
+                    }
+                    break;
+                case LCOMEBACK:
+                    if(!(spriteIndex>=169 && spriteIndex<=180)){
+                        spriteIndex=169;
+                    }
+                    if(spriteIndex==180){
+                        state=State.LIDLE;
+                    }
+                    break;
             }
             sprite.setSprite(spriteIndex);
             spriteIndex++;
             e=0;
         }
+
+        try {
+            i++;
+            if ((scott.state == Scott.State.SLEEP) || (scott.state == Scott.State.LOSE)) {
+                state = State.LIDLE;
+                body.setActive(true);
+            } else if (scott.state == Scott.State.LSLEEP) {
+                state = State.IDLE;
+                body.setActive(true);
+            }
+            if ((body.getPosition().x >= (scott.body.getPosition().x + 4))
+                    && (state != State.LWASATTK2 && state != State.WASATTK2)) {
+                state = State.LWALK;
+            } else if (((body.getPosition().x <= (scott.body.getPosition().x + 3))
+                    && (body.getPosition().x >= (scott.body.getPosition().x)))
+                    && (state != State.LWASATTK2 && state != State.WASATTK2)) {
+                if (i == 30) {
+                    switch (random.nextInt(6)) {
+                        case 0:
+                            state = State.LATTK1;
+                            break;
+                        case 1:
+                            state = State.LATTK2;
+                            break;
+                        case 2:
+                            state = State.LATTK3;
+                            break;
+                        case 3:
+                            state = State.LATTK4;
+                            break;
+                        case 4:
+                            state = State.LATTK5;
+                            break;
+                        case 5:
+                            state = State.LCHARGE;
+                            break;
+                    }
+                }
+
+                if (contacted == true && (scott.spriteIndex == 189 || scott.spriteIndex == 381)) { // lwasattk2
+                    state = State.LWASATTK2;
+                    Gameplay02.scoreg -= 2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 42
+                        || scott.spriteIndex == 46 || scott.spriteIndex == 49
+                        || scott.spriteIndex == 52 || scott.spriteIndex == 55)) {             //lwasattk
+                    state = State.LWASATTK1;
+                    Gameplay02.scoreg -= 0.2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 196 || scott.spriteIndex == 388)) {             //lheadbutt
+                    state = State.LWASATTK2;
+                    Gameplay02.scoreg -= 2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 125
+                        || scott.spriteIndex == 132 || scott.spriteIndex == 159
+                        || scott.spriteIndex == 162)) {
+                    state = State.LWASATTK1;
+                    Gameplay02.scoreg -= 0.2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
+                        || scott.spriteIndex == 167)) {
+                    state = State.LWASATTK2;
+                    Gameplay02.scoreg -= 2f;
+                }
+                if (Gameplay02.scoreg <= 0) {
+                    state = State.LWASATTK2;
+                    body.applyLinearImpulse(new Vec2(10f, -50f), body.getPosition());
+                }
+            }
+            //##########################  LEFT   ##########################################
+            if ((body.getPosition().x <= (scott.body.getPosition().x - 4))
+                    && (state != State.WASATTK2) && (state != State.LWASATTK2)) {
+                state = State.WALK;
+            } else if (((body.getPosition().x >= (scott.body.getPosition().x - 3)) &&
+                    (body.getPosition().x <= (scott.body.getPosition().x)))
+                    && (state != State.WASATTK2) && (state != State.LWASATTK2)) {
+                if (i == 30) {
+                    switch (random.nextInt(6)) {
+                        case 0:
+                            state = State.ATTK1;
+                            break;
+                        case 1:
+                            state = State.ATTK2;
+                            break;
+                        case 2:
+                            state = State.ATTK3;
+                            break;
+                        case 3:
+                            state = State.ATTK4;
+                            break;
+                        case 4:
+                            state = State.ATTK5;
+                            break;
+                        case 5:
+                            state = State.CHARGE;
+                            break;
+                    }
+                }
+                if (contacted == true && (scott.spriteIndex == 381
+                        || scott.spriteIndex == 189)) {                                    // wasattk2
+                    state = State.WASATTK2;
+                    Gameplay02.scoreg -= 2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 299
+                        || scott.spriteIndex == 303 || scott.spriteIndex == 306
+                        || scott.spriteIndex == 309 || scott.spriteIndex == 312)) {             //lwasattk
+                    state = State.WASATTK1;
+                    Gameplay02.scoreg -= 0.2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 388 || scott.spriteIndex == 196)) {             //headbutt
+                    state = State.WASATTK2;
+                    Gameplay02.scoreg -= 2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 317
+                        || scott.spriteIndex == 324 || scott.spriteIndex == 351
+                        || scott.spriteIndex == 354)) {
+                    state = State.WASATTK1;
+                    Gameplay02.scoreg -= 0.2f;
+                }
+                if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
+                        || scott.spriteIndex == 359)) {
+                    state = State.WASATTK2;
+                    Gameplay02.scoreg -= 2f;
+                }
+                if (Gameplay02.scoreg <= 0) {
+                    state = State.WASATTK2;
+                    body.applyLinearImpulse(new Vec2(-10f, -50f), body.getPosition());
+
+                }
+            }
+
+            switch(state){
+                case WALK:
+                    body.applyForce(new Vec2(80f,0f),body.getPosition());
+                    break;
+                case LWALK:
+                    body.applyForce(new Vec2(-80f,0f),body.getPosition());
+                    break;
+                case ATTK1:
+                    body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
+                    break;
+                case LATTK1:
+                    body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
+                    break;
+                case ATTK2:
+                    body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
+                    break;
+                case LATTK2:
+                    body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
+                    break;
+                case ATTK3:
+                    if(spriteIndex==80 || spriteIndex == 82){
+                        body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());
+                    }
+                    break;
+                case LATTK3:
+                    if(spriteIndex==92 || spriteIndex == 94){
+                        body.applyLinearImpulse(new Vec2(-5f,0f),body.getPosition());
+                    }
+                    break;
+                case ATTK4:
+                    if(spriteIndex==109){
+                        body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
+                        if(contacted == true){
+                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LATTK4:
+                    if(spriteIndex==122){
+                        body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
+                        if(contacted == true){
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case ATTK5:
+                    if(spriteIndex==129){
+                        body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
+                        if(contacted == true){
+                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LATTK5:
+                    if(spriteIndex==144){
+                        body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
+                        if(contacted == true){
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case CHARGE:
+                    if(spriteIndex==138){
+                        body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
+                        if(contacted == true){
+                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LCHARGE:
+                    if(spriteIndex==153){
+                        body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
+                        if(contacted == true){
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case WASATTK2:
+                    if((i1>=1&&i1<=100)&&(Gameplay02.scoreg>0)){
+                        i1--;
+                        if(i1==1){
+                            state=State.COMEBACK;
+                            body.setActive(true);
+                            i1=0;
+                        }
+                    }
+                    break;
+                case LWASATTK2:
+                    if((i1>=1&&i1<=100)&&(Gameplay02.scoreg>0)){
+                        i1--;
+                        if(i1==1){
+                            state=State.LCOMEBACK;
+                            body.setActive(true);
+                            i1=0;
+                        }
+                    }
+                    break;
+            }
+        }catch (Exception e){
+
+        }
+        if(i>=30){
+            i=0;
+        }
+
+        Gameplay02.debugSring1 = "HpScore = "+Gameplay02.scoreg;
+    }
+
+    public void paint(Clock clock) {
+        if(!hasLoaded) return;
+        sprite.layer().setTranslation(
+                (body.getPosition().x/ Gameplay00.M_PER_PIXEL),
+                (body.getPosition().y/Gameplay00.M_PER_PIXEL));
     }
 }

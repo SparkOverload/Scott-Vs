@@ -116,6 +116,12 @@ public class ContactTom {
         if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
             tom.state = Tom.State.WASATTK2;
         }
+        if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
+            tom.state = Tom.State.LWASATTK2;
+        }
+        if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
+            tom.state = Tom.State.WASATTK2;
+        }
         // ###################  WasAttk   ######################
 
     }

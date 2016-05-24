@@ -15,6 +15,7 @@ import spark.game01.core.Screen.Gameplay00;
 import spark.game01.core.Screen.Gameplay01;
 import spark.game01.core.Screen.Gameplay02;
 import spark.game01.core.Screen.HomeScreen;
+import spark.game01.core.character.Gideon_char.Gideon;
 import spark.game01.core.character.Matt_char.Matt;
 import spark.game01.core.character.Tom_char.Tom;
 import spark.game01.core.sprite.Sprite;
@@ -312,7 +313,6 @@ public class Scott {
         shape.setAsBox((sprite.layer().width()-62)* Gameplay00.M_PER_PIXEL/2,
                 (sprite.layer().height()-90)*Gameplay00.M_PER_PIXEL/2);
 
-
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
@@ -426,6 +426,9 @@ public class Scott {
                 case ULTIK:
                     if(!(spriteIndex>=111 && spriteIndex<=122)){
                         spriteIndex=111;
+                    }
+                    if(spriteIndex==116){
+                        spriteIndex=113;
                     }
                     break;
                 case KICK1:
@@ -606,6 +609,9 @@ public class Scott {
                 case LULTIK:
                     if(!(spriteIndex>=286 && spriteIndex<=297)){
                         spriteIndex=286;
+                    }
+                    if(spriteIndex==291){
+                        spriteIndex=288;
                     }
                     break;
                 case LATTK1:
@@ -879,6 +885,16 @@ try{
                 }
             }
             break;
+        case ULTIK:
+            if (spriteIndex == 113) {
+                body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+            }
+            break;
+        case LULTIK:
+            if (spriteIndex == 288) {
+                body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+            }
+            break;
 
     }
 
@@ -991,6 +1007,9 @@ try{
                 case ULTIK:
                     if(!(spriteIndex>=111 && spriteIndex<=122)){
                         spriteIndex=111;
+                    }
+                    if(spriteIndex==116){
+                        spriteIndex=113;
                     }
                     break;
                 case KICK1:
@@ -1171,6 +1190,9 @@ try{
                 case LULTIK:
                     if(!(spriteIndex>=286 && spriteIndex<=297)){
                         spriteIndex=286;
+                    }
+                    if(spriteIndex==291){
+                        spriteIndex=288;
                     }
                     break;
                 case LATTK1:
@@ -1435,6 +1457,16 @@ try{
                         }
                     }
                     break;
+                case ULTIK:
+                    if (spriteIndex == 113) {
+                        body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+                    }
+                    break;
+                case LULTIK:
+                    if (spriteIndex == 288) {
+                        body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+                    }
+                    break;
             }
         }catch (Exception e){
 
@@ -1442,13 +1474,584 @@ try{
         Gameplay00.debugSring = "HpScore = "+Gameplay00.score;
     }
 
+    public void update(int delta,Gideon gideon){
+        if(hasLoaded == false) return;
+        e = e + delta;
+        if(e > 60){
+            switch (state) {
+                case IDLE:
+                    if(!(spriteIndex>=0 && spriteIndex<=7)){
+                        spriteIndex=0;
+                    }
+                    rcount++;
+                    break;
+                case WALK:
+                    if(!(spriteIndex>=16 && spriteIndex<=21)){
+                        spriteIndex=16;
+                    }
+                    break;
+                case RUN:
+                    if(!(spriteIndex>=8 && spriteIndex<=15)){
+                        spriteIndex=8;
+                    }
+                    break;
+                case JUMP:
+                    if(!(spriteIndex>=22 && spriteIndex<=34)){
+                        spriteIndex=22;
+                    }
+                    if(spriteIndex>=32&&spriteIndex<=33){
+                        spriteIndex=32;
+                    }
+                    break;
+                case DODGE:
+                    if(!(spriteIndex>=35 && spriteIndex<=40)){
+                        spriteIndex=35;
+                    }
+                    if(spriteIndex==40){
+                        state = State.IDLE;
+                    }
+                    break;
+                case ATTK1:
+                    if(!(spriteIndex>=41 && spriteIndex<=44)){
+                        spriteIndex=41;
+                    }
+                    if(spriteIndex==44){
+                        state = State.IDLE;
+                    }
+                    break;
+                case ATTK2:
+                    if(!(spriteIndex>=45 && spriteIndex<=50)){
+                        spriteIndex=45;
+                    }
+                    if(spriteIndex==50){
+                        state = State.IDLE;
+                    }
+                    break;
+                case ATTK3:
+                    if(!(spriteIndex>=51 && spriteIndex<=57)){
+                        spriteIndex=51;
+                    }
+                    if(spriteIndex==57){
+                        state = State.IDLE;
+                    }
+                    break;
+                case DEF:
+                    if(!(spriteIndex>=58 && spriteIndex<=64)){
+                        spriteIndex=58;
+                    }
+                    if(spriteIndex>=59){
+                        spriteIndex=59;
+                    }
+                    break;
+                case CEL2:
+                    if(!(spriteIndex>=65 && spriteIndex<=79)){
+                        spriteIndex=65;
+                    }
+                    if(spriteIndex==79){
+                        state = State.IDLE;
+                    }
+                    break;
+                case GUITAR:
+                    if(!(spriteIndex>=80 && spriteIndex<=85)){
+                        spriteIndex=80;
+                    }
+                    break;
+                case CEL1:
+                    if(!(spriteIndex>=86 && spriteIndex<=92)){
+                        spriteIndex=86;
+                    }
+                    if(spriteIndex>=91&&spriteIndex<=92){
+                        spriteIndex=91;
+                    }
+                    break;
+                case CEL3:
+                    if(!(spriteIndex>=93 && spriteIndex<=110)){
+                        spriteIndex=93;
+                    }
+                    if(spriteIndex>=109&&spriteIndex<=110){
+                        spriteIndex=109;
+                    }
+                    break;
+                case ULTIK:
+                    if(!(spriteIndex>=111 && spriteIndex<=122)){
+                        spriteIndex=111;
+                    }
+                    if(spriteIndex==116){
+                        spriteIndex=113;
+                    }
+                    break;
+                case KICK1:
+                    if(!(spriteIndex>=123 && spriteIndex<=129)){
+                        spriteIndex=123;
+                    }
+                    if(spriteIndex==129){
+                        state = State.IDLE;
+                    }
+                    break;
+                case KICK2:
+                    if(!(spriteIndex>=130 && spriteIndex<=136)){
+                        spriteIndex=130;
+                    }
+                    if(spriteIndex==136){
+                        state = State.IDLE;
+                    }
+                    break;
+                case JKICK:
+                    if(!(spriteIndex>=137 && spriteIndex<=143)){
+                        spriteIndex=137;
+                    }
+                    if(spriteIndex>=141 && spriteIndex<=143){
+                        spriteIndex=141;
+                    }
+                    break;
+                case ULTIB1:
+                    if(!(spriteIndex>=144 && spriteIndex<=155)){
+                        spriteIndex=144;
+                    }
+                    if(spriteIndex==155){
+                        state = State.IDLE;
+                    }
+                    break;
+                case ULTIB2:
+                    if(!(spriteIndex>=156 && spriteIndex<=174)){
+                        spriteIndex=156;
+                    }
+                    if(spriteIndex==174){
+                        state = State.IDLE;
+                    }
+                    break;
+                case CHARGE:
+                    if(!(spriteIndex>=175 && spriteIndex<=191)){
+                        spriteIndex=175;
+                    }
+                    if(spriteIndex==191){
+                        state = State.IDLE;
+                    }
+                    break;
+                case HEADBUTT:
+                    if(!(spriteIndex>=192 && spriteIndex<=201)){
+                        spriteIndex=192;
+                    }
+                    if(spriteIndex==201){
+                        state = State.IDLE;
+                    }
+                    break;
+                case LOSE:
+                    if(!(spriteIndex>=202 && spriteIndex<=205)){
+                        spriteIndex=202;
+                    }
+                    break;
+                case COMEBACK:
+                    if(!(spriteIndex>=206 && spriteIndex<=212)){
+                        spriteIndex=206;
+                    }
+                    if(spriteIndex==212){
+                        state = State.IDLE;
+                    }
+                    break;
+                case LCOMEBACK:
+                    if(!(spriteIndex>=394 && spriteIndex<=400)){
+                        spriteIndex=394;
+                    }
+                    if(spriteIndex==400){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case WASATK1:
+                    if(!(spriteIndex>=213 && spriteIndex<=217)){
+                        spriteIndex=213;
+                    }
+                    if(spriteIndex==217){
+                        state = State.IDLE;
+                    }
+                    break;
+                case WASATK2:
+                    if(!(spriteIndex>=218 && spriteIndex<=221)){
+                        spriteIndex=218;
+                    }
+                    if(spriteIndex==221){
+                        state = State.IDLE;
+                    }
+                    break;
+                case WASATK3:
+                    if(!(spriteIndex>=222 && spriteIndex<=235)){
+                        spriteIndex=222;
+                    }
+                    if(spriteIndex==235){
+                        state = State.SLEEP;
+                    }
+                    break;
+                case LWASATK1:
+                    if(!(spriteIndex>=417 && spriteIndex<=421)){
+                        spriteIndex=417;
+                    }
+                    if(spriteIndex==421){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LWASATK2:
+                    if(!(spriteIndex>=422 && spriteIndex<=425)){
+                        spriteIndex=422;
+                    }
+                    if(spriteIndex==425){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LWASATK3:
+                    if(!(spriteIndex>=403 && spriteIndex<=416)){
+                        spriteIndex=403;
+                    }
+                    if(spriteIndex==416){
+                        state = State.LSLEEP;
+                    }
+                    break;
+                case SLEEP:
+                    if(!(spriteIndex>=236 && spriteIndex<=237)){
+                        spriteIndex=236;
+                    }
+                    break;
+                case LSLEEP:
+                    if(!(spriteIndex>=401 && spriteIndex<=402)){
+                        spriteIndex=401;
+                    }
+                    break;
+                case LIDLE:
+                    if(!(spriteIndex>=238 && spriteIndex<=245)){
+                        spriteIndex=238;
+                    }
+                    lcount++;
+                    break;
+                case LWALK:
+                    if(!(spriteIndex>=246 && spriteIndex<=251)){
+                        spriteIndex=246;
+                    }
+                    break;
+                case LRUN:
+                    if(!(spriteIndex>=252 && spriteIndex<=259)){
+                        spriteIndex=252;
+                    }
+                    break;
+                case LJUMP:
+                    if(!(spriteIndex>=260 && spriteIndex<=272)){
+                        spriteIndex=260;
+                    }
+                    if(spriteIndex>=270&&spriteIndex<=271){
+                        spriteIndex=270;
+                    }
+                    break;
+                case LDODGE:
+                    if(!(spriteIndex>=273 && spriteIndex<=278)){
+                        spriteIndex=273;
+                    }
+                    if(spriteIndex==278){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LDEF:
+                    if(!(spriteIndex>=279 && spriteIndex<=285)){
+                        spriteIndex=279;
+                    }
+                    if(spriteIndex>=280){
+                        spriteIndex=280;
+                    }
+                    break;
+                case LULTIK:
+                    if(!(spriteIndex>=286 && spriteIndex<=297)){
+                        spriteIndex=286;
+                    }
+                    if(spriteIndex==291){
+                        spriteIndex=288;
+                    }
+                    break;
+                case LATTK1:
+                    if(!(spriteIndex>=298 && spriteIndex<=301)){
+                        spriteIndex=298;
+                    }
+                    if(spriteIndex==301){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LATTK2:
+                    if(!(spriteIndex>=302 && spriteIndex<=307)){
+                        spriteIndex=302;
+                    }
+                    if(spriteIndex==307){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LATTK3:
+                    if(!(spriteIndex>=308 && spriteIndex<=314)){
+                        spriteIndex=308;
+                    }
+                    if(spriteIndex==314){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LKICK1:
+                    if(!(spriteIndex>=315 && spriteIndex<=321)){
+                        spriteIndex=315;
+                    }
+                    if(spriteIndex==321){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LKICK2:
+                    if(!(spriteIndex>=322 && spriteIndex<=328)){
+                        spriteIndex=322;
+                    }
+                    if(spriteIndex==328){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LJKICK:
+                    if(!(spriteIndex>=329 && spriteIndex<=335)){
+                        spriteIndex=329;
+                    }
+                    if(spriteIndex>=333 && spriteIndex<=335){
+                        spriteIndex=333;
+                    }
+                    break;
+                case LULTIB1:
+                    if(!(spriteIndex>=336 && spriteIndex<=347)){
+                        spriteIndex=336;
+                    }
+                    if(spriteIndex==347){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LULTIB2:
+                    if(!(spriteIndex>=348 && spriteIndex<=366)){
+                        spriteIndex=348;
+                    }
+                    if(spriteIndex==366){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LCHARGE:
+                    if(!(spriteIndex>=367 && spriteIndex<=383)){
+                        spriteIndex=367;
+                    }
+                    if(spriteIndex==383){
+                        state = State.LIDLE;
+                    }
+                    break;
+                case LHEADBUTT:
+                    if(!(spriteIndex>=384 && spriteIndex<=393)){
+                        spriteIndex=384;
+                    }
+                    if(spriteIndex==393){
+                        state = State.LIDLE;
+                    }
+                    break;
+
+            }
+            sprite.setSprite(spriteIndex);
+            spriteIndex++;
+            e=0;
+        }
+
+        try {
+            //###################### Gideon Attk ########################
+            if (state != State.DEF && state != State.LDEF) {
+                if (contacted == true && (gideon.spriteIndex == 64 || gideon.spriteIndex == 71
+                        || gideon.spriteIndex == 92 || gideon.spriteIndex == 94 || gideon.spriteIndex == 117)) {
+                    state = State.WASATK1;
+                    Gameplay02.score -= 0.2f;
+                }
+                if (contacted == true && (gideon.spriteIndex == 49 || gideon.spriteIndex == 56
+                        || gideon.spriteIndex == 80 || gideon.spriteIndex == 82 || gideon.spriteIndex == 104)) {
+                    state = State.LWASATK1;
+                    Gameplay02.score -= 0.2f;
+                }
+                if (contacted == true && ((gideon.spriteIndex >= 122 && gideon.spriteIndex <= 126)
+                        || (gideon.spriteIndex >= 144 && gideon.spriteIndex <= 149)
+                        || (gideon.spriteIndex >= 153 && gideon.spriteIndex <= 156) )) {
+                    state = State.WASATK3;
+                    Gameplay02.score -= 2f;
+                }
+                if (contacted == true && ((gideon.spriteIndex >= 109 && gideon.spriteIndex <= 113)
+                        || (gideon.spriteIndex >= 129 && gideon.spriteIndex <= 134)
+                        || (gideon.spriteIndex >= 138 && gideon.spriteIndex <= 141) )) {
+                    state = State.LWASATK3;
+                    Gameplay02.score -= 2f;
+                }
+                if(Gameplay02.scoreg <= 0){
+                    state = State.CEL3;
+                }
+            }
+            if(Gameplay02.score <= 0){
+                state = State.LOSE;
+            }
+
+            switch(state){
+                case WALK:
+                    body.applyForce(new Vec2(80f, 0f), body.getPosition());
+                    break;
+                case LWALK:
+                    body.applyForce(new Vec2(-80f, 0f), body.getPosition());
+                    break;
+                case RUN:
+                    body.applyForce(new Vec2(100f, 0f), body.getPosition());
+                    break;
+                case LRUN:
+                    body.applyForce(new Vec2(-100f, 0f), body.getPosition());
+                    break;
+                case JUMP:
+                    if (spriteIndex == 23) {
+                        body.applyLinearImpulse(new Vec2(0f, -30f), body.getPosition());
+                        System.out.println(body);
+                    }
+                    break;
+                case LJUMP:
+                    if (spriteIndex == 261) {
+                        body.applyLinearImpulse(new Vec2(0f, -30f), body.getPosition());
+                    }
+                    break;
+                case CHARGE:
+                    if (spriteIndex == 189) {
+                        body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(20, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LCHARGE:
+                    if (spriteIndex == 381) {
+                        body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case ATTK1:
+                    if (spriteIndex == 42) {
+                        body.applyLinearImpulse(new Vec2(5f, 0f), body.getPosition());
+                    }
+                    break;
+                case ATTK2:
+                    if (spriteIndex == 46 || spriteIndex == 49) {
+                        body.applyLinearImpulse(new Vec2(5f, 0f), body.getPosition());
+                    }
+                    break;
+                case ATTK3:
+                    if (spriteIndex == 52 || spriteIndex == 55) {
+                        body.applyLinearImpulse(new Vec2(5f, 0f), body.getPosition());
+                    }
+                    break;
+                case LATTK1:
+                    if (spriteIndex == 299) {
+                        body.applyLinearImpulse(new Vec2(-5f, 0f), body.getPosition());
+                    }
+                    break;
+                case LATTK2:
+                    if (spriteIndex == 303 || spriteIndex == 306) {
+                        body.applyLinearImpulse(new Vec2(-5f, 0f), body.getPosition());
+                    }
+                    break;
+                case LATTK3:
+                    if (spriteIndex == 309 || spriteIndex == 312) {
+                        body.applyLinearImpulse(new Vec2(-5f, 0f), body.getPosition());
+                    }
+                    break;
+                case HEADBUTT:
+                    if (spriteIndex == 196) {
+                        body.applyLinearImpulse(new Vec2(10f, 0f), body.getPosition());
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LHEADBUTT:
+                    if (spriteIndex == 388) {
+                        body.applyLinearImpulse(new Vec2(-10f, 0f), body.getPosition());
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
+                        }
+                    }
+                    break;
+                case KICK1:
+                    if (spriteIndex == 125) {
+                        body.applyLinearImpulse(new Vec2(5f, 0f), body.getPosition());
+                    }
+                    break;
+                case KICK2:
+                    if (spriteIndex == 132) {
+                        body.applyLinearImpulse(new Vec2(5f, 0f), body.getPosition());
+                    }
+                    break;
+                case LKICK1:
+                    if (spriteIndex == 317) {
+                        body.applyLinearImpulse(new Vec2(-5f, 0f), body.getPosition());
+                    }
+                    break;
+                case LKICK2:
+                    if (spriteIndex == 324) {
+                        body.applyLinearImpulse(new Vec2(-5f, 0f), body.getPosition());
+                    }
+                    break;
+                case JKICK:
+                    if (spriteIndex == 139) {
+                        body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+                    }
+
+                    break;
+                case LJKICK:
+                    if (spriteIndex == 331) {
+                        body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+                    }
+                    break;
+                case ULTIB1:
+                    if (spriteIndex == 147) {
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LULTIB1:
+                    if (spriteIndex == 339) {
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
+                        }
+                    }
+                    break;
+                case ULTIB2:
+                    if (spriteIndex == 167) {
+                        body.applyLinearImpulse(new Vec2(10f, -5f), body.getPosition());
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
+                        }
+                    }
+                    break;
+                case LULTIB2:
+                    if (spriteIndex == 359) {
+                        body.applyLinearImpulse(new Vec2(-10f, -5f), body.getPosition());
+                        if (contacted == true) {
+                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
+                        }
+                    }
+                    break;
+                case ULTIK:
+                    if (spriteIndex == 113) {
+                        body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+                    }
+                    break;
+                case LULTIK:
+                    if (spriteIndex == 288) {
+                        body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+                    }
+                    break;
+            }
+        }catch (Exception e){
+
+        }
+        //Gameplay00.debugSring = "HpScore = "+Gameplay00.score;
+    }
+
     public void paint(Clock clock) {
         if(!hasLoaded) return;
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 (body.getPosition().y/Gameplay00.M_PER_PIXEL));
-
-        //System.out.println(contacted);
     }
 
 

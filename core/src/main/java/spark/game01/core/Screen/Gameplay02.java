@@ -32,7 +32,6 @@ public class Gameplay02 extends Screen{
     private World world;
     private ScreenStack ss;
     public  static ImageLayer bg;
-    public  static ImageLayer gndfight;
     private ImageLayer tagew3;
     private ImageLayer scotthead;
     private ImageLayer gideonhead;
@@ -57,8 +56,7 @@ public class Gameplay02 extends Screen{
 
         Body ground = world.createBody(new BodyDef());
         EdgeShape groundShape = new EdgeShape();
-        groundShape.set(new Vec2(2,height-2.5f),new Vec2(width,height-2.5f));
-        //ground.createFixture(groundShape,0.0f);
+        groundShape.set(new Vec2(2,height-3.3f),new Vec2(width,height-3.3f));
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.friction = 0.65f;
@@ -70,28 +68,24 @@ public class Gameplay02 extends Screen{
         Image bgImage = assets().getImage("images/Screen_bg/screen08.png");
         bg = graphics().createImageLayer(bgImage);
 
-        Image gndfightImage = assets().getImage("images/gndfight.png");
-        gndfight = graphics().createImageLayer(gndfightImage);
-        gndfight.setTranslation(0,360);
-
         Image tagw3Image = assets().getImage("images/w3.png");
         tagew3 = graphics().createImageLayer(tagw3Image);
         tagew3.setTranslation(170,25);
 
-       // scott = new Scott(ss,world,250f,350f);
+        scott = new Scott(ss,world,250f,350f);
         gideon = new Gideon(world,350f,350f);
 
         Image hscottImage = assets().getImage("images/scott_all/scott_h.png");
         scotthead = graphics().createImageLayer(hscottImage);
         scotthead.setTranslation(20,20);
 
-        Image hgideonImage = assets().getImage("images/matt_all/matt_h.png");
+        Image hgideonImage = assets().getImage("images/gideon_all/gideon_h.png");
         gideonhead = graphics().createImageLayer(hgideonImage);
         gideonhead.setTranslation(530,20);
 
         new ContactMotion3(world,bodies,scott,gideon);
-        debugSring = "HpScore tom = "+Gameplay02.score;
-        debugSring1 = "HpScore scott = "+Gameplay02.scoreg;
+        debugSring = "HpScore scott = "+Gameplay02.score;
+        debugSring1 = "HpScore gideon = "+Gameplay02.scoreg;
 
     }
 
@@ -100,7 +94,6 @@ public class Gameplay02 extends Screen{
     public void wasShown(){
         super.wasShown();
         this.layer.add(bg);
-        this.layer.add(gndfight);
         this.layer.add(tagew3);
         this.layer.add(gideonhead);
         this.layer.add(scotthead);
@@ -108,7 +101,7 @@ public class Gameplay02 extends Screen{
         this.layer.add(hpscott.layer());
         this.layer.add(hpgideon.layer());
         this.layer.add(gideon.layer());
-        //this.layer.add(scott.layer());
+        this.layer.add(scott.layer());
 
         if(showDebugDraw){
             CanvasImage image = graphics().createImage(
@@ -134,8 +127,8 @@ public class Gameplay02 extends Screen{
         world.step(0.066f,10,10);
         hpscott.update(delta);
         hpgideon.update(delta);
-        gideon.update(delta);
-        //scott.update(delta,gideon);
+        gideon.update(delta,scott);
+        scott.update(delta,gideon);
 
     }
 
@@ -148,7 +141,7 @@ public class Gameplay02 extends Screen{
             debugDraw.getCanvas().drawText(debugSring1,200,100);
             world.drawDebugData();
         }
-        //scott.paint(clock);
-        //gideon.paint(clock);
+        scott.paint(clock);
+        gideon.paint(clock);
     }
 }
