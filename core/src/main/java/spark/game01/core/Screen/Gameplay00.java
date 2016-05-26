@@ -10,6 +10,7 @@ import playn.core.*;
 import playn.core.ImageLayer;
 import spark.game01.core.ContactObject.ContactMotion1;
 import spark.game01.core.HP.Hpbar;
+import spark.game01.core.ToolsG;
 import spark.game01.core.character.Scott_char.Scott;
 import spark.game01.core.character.Tom_char.Tom;
 import tripleplay.game.*;
@@ -17,10 +18,13 @@ import java.lang.Override;
 import java.util.HashMap;
 
 import playn.core.util.Clock;
+import tripleplay.util.Colors;
 
 
 public class Gameplay00 extends Screen{
 
+    private Boolean pause = false;
+    private Clock.Source stoptime = new Clock.Source(0);
     public static  float M_PER_PIXEL = 1 / 26.666667f;
     private static float width = 24;
     private static float height = 18;
@@ -40,20 +44,28 @@ public class Gameplay00 extends Screen{
     public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
     public static String debugSring = "";
     public static String debugSring1 = "";
-    public static float score=100;
-    public static float scoret=100;
-    private float x = 0;
+    public static String debugSring2 = "";
+    public static String debugSring3 = "";
+    public static int score;
+    public static int spscott = 50;
+    public static int scoret;
+    public static int sptom;
+    private float x = -140;
     private float y =0;
+    private Body ground;
+    private ToolsG toolg = new ToolsG();
+    private Layer hp1;
+    private Layer hp2;
+    private float alphaTest = 0.00f;
 
 
   public Gameplay00(final ScreenStack ss) {
-
       Vec2 gravity = new Vec2(0.0f,10.0f);
       world = new World(gravity);
       world.setWarmStarting(true);
       world.setAutoClearForces(true);
 
-      Body ground = world.createBody(new BodyDef());
+      ground = world.createBody(new BodyDef());
       EdgeShape groundShape = new EdgeShape();
       groundShape.set(new Vec2(2,height-2.5f),new Vec2(width,height-2.5f));
       //ground.createFixture(groundShape,0.0f);
@@ -64,9 +76,14 @@ public class Gameplay00 extends Screen{
       ground.createFixture(fixtureDef);
       bodies.put(ground,"ground");
 
+      score=100;
+      scoret=100;
+      sptom=50;
+
       this.ss = ss;
       Image bgImage = assets().getImage("images/Screen_bg/screen00.png");
       bg = graphics().createImageLayer(bgImage);
+      bg.setTranslation(x,y);
 
       Image gndfightImage = assets().getImage("images/gndfight.png");
       gndfight = graphics().createImageLayer(gndfightImage);
@@ -79,6 +96,19 @@ public class Gameplay00 extends Screen{
       tagew1 = graphics().createImageLayer(tagw1Image);
       tagew1.setTranslation(170,25);
 
+      tagew1.addListener(new Mouse.LayerAdapter(){
+          @Override
+          public void onMouseDown(Mouse.ButtonEvent event){
+              if(pause==false){
+                  pause = true;
+              }else{
+                  pause = false;
+              }
+
+          }
+
+      });
+
       Image hscottImage = assets().getImage("images/scott_all/scott_h.png");
       scotthead = graphics().createImageLayer(hscottImage);
       scotthead.setTranslation(20,20);
@@ -88,8 +118,15 @@ public class Gameplay00 extends Screen{
       tomhead.setTranslation(530,20);
 
       new ContactMotion1(world,bodies,scott,tom);
-      debugSring = "HpScore tom = "+Gameplay00.score;
-      debugSring1 = "HpScore scott = "+Gameplay00.scoret;
+
+      hp1 = toolg.genText("HP : "+score,30, Colors.WHITE,30,90);
+      hp2 = toolg.genText("HP : "+scoret,30, Colors.WHITE,460,90);
+
+      debugSring = "HpScore tom = "+score;
+      debugSring1 = "HpScore scott = "+scoret;
+
+      debugSring2 = "SP tom = "+sptom;
+      debugSring3 = "SP scott = "+spscott;
 
   }
 
@@ -106,6 +143,9 @@ public class Gameplay00 extends Screen{
       this.layer.add(scott.layer());
       this.layer.add(hptom.layer());
       this.layer.add(tom.layer());
+      ///////////////////////////////////////// text
+      this.layer.add(hp1);
+      this.layer.add(hp2);
 
       if(showDebugDraw){
           CanvasImage image = graphics().createImage(
@@ -128,33 +168,77 @@ public class Gameplay00 extends Screen{
 
     @Override
     public void update(int delta) {
-        super.update(delta);
-        world.step(0.066f,10,10);
-        hpscott.update(delta);
-        hptom.update(delta);
-        scott.update(delta,tom);
-        tom.update(delta,scott);
+        try {
+            if (pause == false) {
+                super.update(delta);
+                world.step(0.066f, 10, 10);
+                hpscott.update(delta);
+                hptom.update(delta);
+                scott.update(delta, tom);
+                tom.update(delta, scott);
+                hpscott.Hp(score);
+                hptom.Hp(scoret);
+                bg.setAlpha(alphaTest);
+                updatehp();
+            } else if (pause == true) {
+                super.update(0);
+                world.step(0f, 10, 10);
+                hpscott.update(0);
+                hptom.update(0);
+                scott.update(0, tom);
+                tom.update(0, scott);
+            }
+        }catch (Exception e){
+
+        }
         }
 
     @Override
     public void paint(Clock clock) {
-        super.paint(clock);
-        if(showDebugDraw){
+        if(pause==false) {
+            alphaTest = toolg.fade(alphaTest);
+            super.paint(clock);
+            scott.paint(clock);
+            tom.paint(clock);
+            switch (scott.state) {
+                case WALK:
+                    if (x >= -350 && x <= 350) {
+                        if (x == -350) {
+                            x = -345;
+                        }
+                        x -= 5;
+                        bg.setTranslation(x, y);
+                    }
+                    break;
+                case LWALK:
+                    if (x >= -350 && x <= -10) {
+                        x += 5;
+                        bg.setTranslation(x, y);
+                    }
+                    break;
+            }
+        }else if(pause==true){
+            super.paint(stoptime);
+            scott.paint(stoptime);
+            tom.paint(stoptime);
+        }
+        if (showDebugDraw) {
             debugDraw.getCanvas().clear();
-            debugDraw.getCanvas().drawText(debugSring,200,50);
-            debugDraw.getCanvas().drawText(debugSring1,200,100);
+            debugDraw.getCanvas().drawText(debugSring, 200, 50);
+            debugDraw.getCanvas().drawText(debugSring1, 200, 100);
+            debugDraw.getCanvas().drawText(debugSring2, 200, 300);
+            debugDraw.getCanvas().drawText(debugSring3, 200, 320);
             world.drawDebugData();
         }
-        scott.paint(clock);
-        tom.paint(clock);
+    }
 
-
-//        switch(scott.state){
-//            case WALK:
-//                x -=5;
-//               bg.setTranslation(x,y);
-//                break;
-//        }
+    public void updatehp(){
+        this.layer.remove(hp1);
+        this.layer.remove(hp2);
+        hp1 = toolg.genText("HP : "+score,30, Colors.WHITE,30,90);
+        hp2 = toolg.genText("HP : "+scoret,30, Colors.WHITE,460,90);
+        this.layer.add(hp1);
+        this.layer.add(hp2);
     }
 
 

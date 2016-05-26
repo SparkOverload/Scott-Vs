@@ -11,10 +11,7 @@ import playn.core.Layer;
 import playn.core.PlayN;
 import playn.core.util.Callback;
 import playn.core.util.Clock;
-import spark.game01.core.Screen.Gameplay00;
-import spark.game01.core.Screen.Gameplay01;
-import spark.game01.core.Screen.Gameplay02;
-import spark.game01.core.Screen.HomeScreen;
+import spark.game01.core.Screen.*;
 import spark.game01.core.character.Gideon_char.Gideon;
 import spark.game01.core.character.Matt_char.Matt;
 import spark.game01.core.character.Tom_char.Tom;
@@ -32,11 +29,9 @@ public class Scott {
     private  int eventstate;
     private  int rcount=10;
     private  int lcount=10;
-    private int move;
     public Body body;
     public Body other;
     public Boolean contacted = false;
-    public int contactcheck = 0;
     private ScreenStack ss;
 
     public enum State{
@@ -72,31 +67,21 @@ public class Scott {
                    case LEFT:
                        if(lcount<3&& state == State.LIDLE){
                            state = State.LRUN;
-                           move = 1;
                        }
                        if(state == State.LIDLE || state == State.IDLE || state == State.WALK){
                            state = State.LWALK;
                            lcount=10;
                            rcount=10;
-                           move = 1;
-                       }
-                       if(state == State.LJUMP){
-                           move = 1;
                        }
                        break;
                     case RIGHT:
                         if(rcount<3 && state == State.IDLE){
                             state = State.RUN;
-                            move=1;
                         }
                         if(state == State.IDLE || state == State.LIDLE || state == State.LWALK){
                             state = State.WALK;
                             lcount=10;
                             rcount=10;
-                            move=1;
-                        }
-                        if(state == State.JUMP){
-                            move = 1;
                         }
                         break;
                     case DOWN:
@@ -225,14 +210,6 @@ public class Scott {
                         state = State.LWASATK3;
                         break;
                     case ENTER:
-                        if(state==State.CEL1){
-                            ss.remove(ss.top());
-                            ss.push(new Gameplay01(ss));
-                        }
-                        if(state==State.CEL2){
-                            ss.remove(ss.top());
-                            ss.push(new Gameplay02(ss));
-                        }
                         break;
                    case ESCAPE:
                        ss.remove(ss.top());
@@ -252,7 +229,6 @@ public class Scott {
                         if(state == State.RUN){
                             state = State.IDLE;
                         }
-                        move=0;
                         break;
                     case D:
                         if(state == State.DEF){
@@ -270,7 +246,6 @@ public class Scott {
                         if(state == State.LRUN){
                             state = State.LIDLE;
                         }
-                        move=0;
                         break;
                 }
             }
@@ -400,6 +375,8 @@ public class Scott {
                     }
                     if(spriteIndex>=76&&spriteIndex<=77){
                         spriteIndex=76;
+                        ss.remove(ss.top());
+                        ss.push(new Gameplay02(ss));
                     }
                     break;
                 case GUITAR:
@@ -413,6 +390,8 @@ public class Scott {
                     }
                     if(spriteIndex>=91&&spriteIndex<=92){
                         spriteIndex=91;
+                        ss.remove(ss.top());
+                        ss.push(new Gameplay01(ss));
                     }
                     break;
                 case CEL3:
@@ -421,6 +400,8 @@ public class Scott {
                     }
                     if(spriteIndex>=109&&spriteIndex<=110){
                         spriteIndex=109;
+                        ss.remove(ss.top());
+                        ss.push(new TopScore(ss));
                     }
                     break;
                 case ULTIK:
@@ -706,34 +687,41 @@ try{
     if (state != State.DEF && state != State.LDEF) {
         if (contacted == true && (matt.spriteIndex == 36 || matt.spriteIndex == 43)) {
             state = State.LWASATK1;
-            Gameplay01.score -= 0.2f;
+            Gameplay00.score -= 1;
+            Gameplay01.spmatt +=2;
         }
         if (contacted == true && (matt.spriteIndex == 50 || matt.spriteIndex == 57)) {
             state = State.WASATK1;
-            Gameplay01.score -= 0.2f;
+            Gameplay00.score -= 1;
+            Gameplay01.spmatt +=2;
         }
         if (contacted == true && (matt.spriteIndex >= 74 && matt.spriteIndex <= 76)) {
             state = State.WASATK3;
-            Gameplay01.score -= 2f;
+            Gameplay00.score -= 3;
+            Gameplay01.spmatt -=40;
         }
         if (contacted == true && (matt.spriteIndex >= 63 && matt.spriteIndex <= 65)) {
             state = State.LWASATK3;
-            Gameplay01.score -= 2f;
+            Gameplay00.score -= 3;
+            Gameplay01.spmatt -=40;
         }
         if (contacted == true && (matt.spriteIndex >= 148 && matt.spriteIndex <= 153)) {
             state = State.WASATK3;
-            Gameplay01.score -= 2f;
+            Gameplay00.score -= 3;
+            Gameplay01.spmatt -=50;
         }
         if (contacted == true && (matt.spriteIndex >= 136 && matt.spriteIndex <= 141)) {
             state = State.LWASATK3;
-            Gameplay01.score -= 2f;
+            Gameplay00.score -= 3;
+            Gameplay01.spmatt -=50;
         }
         if(Gameplay01.scorem <= 0){
             state = State.CEL2;
+
         }
     }
 
-    if(Gameplay01.score <= 0){
+    if(Gameplay00.score <= 0){
         state = State.LOSE;
     }
 
@@ -901,7 +889,7 @@ try{
 }catch (Exception e){
 
 }
-        Gameplay01.debugSring = "HpScore = "+Gameplay01.score;
+        Gameplay01.debugSring = "HpScore = "+Gameplay00.score;
 ////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
 
     }
@@ -979,8 +967,10 @@ try{
                     if(!(spriteIndex>=65 && spriteIndex<=79)){
                         spriteIndex=65;
                     }
-                    if(spriteIndex==79){
-                        state = State.IDLE;
+                    if(spriteIndex>=78&&spriteIndex<=79){
+                       spriteIndex=78;
+                        ss.remove(ss.top());
+                        ss.push(new Gameplay02(ss));
                     }
                     break;
                 case GUITAR:
@@ -994,6 +984,8 @@ try{
                     }
                     if(spriteIndex>=91&&spriteIndex<=92){
                         spriteIndex=91;
+                        ss.remove(ss.top());
+                        ss.push(new Gameplay01(ss));
                     }
                     break;
                 case CEL3:
@@ -1002,6 +994,8 @@ try{
                     }
                     if(spriteIndex>=109&&spriteIndex<=110){
                         spriteIndex=109;
+                        ss.remove(ss.top());
+                        ss.push(new TopScore(ss));
                     }
                     break;
                 case ULTIK:
@@ -1287,19 +1281,23 @@ try{
             if (state != State.DEF && state != State.LDEF) {
                 if (contacted == true && (tom.spriteIndex == 59 || tom.spriteIndex == 65)) {
                     state = State.WASATK1;
-                    Gameplay00.score -= 0.2f;
+                    Gameplay00.score -= 1;
+                    Gameplay00.sptom += 2;
                 }
                 if (contacted == true && (tom.spriteIndex == 34 || tom.spriteIndex == 40)) {
                     state = State.LWASATK1;
-                    Gameplay00.score -= 0.2f;
+                    Gameplay00.score -= 1;
+                    Gameplay00.sptom +=2;
                 }
                 if (contacted == true && (tom.spriteIndex >= 98 && tom.spriteIndex <= 101)) {
                     state = State.WASATK3;
-                    Gameplay00.score -= 2f;
+                    Gameplay00.score -= 3;
+                    Gameplay00.sptom -=50;
                 }
                 if (contacted == true && (tom.spriteIndex >= 78 && tom.spriteIndex <= 81)) {
                     state = State.LWASATK3;
-                    Gameplay00.score -= 2f;
+                    Gameplay00.score -= 3;
+                    Gameplay00.sptom -= 50;
                 }
                 if(Gameplay00.scoret <= 0){
                     state = State.CEL1;
@@ -1547,8 +1545,10 @@ try{
                     if(!(spriteIndex>=65 && spriteIndex<=79)){
                         spriteIndex=65;
                     }
-                    if(spriteIndex==79){
-                        state = State.IDLE;
+                    if(spriteIndex>=78&&spriteIndex<=79){
+                        spriteIndex=78;
+                        ss.remove(ss.top());
+                        ss.push(new Gameplay02(ss));
                     }
                     break;
                 case GUITAR:
@@ -1562,6 +1562,8 @@ try{
                     }
                     if(spriteIndex>=91&&spriteIndex<=92){
                         spriteIndex=91;
+                        ss.remove(ss.top());
+                        ss.push(new Gameplay01(ss));
                     }
                     break;
                 case CEL3:
@@ -1570,6 +1572,8 @@ try{
                     }
                     if(spriteIndex>=109&&spriteIndex<=110){
                         spriteIndex=109;
+                        ss.remove(ss.top());
+                        ss.push(new TopScore(ss));
                     }
                     break;
                 case ULTIK:
@@ -1856,30 +1860,34 @@ try{
                 if (contacted == true && (gideon.spriteIndex == 64 || gideon.spriteIndex == 71
                         || gideon.spriteIndex == 92 || gideon.spriteIndex == 94 || gideon.spriteIndex == 117)) {
                     state = State.WASATK1;
-                    Gameplay02.score -= 0.2f;
+                    Gameplay00.score -= 1;
+                    Gameplay02.spgideon +=2;
                 }
                 if (contacted == true && (gideon.spriteIndex == 49 || gideon.spriteIndex == 56
                         || gideon.spriteIndex == 80 || gideon.spriteIndex == 82 || gideon.spriteIndex == 104)) {
                     state = State.LWASATK1;
-                    Gameplay02.score -= 0.2f;
+                    Gameplay00.score -= 1;
+                    Gameplay02.spgideon +=2;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 122 && gideon.spriteIndex <= 126)
                         || (gideon.spriteIndex >= 144 && gideon.spriteIndex <= 149)
                         || (gideon.spriteIndex >= 153 && gideon.spriteIndex <= 156) )) {
                     state = State.WASATK3;
-                    Gameplay02.score -= 2f;
+                    Gameplay00.score -= 3;
+                    Gameplay02.spgideon -=20;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 109 && gideon.spriteIndex <= 113)
                         || (gideon.spriteIndex >= 129 && gideon.spriteIndex <= 134)
                         || (gideon.spriteIndex >= 138 && gideon.spriteIndex <= 141) )) {
                     state = State.LWASATK3;
-                    Gameplay02.score -= 2f;
+                    Gameplay00.score -= 3;
+                    Gameplay02.spgideon -=20;
                 }
                 if(Gameplay02.scoreg <= 0){
                     state = State.CEL3;
                 }
             }
-            if(Gameplay02.score <= 0){
+            if(Gameplay00.score <= 0){
                 state = State.LOSE;
             }
 
@@ -2044,7 +2052,7 @@ try{
         }catch (Exception e){
 
         }
-        //Gameplay00.debugSring = "HpScore = "+Gameplay00.score;
+        Gameplay02.debugSring = "HpScore = "+Gameplay00.score;
     }
 
     public void paint(Clock clock) {
@@ -2052,6 +2060,7 @@ try{
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 (body.getPosition().y/Gameplay00.M_PER_PIXEL));
+        body.setFixedRotation(true);
     }
 
 

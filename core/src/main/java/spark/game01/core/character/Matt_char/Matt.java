@@ -254,40 +254,42 @@ public class Matt {
                             state = State.LKICK;
                             break;
                         case 2:
-                            if(i%2==0) {
+                            if(Gameplay01.spmatt>=60) {
                                 state = State.LULTI1;
                             }
                             break;
                         case 3:
-                            state = State.LULTI2;
+                            if(Gameplay01.spmatt>=80) {
+                                state = State.LULTI2;
+                            }
                             break;
                     }
                 }
 
                 if(contacted == true && (scott.spriteIndex==189|| scott.spriteIndex==381)){ // lwasattk2
                     state=State.LWASATTK2;
-                    Gameplay01.scorem -=2f;
+                    Gameplay01.scorem -=3;
                 }
                 if(contacted==true && (scott.spriteIndex==42
                         ||scott.spriteIndex==46||scott.spriteIndex==49
                         ||scott.spriteIndex==52||scott.spriteIndex==55)){             //lwasattk
                     state=State.LWASATTK1;
-                    Gameplay01.scorem -=0.2f;
+                    Gameplay01.scorem -=1;
                 }
                 if(contacted==true && (scott.spriteIndex == 196||scott.spriteIndex == 388)){             //lheadbutt
                     state=State.LWASATTK2;
-                    Gameplay01.scorem -=2f;
+                    Gameplay01.scorem -=3;
                 }
                 if(contacted==true && (scott.spriteIndex==125
                         || scott.spriteIndex==132 || scott.spriteIndex==159
                         || scott.spriteIndex==162)){
                     state=State.LWASATTK1;
-                    Gameplay01.scorem -=0.2f;
+                    Gameplay01.scorem -=1;
                 }
                 if(contacted==true && (scott.spriteIndex==147 || scott.spriteIndex==339
                         || scott.spriteIndex == 167)){
                     state=State.LWASATTK2;
-                    Gameplay01.scorem -=2f;
+                    Gameplay01.scorem -=3;
                 }
                 if(Gameplay01.scorem<=0){
                     state=State.LWASATTK2;
@@ -310,40 +312,42 @@ public class Matt {
                             state = State.KICK;
                             break;
                         case 2:
-                            if(i%2==0) {
+                            if(Gameplay01.spmatt>=60) {
                                 state = State.ULTI1;
                             }
                             break;
                         case 3:
-                            state = State.ULTI2;
+                            if(Gameplay01.spmatt>=80) {
+                                state = State.ULTI2;
+                            }
                             break;
                     }
                 }
                 if(contacted == true && (scott.spriteIndex==381
                         || scott.spriteIndex==189)){                                    // wasattk2
                     state=State.WASATTK2;
-                    Gameplay01.scorem -=2f;
+                    Gameplay01.scorem -=3;
                 }
                 if(contacted==true && (scott.spriteIndex==299
                         ||scott.spriteIndex==303||scott.spriteIndex==306
                         ||scott.spriteIndex==309||scott.spriteIndex==312)){             //lwasattk
                     state=State.WASATTK1;
-                    Gameplay01.scorem -=0.2f;
+                    Gameplay01.scorem -=1;
                 }
                 if(contacted==true && (scott.spriteIndex == 388||scott.spriteIndex == 196)){             //headbutt
                     state=State.WASATTK2;
-                    Gameplay01.scorem -=2f;
+                    Gameplay01.scorem -=3;
                 }
                 if(contacted==true && (scott.spriteIndex==317
                         || scott.spriteIndex==324||scott.spriteIndex==351
                         || scott.spriteIndex==354)){
                     state=State.WASATTK1;
-                    Gameplay01.scorem -=0.2f;
+                    Gameplay01.scorem -=1;
                 }
                 if(contacted==true && (scott.spriteIndex==147 || scott.spriteIndex==339
                         || scott.spriteIndex==359)){
                     state=State.WASATTK2;
-                    Gameplay01.scorem -=2f;
+                    Gameplay01.scorem -=3;
                 }
                 if(Gameplay01.scorem<=0){
                     state=State.WASATTK2;
@@ -430,7 +434,13 @@ public class Matt {
         if(i>=30){
             i=0;
         }
+        if(Gameplay01.spmatt>=100){
+            Gameplay01.spmatt=100;
+        }else if(Gameplay01.spmatt<=0){
+            Gameplay01.spmatt=0;
+        }
         Gameplay01.debugSring1 = "HpScore = "+Gameplay01.scorem;
+        Gameplay01.debugSring2 = "SP tom = "+Gameplay01.spmatt;
     }
 
 
@@ -439,6 +449,7 @@ public class Matt {
                 sprite.layer().setTranslation(
                 (body.getPosition().x/ Gameplay01.M_PER_PIXEL),
                 body.getPosition().y/Gameplay01.M_PER_PIXEL);
+        body.setFixedRotation(true);
 
     }
 
