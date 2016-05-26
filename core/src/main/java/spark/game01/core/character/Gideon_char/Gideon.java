@@ -286,41 +286,47 @@ public class Gideon {
                             state = State.LATTK3;
                             break;
                         case 3:
-                            state = State.LATTK4;
+                            if(Gameplay02.spgideon>=70) {
+                                state = State.LATTK4;
+                            }
                             break;
                         case 4:
-                            state = State.LATTK5;
+                            if(Gameplay02.spgideon>=80) {
+                                state = State.LATTK5;
+                            }
                             break;
                         case 5:
-                            state = State.LCHARGE;
+                            if(Gameplay02.spgideon>=60) {
+                                state = State.LCHARGE;
+                            }
                             break;
                     }
                 }
 
                 if (contacted == true && (scott.spriteIndex == 189 || scott.spriteIndex == 381)) { // lwasattk2
                     state = State.LWASATTK2;
-                    Gameplay02.scoreg -= 2f;
+                    Gameplay02.scoreg -= 3;
                 }
                 if (contacted == true && (scott.spriteIndex == 42
                         || scott.spriteIndex == 46 || scott.spriteIndex == 49
                         || scott.spriteIndex == 52 || scott.spriteIndex == 55)) {             //lwasattk
                     state = State.LWASATTK1;
-                    Gameplay02.scoreg -= 0.2f;
+                    Gameplay02.scoreg -= 1;
                 }
                 if (contacted == true && (scott.spriteIndex == 196 || scott.spriteIndex == 388)) {             //lheadbutt
                     state = State.LWASATTK2;
-                    Gameplay02.scoreg -= 2f;
+                    Gameplay02.scoreg -= 3;
                 }
                 if (contacted == true && (scott.spriteIndex == 125
                         || scott.spriteIndex == 132 || scott.spriteIndex == 159
                         || scott.spriteIndex == 162)) {
                     state = State.LWASATTK1;
-                    Gameplay02.scoreg -= 0.2f;
+                    Gameplay02.scoreg -= 1;
                 }
                 if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
                         || scott.spriteIndex == 167)) {
                     state = State.LWASATTK2;
-                    Gameplay02.scoreg -= 2f;
+                    Gameplay02.scoreg -= 3;
                 }
                 if (Gameplay02.scoreg <= 0) {
                     state = State.LWASATTK2;
@@ -346,41 +352,47 @@ public class Gideon {
                             state = State.ATTK3;
                             break;
                         case 3:
-                            state = State.ATTK4;
+                            if(Gameplay02.spgideon>=70) {
+                                state = State.ATTK4;
+                            }
                             break;
                         case 4:
-                            state = State.ATTK5;
+                            if(Gameplay02.spgideon>=80) {
+                                state = State.ATTK5;
+                            }
                             break;
                         case 5:
-                            state = State.CHARGE;
+                            if(Gameplay02.spgideon>=60) {
+                                state = State.CHARGE;
+                            }
                             break;
                     }
                 }
                 if (contacted == true && (scott.spriteIndex == 381
                         || scott.spriteIndex == 189)) {                                    // wasattk2
                     state = State.WASATTK2;
-                    Gameplay02.scoreg -= 2f;
+                    Gameplay02.scoreg -= 3;
                 }
                 if (contacted == true && (scott.spriteIndex == 299
                         || scott.spriteIndex == 303 || scott.spriteIndex == 306
                         || scott.spriteIndex == 309 || scott.spriteIndex == 312)) {             //lwasattk
                     state = State.WASATTK1;
-                    Gameplay02.scoreg -= 0.2f;
+                    Gameplay02.scoreg -= 1f;
                 }
                 if (contacted == true && (scott.spriteIndex == 388 || scott.spriteIndex == 196)) {             //headbutt
                     state = State.WASATTK2;
-                    Gameplay02.scoreg -= 2f;
+                    Gameplay02.scoreg -= 3;
                 }
                 if (contacted == true && (scott.spriteIndex == 317
                         || scott.spriteIndex == 324 || scott.spriteIndex == 351
                         || scott.spriteIndex == 354)) {
                     state = State.WASATTK1;
-                    Gameplay02.scoreg -= 0.2f;
+                    Gameplay02.scoreg -= 1;
                 }
                 if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
                         || scott.spriteIndex == 359)) {
                     state = State.WASATTK2;
-                    Gameplay02.scoreg -= 2f;
+                    Gameplay02.scoreg -= 3;
                 }
                 if (Gameplay02.scoreg <= 0) {
                     state = State.WASATTK2;
@@ -493,8 +505,14 @@ public class Gideon {
         if(i>=30){
             i=0;
         }
+        if(Gameplay02.spgideon>=100){
+            Gameplay02.spgideon=100;
+        }else if(Gameplay02.spgideon<=0){
+            Gameplay02.spgideon=0;
+        }
 
         Gameplay02.debugSring1 = "HpScore = "+Gameplay02.scoreg;
+        Gameplay02.debugSring2 = "SP gideon = "+Gameplay02.spgideon;
     }
 
     public void paint(Clock clock) {
@@ -502,5 +520,6 @@ public class Gideon {
         sprite.layer().setTranslation(
                 (body.getPosition().x/ Gameplay00.M_PER_PIXEL),
                 (body.getPosition().y/Gameplay00.M_PER_PIXEL));
+        body.setFixedRotation(true);
     }
 }

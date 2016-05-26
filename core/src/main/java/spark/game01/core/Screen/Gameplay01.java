@@ -7,19 +7,16 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import playn.core.CanvasImage;
-import playn.core.DebugDrawBox2D;
-import playn.core.Image;
-import playn.core.ImageLayer;
+import playn.core.*;
 import playn.core.util.Clock;
-import spark.game01.core.ContactObject.ContactMotion1;
 import spark.game01.core.ContactObject.ContactMotion2;
 import spark.game01.core.HP.Hpbar;
+import spark.game01.core.ToolsG;
 import spark.game01.core.character.Matt_char.Matt;
 import spark.game01.core.character.Scott_char.Scott;
-import spark.game01.core.character.Tom_char.Tom;
 import tripleplay.game.Screen;
 import tripleplay.game.ScreenStack;
+import tripleplay.util.Colors;
 
 import java.util.HashMap;
 
@@ -28,6 +25,8 @@ import static playn.core.PlayN.graphics;
 
 public class Gameplay01 extends Screen{
 
+    private Boolean pause = false;
+    private Clock.Source stoptime = new Clock.Source(0);
     public static  float M_PER_PIXEL = 1 / 26.666667f;
     private static float width = 24;
     private static float height = 18;
@@ -47,8 +46,17 @@ public class Gameplay01 extends Screen{
     public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
     public static String debugSring = "";
     public static String debugSring1 = "";
-    public static float score=100;
-    public static float scorem=100;
+    public static String debugSring2 = "";
+    public static String debugSring3 = "";
+    public static int scorem;
+    public static int spmatt;
+    private float x = -180;
+    private float y =0;
+    private float xr = -125;
+    private float yr = 405;
+    private ToolsG toolg = new ToolsG();
+    private Layer hp1;
+    private Layer hp2;
 
     public Gameplay01(final ScreenStack ss){
         Vec2 gravity = new Vec2(0.0f,10.0f);
@@ -58,7 +66,7 @@ public class Gameplay01 extends Screen{
 
         Body ground = world.createBody(new BodyDef());
         EdgeShape groundShape = new EdgeShape();
-        groundShape.set(new Vec2(2,height-2.5f),new Vec2(width,height-2.5f));
+        groundShape.set(new Vec2(2,height-2.5f),new Vec2(width-2,height-2.5f));
         //ground.createFixture(groundShape,0.0f);
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -70,14 +78,31 @@ public class Gameplay01 extends Screen{
         this.ss = ss;
         Image bgImage = assets().getImage("images/Screen_bg/screen07.png");
         bg = graphics().createImageLayer(bgImage);
+        bg.setTranslation(x,y);
 
-        Image gndfightImage = assets().getImage("images/gndfight.png");
+        scorem=100;
+        spmatt=50;
+
+        Image gndfightImage = assets().getImage("images/rope.png");
         gndfight = graphics().createImageLayer(gndfightImage);
-        gndfight.setTranslation(0,360);
+        gndfight.setTranslation(xr,yr);
 
         Image tagw2Image = assets().getImage("images/w2.png");
         tagew2 = graphics().createImageLayer(tagw2Image);
         tagew2.setTranslation(170,25);
+
+        tagew2.addListener(new Mouse.LayerAdapter(){
+            @Override
+            public void onMouseDown(Mouse.ButtonEvent event){
+                if(pause==false){
+                    pause = true;
+                }else{
+                    pause = false;
+                }
+
+            }
+
+        });
 
         scott = new Scott(ss,world,250f,350f);
         matt = new Matt(world,350f,350f);
@@ -91,8 +116,14 @@ public class Gameplay01 extends Screen{
         matthead.setTranslation(530,20);
 
         new ContactMotion2(world,bodies,scott,matt);
-        debugSring = "HpScore tom = "+Gameplay01.score;
-        debugSring1 = "HpScore scott = "+Gameplay01.scorem;
+
+        hp1 = toolg.genText("HP : "+Gameplay00.score,30, Colors.WHITE,30,90);
+        hp2 = toolg.genText("HP : "+scorem,30, Colors.WHITE,460,90);
+
+        debugSring = "HpScore matt = "+Gameplay01.scorem;
+        debugSring1 = "HpScore scott = "+Gameplay00.score;
+        debugSring2 = "SP matt = "+spmatt;
+        debugSring3 = "SP scott = "+Gameplay00.spscott;
     }
 
     @Override
@@ -108,6 +139,9 @@ public class Gameplay01 extends Screen{
         this.layer.add(hpmatt.layer());
         this.layer.add(matt.layer());
         this.layer.add(scott.layer());
+        /////////////////////////////////////////////
+        this.layer.add(hp1);
+        this.layer.add(hp2);
 
         if(showDebugDraw){
             CanvasImage image = graphics().createImage(
@@ -130,27 +164,83 @@ public class Gameplay01 extends Screen{
 
     @Override
     public void update(int delta) {
-        super.update(delta);
-        world.step(0.066f,10,10);
-        hpscott.update(delta);
-        hpmatt.update(delta);
-        matt.update(delta,scott);
-        scott.update(delta,matt);
+        try {
+            if (pause == false) {
+                super.update(delta);
+                world.step(0.066f, 10, 10);
+                hpscott.update(delta);
+                hpmatt.update(delta);
+                matt.update(delta, scott);
+                scott.update(delta, matt);
+                hpscott.Hp(Gameplay00.score);
+                hpmatt.Hp(scorem);
+                updatehp();
+            } else if (pause == true) {
+                super.update(0);
+                world.step(0f, 10, 10);
+                hpscott.update(0);
+                hpmatt.update(0);
+                matt.update(0, scott);
+                scott.update(0, matt);
+            }
+        }catch (Exception e){
+
+        }
 
     }
 
     @Override
     public void paint(Clock clock) {
-        super.paint(clock);
+        if(pause==false) {
+            super.paint(clock);
+            scott.paint(clock);
+            matt.paint(clock);
+            switch (scott.state) {
+                case WALK:
+                    if (x >= -350 && x <= 350) {
+                        if (x == -350) {
+                            x = -345;
+                            xr = -295;
+                        }
+                        xr -= 5;
+                        x -= 5;
+                        gndfight.setTranslation(xr, yr);
+                        bg.setTranslation(x, y);
+                    }
+                    break;
+                case LWALK:
+                    if (x >= -350 && x <= -10) {
+                        x += 5;
+                        xr += 5;
+                        gndfight.setTranslation(xr, yr);
+                        bg.setTranslation(x, y);
+                    }
+                    break;
+            }
+        }else if(pause==true){
+            super.paint(stoptime);
+            scott.paint(stoptime);
+            matt.paint(stoptime);
+        }
+
         if(showDebugDraw){
             debugDraw.getCanvas().clear();
             debugDraw.getCanvas().drawText(debugSring,200,50);
             debugDraw.getCanvas().drawText(debugSring1,200,100);
+            debugDraw.getCanvas().drawText(debugSring2, 200, 300);
+            debugDraw.getCanvas().drawText(debugSring3, 200, 320);
             world.drawDebugData();
         }
-        scott.paint(clock);
-        matt.paint(clock);
 
+    }
+
+    public void updatehp(){
+        this.layer.remove(hp1);
+        this.layer.remove(hp2);
+        hp1 = toolg.genText("HP : "+Gameplay00.score,30, Colors.WHITE,30,90);
+        hp2 = toolg.genText("HP : "+scorem,30, Colors.WHITE,460,90);
+        this.layer.add(hp1);
+        this.layer.add(hp2);
     }
 
 }

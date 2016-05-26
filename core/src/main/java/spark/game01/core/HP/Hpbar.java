@@ -90,23 +90,25 @@ public class Hpbar {
             spriteIndex++;
             e=0;
         }
+    }
 
-        if(Gameplay00.score <= 90f){
+    public void Hp(float hp){
+        if(hp <= 90f){
             state=State.HP90;
         }
-        if(Gameplay00.score <= 70f){
+        if(hp <= 70f){
             state=State.HP70;
         }
-        if(Gameplay00.score <= 50f){
+        if(hp <= 50f){
             state=State.HP50;
         }
-        if(Gameplay00.score <= 30f){
+        if(hp <= 30f){
             state=State.HP30;
         }
-        if(Gameplay00.score <= 10f){
+        if(hp <= 10f){
             state=State.HP10;
         }
-        if(Gameplay00.score <= 0f){
+        if(hp <= 0f){
             state=State.HP0;
         }
     }
