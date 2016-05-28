@@ -33,13 +33,15 @@ public class Scott {
     public Body other;
     public Boolean contacted = false;
     private ScreenStack ss;
+    private float relaya = 10;
+    int b;
 
     public enum State{
         IDLE,LIDLE,RUN,LRUN,WALK,LWALK,JUMP,LJUMP,DODGE,LDODGE,ATTK1,ATTK2,ATTK3,
         LATTK1,LATTK2,LATTK3,KICK1,LKICK1,KICK2,LKICK2,JKICK,LJKICK,ULTIK,LULTIK,
         ULTIB1,LULTIB1,ULTIB2,LULTIB2,CHARGE,LCHARGE,
         DEF,LDEF,CEL1,CEL2,CEL3,GUITAR,HEADBUTT,LHEADBUTT,LOSE,COMEBACK,LCOMEBACK,
-        WASATK1,LWASATK1,WASATK2,LWASATK2,WASATK3,LWASATK3,SLEEP,LSLEEP
+        WASATK1,LWASATK1,WASATK2,LWASATK2,WASATK3,LWASATK3,SLEEP,LSLEEP,COOLDOWN,LCOOLDOWN
     };
     public State state = State.IDLE;
     private int e = 0;
@@ -51,17 +53,22 @@ public class Scott {
             public void onKeyDown(Keyboard.Event event) {
                switch (event.key()) {
                     case UP:
+                        relaya = relaya - 0.9f;
+                        b=Math.round(relaya);
+                        System.out.println(b);
                         if(state == State.SLEEP){
                             state = State.COMEBACK;
                         }
                         if(state == State.LSLEEP){
                             state = State.LCOMEBACK;
                         }
-                        if(state == State.ATTK2){
+                        if(state == State.ATTK2 && Gameplay00.spscott>=80){
                             state = State.ULTIB1;
+                            Gameplay00.spscott-=80;
                         }
-                        if(state == State.LATTK2){
+                        if(state == State.LATTK2 && Gameplay00.spscott>=80){
                             state = State.LULTIB1;
+                            Gameplay00.spscott-=80;
                         }
                         break;
                    case LEFT:
@@ -131,9 +138,8 @@ public class Scott {
                                 state = State.ATTK2;
                             }
                             if (state == State.IDLE || state == State.WALK || state == State.RUN) {
-                                state = State.ATTK1;
+                                    state = State.ATTK1;
                             }
-
                             if (state == State.LATTK2 && (spriteIndex >= 305 && spriteIndex <= 307)) {
                             state = State.LATTK3;
                              }
@@ -164,17 +170,21 @@ public class Scott {
                         if(state == State.LIDLE || state == State.LWALK || state == State.LRUN){
                             state = State.LKICK1;
                         }
-                        if(state == State.ATTK2){
+                        if(state == State.ATTK2 && Gameplay00.spscott>=80){
                             state=State.ULTIB2;
+                            Gameplay00.spscott-=80;
                         }
-                        if(state == State.LATTK2){
+                        if(state == State.LATTK2 && Gameplay00.spscott>=80){
                             state=State.LULTIB2;
+                            Gameplay00.spscott-=80;
                         }
-                        if(state == State.ATTK1){
+                        if(state == State.ATTK1 && Gameplay00.spscott>=50){
                             state=State.CHARGE;
+                            Gameplay00.spscott-=50;
                         }
-                        if(state == State.LATTK1){
+                        if(state == State.LATTK1 && Gameplay00.spscott>=50){
                             state=State.LCHARGE;
+                            Gameplay00.spscott-=50;
                         }
                         break;
                     case D:
@@ -285,18 +295,19 @@ public class Scott {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width()-62)* Gameplay00.M_PER_PIXEL/2,
+        shape.setAsBox((sprite.layer().width()-80)* Gameplay00.M_PER_PIXEL/2,
                 (sprite.layer().height()-90)*Gameplay00.M_PER_PIXEL/2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 1.3f;
         fixtureDef.friction = 1f;
         //fixtureDef.restitution = 1f;
 
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x,y),0f);
+        body.setFixedRotation(true);
         return body;
     }
 
@@ -358,7 +369,7 @@ public class Scott {
                         spriteIndex=51;
                     }
                     if(spriteIndex==57){
-                        state = State.IDLE;
+                        state = State.COOLDOWN;
                     }
                     break;
                 case DEF:
@@ -425,7 +436,7 @@ public class Scott {
                         spriteIndex=130;
                     }
                     if(spriteIndex==136){
-                        state = State.IDLE;
+                        state = State.COOLDOWN;
                     }
                     break;
                 case JKICK:
@@ -616,7 +627,7 @@ public class Scott {
                         spriteIndex=308;
                     }
                     if(spriteIndex==314){
-                        state = State.LIDLE;
+                        state = State.LCOOLDOWN;
                     }
                     break;
                 case LKICK1:
@@ -632,7 +643,7 @@ public class Scott {
                         spriteIndex=322;
                     }
                     if(spriteIndex==328){
-                        state = State.LIDLE;
+                        state = State.LCOOLDOWN;
                     }
                     break;
                 case LJKICK:
@@ -675,6 +686,22 @@ public class Scott {
                         state = State.LIDLE;
                     }
                     break;
+                case COOLDOWN:
+                    if(!(spriteIndex>=0 && spriteIndex<=3)){
+                        spriteIndex=0;
+                    }
+                    if(spriteIndex==3){
+                        state=State.IDLE;
+                    }
+                    break;
+                case LCOOLDOWN:
+                    if(!(spriteIndex>=238 && spriteIndex<=245)){
+                        spriteIndex=238;
+                    }
+                    if(spriteIndex==245){
+                        state=State.LIDLE;
+                    }
+                    break;
 
             }
             sprite.setSprite(spriteIndex);
@@ -687,35 +714,35 @@ try{
     if (state != State.DEF && state != State.LDEF) {
         if (contacted == true && (matt.spriteIndex == 36 || matt.spriteIndex == 43)) {
             state = State.LWASATK1;
-            Gameplay00.score -= 1;
+            Gameplay00.score -= 2;
             Gameplay01.spmatt +=2;
         }
         if (contacted == true && (matt.spriteIndex == 50 || matt.spriteIndex == 57)) {
             state = State.WASATK1;
-            Gameplay00.score -= 1;
+            Gameplay00.score -= 2;
             Gameplay01.spmatt +=2;
         }
         if (contacted == true && (matt.spriteIndex >= 74 && matt.spriteIndex <= 76)) {
             state = State.WASATK3;
-            Gameplay00.score -= 3;
+            Gameplay00.score -= 10;
             Gameplay01.spmatt -=40;
         }
         if (contacted == true && (matt.spriteIndex >= 63 && matt.spriteIndex <= 65)) {
             state = State.LWASATK3;
-            Gameplay00.score -= 3;
+            Gameplay00.score -= 10;
             Gameplay01.spmatt -=40;
         }
         if (contacted == true && (matt.spriteIndex >= 148 && matt.spriteIndex <= 153)) {
             state = State.WASATK3;
-            Gameplay00.score -= 3;
+            Gameplay00.score -= 20;
             Gameplay01.spmatt -=50;
         }
         if (contacted == true && (matt.spriteIndex >= 136 && matt.spriteIndex <= 141)) {
             state = State.LWASATK3;
-            Gameplay00.score -= 3;
+            Gameplay00.score -= 20;
             Gameplay01.spmatt -=50;
         }
-        if(Gameplay01.scorem <= 0){
+        if(Gameplay01.scorem <= 0 && (matt.spriteIndex==105 || matt.spriteIndex==92)){
             state = State.CEL2;
 
         }
@@ -754,7 +781,7 @@ try{
             if (spriteIndex == 189) {
                 body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
                 if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(5, -10f), other.getPosition());
+                    other.applyLinearImpulse(new Vec2(20, -20f), other.getPosition());
                 }
             }
             break;
@@ -762,7 +789,7 @@ try{
             if (spriteIndex == 381) {
                 body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
                 if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(-5f, -10f), other.getPosition());
+                    other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
                 }
             }
             break;
@@ -800,7 +827,7 @@ try{
             if (spriteIndex == 196) {
                 body.applyLinearImpulse(new Vec2(10f, 0f), body.getPosition());
                 if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(10f, -10f), other.getPosition());
+                    other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
                 }
             }
             break;
@@ -808,7 +835,7 @@ try{
             if (spriteIndex == 388) {
                 body.applyLinearImpulse(new Vec2(-10f, 0f), body.getPosition());
                 if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(-10f, -10f), other.getPosition());
+                    other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
                 }
             }
             break;
@@ -889,6 +916,11 @@ try{
 }catch (Exception e){
 
 }
+
+        if(Gameplay00.score<=0){
+            Gameplay00.score=0;
+        }
+
         Gameplay01.debugSring = "HpScore = "+Gameplay00.score;
 ////////////////////////////////////////////////////////////////////////////////////////////////// add Motion on update method
 
@@ -952,7 +984,7 @@ try{
                         spriteIndex=51;
                     }
                     if(spriteIndex==57){
-                        state = State.IDLE;
+                        state = State.COOLDOWN;
                     }
                     break;
                 case DEF:
@@ -1019,7 +1051,7 @@ try{
                         spriteIndex=130;
                     }
                     if(spriteIndex==136){
-                        state = State.IDLE;
+                        state = State.COOLDOWN;
                     }
                     break;
                 case JKICK:
@@ -1210,7 +1242,7 @@ try{
                         spriteIndex=308;
                     }
                     if(spriteIndex==314){
-                        state = State.LIDLE;
+                        state = State.LCOOLDOWN;
                     }
                     break;
                 case LKICK1:
@@ -1226,7 +1258,7 @@ try{
                         spriteIndex=322;
                     }
                     if(spriteIndex==328){
-                        state = State.LIDLE;
+                        state = State.LCOOLDOWN;
                     }
                     break;
                 case LJKICK:
@@ -1269,6 +1301,22 @@ try{
                         state = State.LIDLE;
                     }
                     break;
+                case COOLDOWN:
+                    if(!(spriteIndex>=0 && spriteIndex<=3)){
+                        spriteIndex=0;
+                    }
+                    if(spriteIndex==3){
+                        state=State.IDLE;
+                    }
+                    break;
+                case LCOOLDOWN:
+                    if(!(spriteIndex>=238 && spriteIndex<=245)){
+                        spriteIndex=238;
+                    }
+                    if(spriteIndex==245){
+                        state=State.LIDLE;
+                    }
+                    break;
 
             }
             sprite.setSprite(spriteIndex);
@@ -1281,25 +1329,25 @@ try{
             if (state != State.DEF && state != State.LDEF) {
                 if (contacted == true && (tom.spriteIndex == 59 || tom.spriteIndex == 65)) {
                     state = State.WASATK1;
-                    Gameplay00.score -= 1;
+                    Gameplay00.score -= 2;
                     Gameplay00.sptom += 2;
                 }
                 if (contacted == true && (tom.spriteIndex == 34 || tom.spriteIndex == 40)) {
                     state = State.LWASATK1;
-                    Gameplay00.score -= 1;
+                    Gameplay00.score -= 2;
                     Gameplay00.sptom +=2;
                 }
                 if (contacted == true && (tom.spriteIndex >= 98 && tom.spriteIndex <= 101)) {
                     state = State.WASATK3;
-                    Gameplay00.score -= 3;
+                    Gameplay00.score -= 10;
                     Gameplay00.sptom -=50;
                 }
                 if (contacted == true && (tom.spriteIndex >= 78 && tom.spriteIndex <= 81)) {
                     state = State.LWASATK3;
-                    Gameplay00.score -= 3;
+                    Gameplay00.score -= 10;
                     Gameplay00.sptom -= 50;
                 }
-                if(Gameplay00.scoret <= 0){
+                if(Gameplay00.scoret <= 0 && (tom.spriteIndex==127 || tom.spriteIndex==151)){
                     state = State.CEL1;
                 }
             }
@@ -1469,6 +1517,10 @@ try{
         }catch (Exception e){
 
         }
+
+        if(Gameplay00.score<=0){
+            Gameplay00.score=0;
+        }
         Gameplay00.debugSring = "HpScore = "+Gameplay00.score;
     }
 
@@ -1530,7 +1582,7 @@ try{
                         spriteIndex=51;
                     }
                     if(spriteIndex==57){
-                        state = State.IDLE;
+                        state = State.COOLDOWN;
                     }
                     break;
                 case DEF:
@@ -1597,7 +1649,7 @@ try{
                         spriteIndex=130;
                     }
                     if(spriteIndex==136){
-                        state = State.IDLE;
+                        state = State.COOLDOWN;
                     }
                     break;
                 case JKICK:
@@ -1788,7 +1840,7 @@ try{
                         spriteIndex=308;
                     }
                     if(spriteIndex==314){
-                        state = State.LIDLE;
+                        state = State.LCOOLDOWN;
                     }
                     break;
                 case LKICK1:
@@ -1804,7 +1856,7 @@ try{
                         spriteIndex=322;
                     }
                     if(spriteIndex==328){
-                        state = State.LIDLE;
+                        state = State.LCOOLDOWN;
                     }
                     break;
                 case LJKICK:
@@ -1847,6 +1899,22 @@ try{
                         state = State.LIDLE;
                     }
                     break;
+                case COOLDOWN:
+                    if(!(spriteIndex>=0 && spriteIndex<=3)){
+                        spriteIndex=0;
+                    }
+                    if(spriteIndex==3){
+                        state=State.IDLE;
+                    }
+                    break;
+                case LCOOLDOWN:
+                    if(!(spriteIndex>=238 && spriteIndex<=245)){
+                        spriteIndex=238;
+                    }
+                    if(spriteIndex==245){
+                        state=State.LIDLE;
+                    }
+                    break;
 
             }
             sprite.setSprite(spriteIndex);
@@ -1860,30 +1928,30 @@ try{
                 if (contacted == true && (gideon.spriteIndex == 64 || gideon.spriteIndex == 71
                         || gideon.spriteIndex == 92 || gideon.spriteIndex == 94 || gideon.spriteIndex == 117)) {
                     state = State.WASATK1;
-                    Gameplay00.score -= 1;
+                    Gameplay00.score -= 2;
                     Gameplay02.spgideon +=2;
                 }
                 if (contacted == true && (gideon.spriteIndex == 49 || gideon.spriteIndex == 56
                         || gideon.spriteIndex == 80 || gideon.spriteIndex == 82 || gideon.spriteIndex == 104)) {
                     state = State.LWASATK1;
-                    Gameplay00.score -= 1;
+                    Gameplay00.score -= 2;
                     Gameplay02.spgideon +=2;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 122 && gideon.spriteIndex <= 126)
                         || (gideon.spriteIndex >= 144 && gideon.spriteIndex <= 149)
                         || (gideon.spriteIndex >= 153 && gideon.spriteIndex <= 156) )) {
                     state = State.WASATK3;
-                    Gameplay00.score -= 3;
+                    Gameplay00.score -= 25;
                     Gameplay02.spgideon -=20;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 109 && gideon.spriteIndex <= 113)
                         || (gideon.spriteIndex >= 129 && gideon.spriteIndex <= 134)
                         || (gideon.spriteIndex >= 138 && gideon.spriteIndex <= 141) )) {
                     state = State.LWASATK3;
-                    Gameplay00.score -= 3;
+                    Gameplay00.score -= 15;
                     Gameplay02.spgideon -=20;
                 }
-                if(Gameplay02.scoreg <= 0){
+                if(Gameplay02.scoreg <= 0 && (gideon.spriteIndex==18 || gideon.spriteIndex==44)){
                     state = State.CEL3;
                 }
             }
@@ -2052,6 +2120,10 @@ try{
         }catch (Exception e){
 
         }
+
+        if(Gameplay00.score<=0){
+            Gameplay00.score=0;
+        }
         Gameplay02.debugSring = "HpScore = "+Gameplay00.score;
     }
 
@@ -2060,8 +2132,6 @@ try{
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 (body.getPosition().y/Gameplay00.M_PER_PIXEL));
-        body.setFixedRotation(true);
     }
-
 
 }

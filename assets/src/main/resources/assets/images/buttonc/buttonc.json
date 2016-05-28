@@ -1,0 +1,14 @@
+{
+  "urls": ["images/buttonc/startbutton.png","images/buttonc/startbutton1.png"
+            ,"images/buttonc/howbutton.png","images/buttonc/howbutton1.png"
+            ,"images/buttonc/topscorebutton.png","images/buttonc/topscorebutton1.png"],
+  "sprites":[
+    {"id": "b1", "url": 0, "x": 0,   "y": 0, "w": 250, "h": 67},
+    {"id": "b2", "url": 1, "x": 0,  "y": 0, "w": 250, "h": 68},
+    {"id": "b3", "url": 2, "x": 0,  "y": 0, "w": 250, "h": 67},
+    {"id": "b4", "url": 3, "x": 0, "y": 0, "w": 250, "h": 68},
+    {"id": "b5", "url": 4, "x": 0,  "y": 0, "w": 250, "h": 67},
+    {"id": "b6", "url": 5, "x": 0, "y": 0, "w": 250, "h": 68}
+
+  ]
+}

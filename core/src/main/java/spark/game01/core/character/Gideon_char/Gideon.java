@@ -9,7 +9,6 @@ import playn.core.PlayN;
 import playn.core.util.Callback;
 import playn.core.util.Clock;
 import spark.game01.core.Screen.Gameplay00;
-import spark.game01.core.Screen.Gameplay01;
 import spark.game01.core.Screen.Gameplay02;
 import spark.game01.core.character.Scott_char.Scott;
 import spark.game01.core.sprite.Sprite;
@@ -45,8 +44,8 @@ public class Gideon {
                 sprite.layer().setTranslation(x,y);
 
                 body = initPhysicsBody(world,
-                        Gameplay01.M_PER_PIXEL * x,
-                        Gameplay01.M_PER_PIXEL * y);
+                        Gameplay02.M_PER_PIXEL * x,
+                        Gameplay02.M_PER_PIXEL * y);
                 hasLoaded=true;
             }
 
@@ -69,18 +68,19 @@ public class Gideon {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width()-145)* Gameplay01.M_PER_PIXEL/2,
-                (sprite.layer().height()-110)*Gameplay01.M_PER_PIXEL/2);
+        shape.setAsBox((sprite.layer().width()-165)* Gameplay02.M_PER_PIXEL/2,
+                (sprite.layer().height()-110)*Gameplay02.M_PER_PIXEL/2);
 
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 1.3f;
         fixtureDef.friction = 1f;
 
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x,y),0f);
+        body.setFixedRotation(true);
         return body;
     }
 
@@ -274,7 +274,7 @@ public class Gideon {
             } else if (((body.getPosition().x <= (scott.body.getPosition().x + 3))
                     && (body.getPosition().x >= (scott.body.getPosition().x)))
                     && (state != State.LWASATTK2 && state != State.WASATTK2)) {
-                if (i == 30) {
+                /*if (i == 30) {
                     switch (random.nextInt(6)) {
                         case 0:
                             state = State.LATTK1;
@@ -301,32 +301,34 @@ public class Gideon {
                             }
                             break;
                     }
-                }
+                }*/
 
                 if (contacted == true && (scott.spriteIndex == 189 || scott.spriteIndex == 381)) { // lwasattk2
                     state = State.LWASATTK2;
-                    Gameplay02.scoreg -= 3;
+                    Gameplay02.scoreg -= 15;
                 }
                 if (contacted == true && (scott.spriteIndex == 42
                         || scott.spriteIndex == 46 || scott.spriteIndex == 49
                         || scott.spriteIndex == 52 || scott.spriteIndex == 55)) {             //lwasattk
                     state = State.LWASATTK1;
                     Gameplay02.scoreg -= 1;
+                    Gameplay00.spscott+=1;
                 }
                 if (contacted == true && (scott.spriteIndex == 196 || scott.spriteIndex == 388)) {             //lheadbutt
                     state = State.LWASATTK2;
-                    Gameplay02.scoreg -= 3;
+                    Gameplay02.scoreg -= 10;
                 }
                 if (contacted == true && (scott.spriteIndex == 125
                         || scott.spriteIndex == 132 || scott.spriteIndex == 159
                         || scott.spriteIndex == 162)) {
                     state = State.LWASATTK1;
                     Gameplay02.scoreg -= 1;
+                    Gameplay00.spscott+=1;
                 }
                 if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
                         || scott.spriteIndex == 167)) {
                     state = State.LWASATTK2;
-                    Gameplay02.scoreg -= 3;
+                    Gameplay02.scoreg -= 20;
                 }
                 if (Gameplay02.scoreg <= 0) {
                     state = State.LWASATTK2;
@@ -371,28 +373,30 @@ public class Gideon {
                 if (contacted == true && (scott.spriteIndex == 381
                         || scott.spriteIndex == 189)) {                                    // wasattk2
                     state = State.WASATTK2;
-                    Gameplay02.scoreg -= 3;
+                    Gameplay02.scoreg -= 15;
                 }
                 if (contacted == true && (scott.spriteIndex == 299
                         || scott.spriteIndex == 303 || scott.spriteIndex == 306
                         || scott.spriteIndex == 309 || scott.spriteIndex == 312)) {             //lwasattk
                     state = State.WASATTK1;
                     Gameplay02.scoreg -= 1f;
+                    Gameplay00.spscott+=1;
                 }
                 if (contacted == true && (scott.spriteIndex == 388 || scott.spriteIndex == 196)) {             //headbutt
                     state = State.WASATTK2;
-                    Gameplay02.scoreg -= 3;
+                    Gameplay02.scoreg -= 10;
                 }
                 if (contacted == true && (scott.spriteIndex == 317
                         || scott.spriteIndex == 324 || scott.spriteIndex == 351
                         || scott.spriteIndex == 354)) {
                     state = State.WASATTK1;
                     Gameplay02.scoreg -= 1;
+                    Gameplay00.spscott+=1;
                 }
                 if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
                         || scott.spriteIndex == 359)) {
                     state = State.WASATTK2;
-                    Gameplay02.scoreg -= 3;
+                    Gameplay02.scoreg -= 20;
                 }
                 if (Gameplay02.scoreg <= 0) {
                     state = State.WASATTK2;
@@ -479,7 +483,7 @@ public class Gideon {
                     }
                     break;
                 case WASATTK2:
-                    if((i1>=1&&i1<=100)&&(Gameplay02.scoreg>0)){
+                    if((i1>=1&&i1<=50)&&(Gameplay02.scoreg>0)){
                         i1--;
                         if(i1==1){
                             state=State.COMEBACK;
@@ -489,7 +493,7 @@ public class Gideon {
                     }
                     break;
                 case LWASATTK2:
-                    if((i1>=1&&i1<=100)&&(Gameplay02.scoreg>0)){
+                    if((i1>=1&&i1<=50)&&(Gameplay02.scoreg>0)){
                         i1--;
                         if(i1==1){
                             state=State.LCOMEBACK;
@@ -510,16 +514,25 @@ public class Gideon {
         }else if(Gameplay02.spgideon<=0){
             Gameplay02.spgideon=0;
         }
+        if(Gameplay00.spscott>=100){
+            Gameplay00.spscott=100;
+        }else if(Gameplay00.spscott<=0){
+            Gameplay00.spscott=0;
+        }
+
+        if(Gameplay02.scoreg<=0){
+            Gameplay02.scoreg=0;
+        }
 
         Gameplay02.debugSring1 = "HpScore = "+Gameplay02.scoreg;
         Gameplay02.debugSring2 = "SP gideon = "+Gameplay02.spgideon;
+        Gameplay02.debugSring2 = "SP scott = "+Gameplay00.spscott;
     }
 
     public void paint(Clock clock) {
         if(!hasLoaded) return;
         sprite.layer().setTranslation(
-                (body.getPosition().x/ Gameplay00.M_PER_PIXEL),
-                (body.getPosition().y/Gameplay00.M_PER_PIXEL));
-        body.setFixedRotation(true);
+                (body.getPosition().x/ Gameplay02.M_PER_PIXEL),
+                (body.getPosition().y/Gameplay02.M_PER_PIXEL));
     }
 }
