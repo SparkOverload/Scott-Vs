@@ -11,7 +11,8 @@ import playn.core.*;
 import playn.core.util.Clock;
 import spark.game01.core.ContactObject.ContactMotion2;
 import spark.game01.core.HP.Hpbar;
-import spark.game01.core.ToolsG;
+import spark.game01.core.PauseText.Pauselayer;
+import spark.game01.core.Toolsgx.ToolsG;
 import spark.game01.core.character.Matt_char.Matt;
 import spark.game01.core.character.Scott_char.Scott;
 import tripleplay.game.Screen;
@@ -42,7 +43,6 @@ public class Gameplay01 extends Screen{
     private Hpbar hpmatt = new Hpbar(490f,55f);
     private Matt matt;
     private DebugDrawBox2D debugDraw;
-    private Boolean showDebugDraw = true;
     public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
     public static String debugSring = "";
     public static String debugSring1 = "";
@@ -57,6 +57,12 @@ public class Gameplay01 extends Screen{
     private ToolsG toolg = new ToolsG();
     private Layer hp1;
     private Layer hp2;
+    private Layer sp1;
+    private Layer sp2;
+    private Pauselayer pauselayer;
+    private Layer gameover;
+    private float alphaStart = 0.00f;
+    private float alphaEnd = 0.00f;
 
     public Gameplay01(final ScreenStack ss){
         Vec2 gravity = new Vec2(0.0f,10.0f);
@@ -95,8 +101,11 @@ public class Gameplay01 extends Screen{
             @Override
             public void onMouseDown(Mouse.ButtonEvent event){
                 if(pause==false){
+                    pauselayer = new Pauselayer(310f,240f);
+                    layer.add(pauselayer.layer());
                     pause = true;
                 }else{
+                    layer.remove(pauselayer.layer());
                     pause = false;
                 }
 
@@ -117,8 +126,10 @@ public class Gameplay01 extends Screen{
 
         new ContactMotion2(world,bodies,scott,matt);
 
-        hp1 = toolg.genText("HP : "+Gameplay00.score,30, Colors.WHITE,30,90);
-        hp2 = toolg.genText("HP : "+scorem,30, Colors.WHITE,460,90);
+        hp1 = toolg.genText("HP : "+Gameplay00.score,30, Colors.CYAN,30,90);
+        hp2 = toolg.genText("HP : "+scorem,30, Colors.CYAN,530,90);
+        sp1 = toolg.genText("SP : "+Gameplay00.spscott,22, Colors.WHITE,30,110);
+        sp2 = toolg.genText("SP : "+spmatt,22, Colors.WHITE,530,110);
 
         debugSring = "HpScore matt = "+Gameplay01.scorem;
         debugSring1 = "HpScore scott = "+Gameplay00.score;
@@ -142,8 +153,10 @@ public class Gameplay01 extends Screen{
         /////////////////////////////////////////////
         this.layer.add(hp1);
         this.layer.add(hp2);
+        this.layer.add(sp1);
+        this.layer.add(sp2);
 
-        if(showDebugDraw){
+        if(Gameplay00.showDebugDraw){
             CanvasImage image = graphics().createImage(
                     (int) (width / Gameplay01.M_PER_PIXEL),
                     (int) (height / Gameplay01.M_PER_PIXEL));
@@ -175,8 +188,15 @@ public class Gameplay01 extends Screen{
                 hpscott.Hp(Gameplay00.score);
                 hpmatt.Hp(scorem);
                 updatehp();
+                cgx();
+                if(Gameplay00.score<=0){
+                    gameover = toolg.genText("GAME OVER",70, Colors.BLUE,120,200);
+                    this.layer.add(gameover);
+                    gameover.setAlpha(alphaEnd);
+                }
             } else if (pause == true) {
                 super.update(0);
+                pauselayer.update(delta);
                 world.step(0f, 10, 10);
                 hpscott.update(0);
                 hpmatt.update(0);
@@ -192,6 +212,7 @@ public class Gameplay01 extends Screen{
     @Override
     public void paint(Clock clock) {
         if(pause==false) {
+            alphaStart = toolg.fade(alphaStart);
             super.paint(clock);
             scott.paint(clock);
             matt.paint(clock);
@@ -217,13 +238,16 @@ public class Gameplay01 extends Screen{
                     }
                     break;
             }
+            if(Gameplay00.score<=0){
+                alphaEnd = toolg.fade(alphaEnd);
+            }
         }else if(pause==true){
             super.paint(stoptime);
             scott.paint(stoptime);
             matt.paint(stoptime);
         }
 
-        if(showDebugDraw){
+        if(Gameplay00.showDebugDraw){
             debugDraw.getCanvas().clear();
             debugDraw.getCanvas().drawText(debugSring,200,50);
             debugDraw.getCanvas().drawText(debugSring1,200,100);
@@ -237,10 +261,30 @@ public class Gameplay01 extends Screen{
     public void updatehp(){
         this.layer.remove(hp1);
         this.layer.remove(hp2);
-        hp1 = toolg.genText("HP : "+Gameplay00.score,30, Colors.WHITE,30,90);
-        hp2 = toolg.genText("HP : "+scorem,30, Colors.WHITE,460,90);
+        this.layer.remove(sp1);
+        this.layer.remove(sp2);
+        hp1 = toolg.genText("HP : "+Gameplay00.score,22, Colors.CYAN,30,90);
+        hp2 = toolg.genText("HP : "+scorem,22, Colors.CYAN,530,90);
+        sp1 = toolg.genText("SP : "+Gameplay00.spscott,22, Colors.WHITE,30,110);
+        sp2 = toolg.genText("SP : "+spmatt,22, Colors.WHITE,530,110);
         this.layer.add(hp1);
         this.layer.add(hp2);
+        this.layer.add(sp1);
+        this.layer.add(sp2);
+        hp1.setAlpha(alphaStart);
+        hp2.setAlpha(alphaStart);
+        sp1.setAlpha(alphaStart);
+        sp2.setAlpha(alphaStart);
+    }
+
+    public void cgx(){
+        bg.setAlpha(alphaStart);
+        gndfight.setAlpha(alphaStart);
+        scotthead.setAlpha(alphaStart);
+        matthead.setAlpha(alphaStart);
+        tagew2.setAlpha(alphaStart);
+        hpmatt.layer().setAlpha(alphaStart);
+        hpscott.layer().setAlpha(alphaStart);
     }
 
 }

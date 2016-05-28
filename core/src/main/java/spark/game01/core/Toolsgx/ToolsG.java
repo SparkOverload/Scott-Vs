@@ -1,4 +1,4 @@
-package spark.game01.core;
+package spark.game01.core.Toolsgx;
 
         import playn.core.*;
         import spark.game01.core.Screen.*;
@@ -28,9 +28,6 @@ public class ToolsG extends UIScreen {
                 (int) (height / Gameplay00.M_PER_PIXEL));
         if (fontColor != null) image.canvas().setFillColor(fontColor);
         image.canvas().fillText(layout,x,y);
-        //image.canvas().setStrokeColor(fontColor);
-        //image.canvas().setAlpha(100);
-        //image.canvas().strokeText(layout,10,10);
 
         return graphics().createImageLayer(image);
     }

@@ -45,14 +45,14 @@ public class ContactTom {
                 if((tom.body==a && (Gameplay00.bodies.get(b))== "ground")||
                         (tom.body==b && (Gameplay00.bodies.get(a))== "ground")){
                          tom.body.setActive(false);
-                         tom.i1=100;
+                         tom.i1=50;
                 }
                 break;
             case WASATTK2:
                 if((tom.body==a && (Gameplay00.bodies.get(b))== "ground")||
                         (tom.body==b && (Gameplay00.bodies.get(a))== "ground")){
                          tom.body.setActive(false);
-                         tom.i1=100;
+                         tom.i1=50;
                 }
                 break;
         }
@@ -64,20 +64,26 @@ public class ContactTom {
         if(scott.spriteIndex>=189&&scott.spriteIndex<=191){   //lwasattk2
             if(tom.state == Tom.State.IDLE){
                 tom.state = Tom.State.WASATTK2;
+                Gameplay00.scoret -=10;
             }else if(tom.state == Tom.State.LIDLE){
                 tom.state = Tom.State.LWASATTK2;
+                Gameplay00.scoret -=10;
             }else{
                 tom.state = Tom.State.LWASATTK2;
+                Gameplay00.scoret -=10;
             }
 
         }
         if(scott.spriteIndex>=380&&scott.spriteIndex<=382){   //wasattk2
             if(tom.state == Tom.State.LIDLE){
                 tom.state = Tom.State.LWASATTK2;
+                Gameplay00.scoret -=10;
             }else if(tom.state == Tom.State.IDLE){
                 tom.state = Tom.State.WASATTK2;
+                Gameplay00.scoret -=10;
             }else{
                 tom.state = Tom.State.WASATTK2;
+                Gameplay00.scoret -=10;
             }
         }
         if(scott.spriteIndex>=41&&scott.spriteIndex<=57){      //wasattk
@@ -88,9 +94,11 @@ public class ContactTom {
         }
         if(scott.spriteIndex>=192&&scott.spriteIndex<=201){     //wasHeadputt
             tom.state = Tom.State.LWASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=384&&scott.spriteIndex<=393){     //wasHeadputt
             tom.state = Tom.State.WASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=123&&scott.spriteIndex<=136){     //waskick
             tom.state = Tom.State.LWASATTK;
@@ -100,27 +108,35 @@ public class ContactTom {
         }
         if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
             tom.state = Tom.State.LWASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=329&&scott.spriteIndex<=335){
             tom.state = Tom.State.WASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=147&&scott.spriteIndex<=152){
             tom.state = Tom.State.LWASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=339&&scott.spriteIndex<=344){
             tom.state = Tom.State.WASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=167&&scott.spriteIndex<=170){
             tom.state = Tom.State.LWASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
             tom.state = Tom.State.WASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
             tom.state = Tom.State.LWASATTK2;
+            Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
             tom.state = Tom.State.WASATTK2;
+            Gameplay00.scoret -=10;
         }
         // ###################  WasAttk   ######################
 

@@ -10,7 +10,8 @@ import playn.core.*;
 import playn.core.ImageLayer;
 import spark.game01.core.ContactObject.ContactMotion1;
 import spark.game01.core.HP.Hpbar;
-import spark.game01.core.ToolsG;
+import spark.game01.core.PauseText.Pauselayer;
+import spark.game01.core.Toolsgx.ToolsG;
 import spark.game01.core.character.Scott_char.Scott;
 import spark.game01.core.character.Tom_char.Tom;
 import tripleplay.game.*;
@@ -40,7 +41,7 @@ public class Gameplay00 extends Screen{
     private Hpbar hptom = new Hpbar(490f,55f);
     private Tom tom;
     private DebugDrawBox2D debugDraw;
-    private Boolean showDebugDraw = true;
+    public static Boolean showDebugDraw = true;
     public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
     public static String debugSring = "";
     public static String debugSring1 = "";
@@ -56,7 +57,12 @@ public class Gameplay00 extends Screen{
     private ToolsG toolg = new ToolsG();
     private Layer hp1;
     private Layer hp2;
-    private float alphaTest = 0.00f;
+    private Layer sp1;
+    private Layer sp2;
+    private Layer gameover;
+    private float alphaStart = 0.00f;
+    private float alphaEnd = 0.00f;
+    private Pauselayer pauselayer;
 
 
   public Gameplay00(final ScreenStack ss) {
@@ -89,8 +95,8 @@ public class Gameplay00 extends Screen{
       gndfight = graphics().createImageLayer(gndfightImage);
       gndfight.setTranslation(0,360);
 
-      scott = new Scott(ss,world,250f,350f);
       tom = new Tom(world,350f,350f);
+      scott = new Scott(ss,world,250f,350f);
 
       Image tagw1Image = assets().getImage("images/w1.png");
       tagew1 = graphics().createImageLayer(tagw1Image);
@@ -100,8 +106,11 @@ public class Gameplay00 extends Screen{
           @Override
           public void onMouseDown(Mouse.ButtonEvent event){
               if(pause==false){
+                  pauselayer = new Pauselayer(310f,240f);
+                  layer.add(pauselayer.layer());
                   pause = true;
               }else{
+                 layer.remove(pauselayer.layer());
                   pause = false;
               }
 
@@ -119,14 +128,19 @@ public class Gameplay00 extends Screen{
 
       new ContactMotion1(world,bodies,scott,tom);
 
-      hp1 = toolg.genText("HP : "+score,30, Colors.WHITE,30,90);
-      hp2 = toolg.genText("HP : "+scoret,30, Colors.WHITE,460,90);
+      hp1 = toolg.genText("HP : "+score,22, Colors.CYAN,30,90);
+      hp2 = toolg.genText("HP : "+scoret,22, Colors.CYAN,530,90);
+      sp1 = toolg.genText("SP : "+spscott,22, Colors.WHITE,30,110);
+      sp2 = toolg.genText("SP : "+sptom,22, Colors.WHITE,530,110);
+
 
       debugSring = "HpScore tom = "+score;
       debugSring1 = "HpScore scott = "+scoret;
 
       debugSring2 = "SP tom = "+sptom;
       debugSring3 = "SP scott = "+spscott;
+
+
 
   }
 
@@ -139,13 +153,15 @@ public class Gameplay00 extends Screen{
       this.layer.add(tomhead);
       this.layer.add(tagew1);
       ///////////////////////////////////////// SpriteLayer
-      this.layer.add(hpscott.layer());
-      this.layer.add(scott.layer());
       this.layer.add(hptom.layer());
       this.layer.add(tom.layer());
+      this.layer.add(hpscott.layer());
+      this.layer.add(scott.layer());
       ///////////////////////////////////////// text
       this.layer.add(hp1);
       this.layer.add(hp2);
+      this.layer.add(sp1);
+      this.layer.add(sp2);
 
       if(showDebugDraw){
           CanvasImage image = graphics().createImage(
@@ -174,14 +190,20 @@ public class Gameplay00 extends Screen{
                 world.step(0.066f, 10, 10);
                 hpscott.update(delta);
                 hptom.update(delta);
-                scott.update(delta, tom);
                 tom.update(delta, scott);
+                scott.update(delta, tom);
                 hpscott.Hp(score);
                 hptom.Hp(scoret);
-                bg.setAlpha(alphaTest);
+                cgx();
                 updatehp();
+                if(score<=0){
+                    gameover = toolg.genText("GAME OVER",70, Colors.PINK,120,200);
+                    this.layer.add(gameover);
+                    gameover.setAlpha(alphaEnd);
+                }
             } else if (pause == true) {
                 super.update(0);
+                pauselayer.update(delta);
                 world.step(0f, 10, 10);
                 hpscott.update(0);
                 hptom.update(0);
@@ -196,10 +218,10 @@ public class Gameplay00 extends Screen{
     @Override
     public void paint(Clock clock) {
         if(pause==false) {
-            alphaTest = toolg.fade(alphaTest);
+            alphaStart = toolg.fade(alphaStart);
             super.paint(clock);
-            scott.paint(clock);
             tom.paint(clock);
+            scott.paint(clock);
             switch (scott.state) {
                 case WALK:
                     if (x >= -350 && x <= 350) {
@@ -216,6 +238,9 @@ public class Gameplay00 extends Screen{
                         bg.setTranslation(x, y);
                     }
                     break;
+            }
+            if(score<=0){
+                alphaEnd = toolg.fade(alphaEnd);
             }
         }else if(pause==true){
             super.paint(stoptime);
@@ -235,12 +260,30 @@ public class Gameplay00 extends Screen{
     public void updatehp(){
         this.layer.remove(hp1);
         this.layer.remove(hp2);
-        hp1 = toolg.genText("HP : "+score,30, Colors.WHITE,30,90);
-        hp2 = toolg.genText("HP : "+scoret,30, Colors.WHITE,460,90);
+        this.layer.remove(sp1);
+        this.layer.remove(sp2);
+        hp1 = toolg.genText("HP : "+score,22, Colors.CYAN,30,90);
+        hp2 = toolg.genText("HP : "+scoret,22, Colors.CYAN,530,90);
+        sp1 = toolg.genText("SP : "+spscott,22, Colors.WHITE,30,110);
+        sp2 = toolg.genText("SP : "+sptom,22, Colors.WHITE,530,110);
         this.layer.add(hp1);
         this.layer.add(hp2);
+        this.layer.add(sp1);
+        this.layer.add(sp2);
+        hp1.setAlpha(alphaStart);
+        hp2.setAlpha(alphaStart);
+        sp1.setAlpha(alphaStart);
+        sp2.setAlpha(alphaStart);
     }
 
+    public void cgx(){
+        bg.setAlpha(alphaStart);
+        scotthead.setAlpha(alphaStart);
+        tomhead.setAlpha(alphaStart);
+        tagew1.setAlpha(alphaStart);
+        hptom.layer().setAlpha(alphaStart);
+        hpscott.layer().setAlpha(alphaStart);
+    }
 
 
   }

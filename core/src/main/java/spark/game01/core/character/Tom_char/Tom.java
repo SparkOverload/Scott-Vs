@@ -1,6 +1,5 @@
 package spark.game01.core.character.Tom_char;
 
-import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -84,6 +83,7 @@ public class Tom {
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
         body.setTransform(new Vec2(x,y),0f);
+        body.setFixedRotation(true);
         return body;
     }
 
@@ -272,7 +272,7 @@ public class Tom {
             }else if(((body.getPosition().x <= (scott.body.getPosition().x+3))
                     &&(body.getPosition().x >= (scott.body.getPosition().x)))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
-                if(i==30) {
+                if(i==25) {
                     switch (random.nextInt(3)) {
                         case 0:
                             state = State.LATTK1;
@@ -290,28 +290,30 @@ public class Tom {
 
                 if(contacted == true && (scott.spriteIndex==189|| scott.spriteIndex==381)){ // lwasattk2
                     state=State.LWASATTK2;
-                    Gameplay00.scoret -=3;
+                    Gameplay00.scoret -=15;
                 }
                 if(contacted==true && (scott.spriteIndex==42
                         ||scott.spriteIndex==46||scott.spriteIndex==49
                         ||scott.spriteIndex==52||scott.spriteIndex==55)){             //lwasattk
                     state=State.LWASATTK;
                     Gameplay00.scoret -=1;
+                    Gameplay00.spscott+=1;
                 }
                 if(contacted==true && (scott.spriteIndex == 196||scott.spriteIndex == 388)){             //lheadbutt
                     state=State.LWASATTK2;
-                    Gameplay00.scoret -=3;
+                    Gameplay00.scoret -=10;
                 }
                 if(contacted==true && (scott.spriteIndex==125
                         || scott.spriteIndex==132 || scott.spriteIndex==159
                         || scott.spriteIndex==162)){
                     state=State.LWASATTK;
                     Gameplay00.scoret -=1;
+                    Gameplay00.spscott+=1;
                 }
                 if(contacted==true && (scott.spriteIndex==147 || scott.spriteIndex==339
                         || scott.spriteIndex == 167)){
                     state=State.LWASATTK2;
-                    Gameplay00.scoret -=3;
+                    Gameplay00.scoret -=20;
                 }
                 if(Gameplay00.scoret<=0){
                     state=State.LWASATTK2;
@@ -325,7 +327,7 @@ public class Tom {
             }else if(((body.getPosition().x >= (scott.body.getPosition().x-3))&&
                     (body.getPosition().x <= (scott.body.getPosition().x)))
                     &&(state!=State.WASATTK2)&&(state!=State.LWASATTK2)){
-                if(i==30) {
+                if(i==25) {
                     switch (random.nextInt(3)) {
                         case 0:
                             state = State.ATTK1;
@@ -343,28 +345,30 @@ public class Tom {
                 if(contacted == true && (scott.spriteIndex==381
                         || scott.spriteIndex==189)){                                    // wasattk2
                     state=State.WASATTK2;
-                    Gameplay00.scoret -=3;
+                    Gameplay00.scoret -=15;
                 }
                 if(contacted==true && (scott.spriteIndex==299
                         ||scott.spriteIndex==303||scott.spriteIndex==306
                         ||scott.spriteIndex==309||scott.spriteIndex==312)){             //lwasattk
                     state=State.WASATTK;
                     Gameplay00.scoret -=1;
+                    Gameplay00.spscott+=1;
                 }
                 if(contacted==true && (scott.spriteIndex == 388||scott.spriteIndex == 196)){             //headbutt
                     state=State.WASATTK2;
-                    Gameplay00.scoret -=3;
+                    Gameplay00.scoret -=10;
                 }
                 if(contacted==true && (scott.spriteIndex==317
                         || scott.spriteIndex==324||scott.spriteIndex==351
                         || scott.spriteIndex==354)){
                     state=State.WASATTK;
                     Gameplay00.scoret -=1;
+                    Gameplay00.spscott+=1;
                 }
                 if(contacted==true && (scott.spriteIndex==147 || scott.spriteIndex==339
                         || scott.spriteIndex==359)){
                     state=State.WASATTK2;
-                    Gameplay00.scoret -=3;
+                    Gameplay00.scoret -=20;
                 }
                 if(Gameplay00.scoret<=0){
                     state=State.WASATTK2;
@@ -418,7 +422,7 @@ public class Tom {
                     }
                     break;
                 case WASATTK2:
-                    if((i1>=1&&i1<=100)&&(Gameplay00.scoret>0)){
+                    if((i1>=1&&i1<=50)&&(Gameplay00.scoret>0)){
                         i1--;
                         if(i1==1){
                             state=State.COMBACK;
@@ -428,7 +432,7 @@ public class Tom {
                     }
                     break;
                 case LWASATTK2:
-                    if((i1>=1&&i1<=100)&&(Gameplay00.scoret>0)){
+                    if((i1>=1&&i1<=50)&&(Gameplay00.scoret>0)){
                         i1--;
                         if(i1==1){
                             state=State.LCOMBACK;
@@ -447,7 +451,7 @@ public class Tom {
         }catch (Exception e){
 
         }
-        if(i>=30){
+        if(i>=25){
             i=0;
         }
         if(Gameplay00.sptom>=100){
@@ -455,8 +459,18 @@ public class Tom {
         }else if(Gameplay00.sptom<=0){
             Gameplay00.sptom=0;
         }
+        if(Gameplay00.spscott>=100){
+            Gameplay00.spscott=100;
+        }else if(Gameplay00.spscott<=0){
+            Gameplay00.spscott=0;
+        }
+
+        if(Gameplay00.scoret<=0){
+            Gameplay00.scoret=0;
+        }
         Gameplay00.debugSring1 = "HpScore = "+Gameplay00.scoret;
         Gameplay00.debugSring2 = "SP tom = "+Gameplay00.sptom;
+        Gameplay00.debugSring3 = "SP scott = "+Gameplay00.spscott;
     }
 
 
@@ -465,7 +479,6 @@ public class Tom {
         sprite.layer().setTranslation(
                 (body.getPosition().x/Gameplay00.M_PER_PIXEL),
                 body.getPosition().y/Gameplay00.M_PER_PIXEL);
-        body.setFixedRotation(true);
     }
 
 }
