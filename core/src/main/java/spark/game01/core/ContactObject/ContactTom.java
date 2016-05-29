@@ -86,65 +86,53 @@ public class ContactTom {
                 Gameplay00.scoret -=10;
             }
         }
-        if(scott.spriteIndex>=41&&scott.spriteIndex<=57){      //wasattk
-            tom.state = Tom.State.LWASATTK;
-        }
-        if(scott.spriteIndex>=298&&scott.spriteIndex<=314){     //wasattk
-            tom.state = Tom.State.WASATTK;
-        }
         if(scott.spriteIndex>=192&&scott.spriteIndex<=201){     //wasHeadputt
-            tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=384&&scott.spriteIndex<=393){     //wasHeadputt
-            tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+           // tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=123&&scott.spriteIndex<=136){     //waskick
-            tom.state = Tom.State.LWASATTK;
-        }
-        if(scott.spriteIndex>=315&&scott.spriteIndex<=328){     //waskick1
-            tom.state = Tom.State.WASATTK;
-        }
         if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
-            tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=329&&scott.spriteIndex<=335){
-            tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=147&&scott.spriteIndex<=152){
-            tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=339&&scott.spriteIndex<=344){
-            tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=167&&scott.spriteIndex<=170){
-            tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+           // tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
-            tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
-            tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
-            tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+           // tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }

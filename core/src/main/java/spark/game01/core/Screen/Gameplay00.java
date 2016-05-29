@@ -41,7 +41,7 @@ public class Gameplay00 extends Screen{
     private Hpbar hptom = new Hpbar(490f,55f);
     private Tom tom;
     private DebugDrawBox2D debugDraw;
-    public static Boolean showDebugDraw = true;
+    public static Boolean showDebugDraw = false;
     public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
     public static String debugSring = "";
     public static String debugSring1 = "";
@@ -108,7 +108,7 @@ public class Gameplay00 extends Screen{
       gndfight = graphics().createImageLayer(gndfightImage);
       gndfight.setTranslation(xgf,ygf);
 
-      tom = new Tom(world,450f,360f);
+      tom = new Tom(world,350f,360f);
       scott = new Scott(ss,world,250f,350f);
 
       Image tagw1Image = assets().getImage("images/w1.png");
