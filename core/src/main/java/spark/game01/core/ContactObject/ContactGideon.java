@@ -69,12 +69,6 @@ public class ContactGideon {
                 Gameplay02.scoreg -= 10;
             }
         }
-        if(scott.spriteIndex>=41&&scott.spriteIndex<=57){      //wasattk
-            gideon.state = Gideon.State.LWASATTK1;
-        }
-        if(scott.spriteIndex>=298&&scott.spriteIndex<=314){     //wasattk
-            gideon.state = Gideon.State.WASATTK1;
-        }
         if(scott.spriteIndex>=192&&scott.spriteIndex<=201){     //wasHeadputt
             //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             gideon.state = Gideon.State.LWASATTK2;
@@ -84,12 +78,6 @@ public class ContactGideon {
             //gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             gideon.state = Gideon.State.WASATTK2;
             Gameplay02.scoreg -= 10;
-        }
-        if(scott.spriteIndex>=123&&scott.spriteIndex<=136){     //waskick
-            gideon.state = Gideon.State.LWASATTK1;
-        }
-        if(scott.spriteIndex>=315&&scott.spriteIndex<=328){     //waskick1
-            gideon.state = Gideon.State.WASATTK1;
         }
         if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
             //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
