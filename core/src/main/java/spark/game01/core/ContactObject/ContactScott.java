@@ -24,21 +24,6 @@ public class ContactScott {
             scott.other = contact.getFixtureA().getBody();
         }
 
-        if(scott.body==a && (Gameplay01.bodies.get(b))!= "ground"){
-            scott.contacted = true;
-            scott.other = contact.getFixtureB().getBody();
-        }else if(scott.body==b && (Gameplay01.bodies.get(a))!= "ground"){
-            scott.contacted = true;
-            scott.other = contact.getFixtureA().getBody();
-        }
-
-        if(scott.body==a && (Gameplay02.bodies.get(b))!= "ground"){
-            scott.contacted = true;
-            scott.other = contact.getFixtureB().getBody();
-        }else if(scott.body==b && (Gameplay02.bodies.get(a))!= "ground"){
-            scott.contacted = true;
-            scott.other = contact.getFixtureA().getBody();
-        }
 
         switch(scott.state){
             case JUMP:
@@ -72,20 +57,22 @@ public class ContactScott {
             case JKICK:
                 if (scott.spriteIndex>=137&&scott.spriteIndex<=143) {
                     if (a == scott.body) {
-                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                        b.applyLinearImpulse(new Vec2(40f, -50f), b.getPosition());
                     } else {
-                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                        a.applyLinearImpulse(new Vec2(40f, -50f), a.getPosition());
                     }
+                    scott.body.applyLinearImpulse(new Vec2(-70f, -100f), scott.body.getPosition());
                 }
                 scott.state=Scott.State.IDLE;
                 break;
             case LJKICK:
                 if (scott.spriteIndex>=329&&scott.spriteIndex<=335) {
                     if (a == scott.body) {
-                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                        b.applyLinearImpulse(new Vec2(-40f, -50f), b.getPosition());
                     } else {
-                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                        a.applyLinearImpulse(new Vec2(-40f, -50f), a.getPosition());
                     }
+                    scott.body.applyLinearImpulse(new Vec2(70f, -100f), scott.body.getPosition());
                 }
                 scott.state=Scott.State.LIDLE;
                 break;
@@ -96,16 +83,18 @@ public class ContactScott {
                     } else {
                         a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
                     }
+                    scott.body.applyLinearImpulse(new Vec2(-90f, -100f), scott.body.getPosition());
                 }
                 scott.state=Scott.State.IDLE;
                 break;
             case LULTIK:
                 if (scott.spriteIndex>=286&&scott.spriteIndex<=297) {
                     if (a == scott.body) {
-                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                        b.applyLinearImpulse(new Vec2(-50f, -50f), b.getPosition());
                     } else {
-                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                        a.applyLinearImpulse(new Vec2(-50f, -50f), a.getPosition());
                     }
+                    scott.body.applyLinearImpulse(new Vec2(90f, -100f), scott.body.getPosition());
                 }
                 scott.state=Scott.State.LIDLE;
                 break;
@@ -164,5 +153,300 @@ public class ContactScott {
                 }
                 break;
         }
+        System.out.println("Contact = "+scott.contacted);
+    }
+
+    public static void contact1(Contact contact, Scott scott){
+
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
+
+        if(scott.body==a && (Gameplay01.bodies.get(b))!= "ground"){
+            scott.contacted = true;
+            scott.other = contact.getFixtureB().getBody();
+        }else if(scott.body==b && (Gameplay01.bodies.get(a))!= "ground"){
+            scott.contacted = true;
+            scott.other = contact.getFixtureA().getBody();
+        }
+
+
+        switch(scott.state){
+            case JUMP:
+                if((scott.body==a && (Gameplay00.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay00.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
+                if((scott.body==a && (Gameplay01.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay01.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
+                if((scott.body==a && (Gameplay02.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay02.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
+                break;
+            case LJUMP:
+                if((scott.body==a && (Gameplay00.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay00.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                if((scott.body==a && (Gameplay01.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay01.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                if((scott.body==a && (Gameplay02.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay02.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                break;
+            case JKICK:
+                if (scott.spriteIndex>=137&&scott.spriteIndex<=143) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(40f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(40f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(-70f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.IDLE;
+                break;
+            case LJKICK:
+                if (scott.spriteIndex>=329&&scott.spriteIndex<=335) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-40f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(-40f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(70f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.LIDLE;
+                break;
+            case ULTIK:
+                if (scott.spriteIndex>=111&&scott.spriteIndex<=122) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(-90f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.IDLE;
+                break;
+            case LULTIK:
+                if (scott.spriteIndex>=286&&scott.spriteIndex<=297) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(-50f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(90f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.LIDLE;
+                break;
+            case CHARGE:
+                if (scott.spriteIndex>=189&&scott.spriteIndex<=191) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(30f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(30f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case LCHARGE:
+                if (scott.spriteIndex>=380&&scott.spriteIndex<=383) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-30f, -50f), b.getPosition());
+                    }else {
+                        a.applyLinearImpulse(new Vec2(-30f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case HEADBUTT:
+                if (scott.spriteIndex>=192&&scott.spriteIndex<=201) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case LHEADBUTT:
+                if (scott.spriteIndex>=384&&scott.spriteIndex<=393) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(-50f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case ULTIB1:
+                if (scott.spriteIndex>=147&&scott.spriteIndex<=152) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(0f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(0f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case LULTIB1:
+                if (scott.spriteIndex>=339&&scott.spriteIndex<=344) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(0f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(0f, -50f), a.getPosition());
+                    }
+                }
+                break;
+        }
+        System.out.println("Contact = "+scott.contacted);
+
+    }
+
+    public static void contact2(Contact contact, Scott scott){
+
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
+
+
+        if(scott.body==a && (Gameplay02.bodies.get(b))!= "ground"){
+            scott.contacted = true;
+            scott.other = contact.getFixtureB().getBody();
+        }else if(scott.body==b && (Gameplay02.bodies.get(a))!= "ground"){
+            scott.contacted = true;
+            scott.other = contact.getFixtureA().getBody();
+        }
+
+
+        switch(scott.state){
+            case JUMP:
+                if((scott.body==a && (Gameplay00.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay00.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
+                if((scott.body==a && (Gameplay01.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay01.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
+                if((scott.body==a && (Gameplay02.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay02.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.IDLE;
+                }
+                break;
+            case LJUMP:
+                if((scott.body==a && (Gameplay00.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay00.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                if((scott.body==a && (Gameplay01.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay01.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                if((scott.body==a && (Gameplay02.bodies.get(b))== "ground")||
+                        (scott.body==b && (Gameplay02.bodies.get(a))== "ground")){
+                    scott.state=Scott.State.LIDLE;
+                }
+                break;
+            case JKICK:
+                if (scott.spriteIndex>=137&&scott.spriteIndex<=143) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(40f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(40f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(-70f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.IDLE;
+                break;
+            case LJKICK:
+                if (scott.spriteIndex>=329&&scott.spriteIndex<=335) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-40f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(-40f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(70f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.LIDLE;
+                break;
+            case ULTIK:
+                if (scott.spriteIndex>=111&&scott.spriteIndex<=122) {
+                        if (a == scott.body) {
+                            b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                        } else {
+                            a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                        }
+
+                    scott.body.applyLinearImpulse(new Vec2(-90f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.IDLE;
+                break;
+            case LULTIK:
+                if (scott.spriteIndex>=286&&scott.spriteIndex<=297) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(-50f, -50f), a.getPosition());
+                    }
+                    scott.body.applyLinearImpulse(new Vec2(90f, -100f), scott.body.getPosition());
+                }
+                scott.state=Scott.State.LIDLE;
+                break;
+            case CHARGE:
+                if (scott.spriteIndex>=189&&scott.spriteIndex<=191) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(30f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(30f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case LCHARGE:
+                if (scott.spriteIndex>=380&&scott.spriteIndex<=383) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-30f, -50f), b.getPosition());
+                    }else {
+                        a.applyLinearImpulse(new Vec2(-30f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case HEADBUTT:
+                if (scott.spriteIndex>=192&&scott.spriteIndex<=201) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(50f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case LHEADBUTT:
+                if (scott.spriteIndex>=384&&scott.spriteIndex<=393) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(-50f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(-50f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case ULTIB1:
+                if (scott.spriteIndex>=147&&scott.spriteIndex<=152) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(0f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(0f, -50f), a.getPosition());
+                    }
+                }
+                break;
+            case LULTIB1:
+                if (scott.spriteIndex>=339&&scott.spriteIndex<=344) {
+                    if (a == scott.body) {
+                        b.applyLinearImpulse(new Vec2(0f, -50f), b.getPosition());
+                    } else {
+                        a.applyLinearImpulse(new Vec2(0f, -50f), a.getPosition());
+                    }
+                }
+                break;
+        }
+        System.out.println("Contact = "+scott.contacted);
+
     }
 }

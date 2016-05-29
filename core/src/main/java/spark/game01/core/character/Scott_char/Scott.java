@@ -33,8 +33,6 @@ public class Scott {
     public Body other;
     public Boolean contacted = false;
     private ScreenStack ss;
-    private float relaya = 10;
-    int b;
 
     public enum State{
         IDLE,LIDLE,RUN,LRUN,WALK,LWALK,JUMP,LJUMP,DODGE,LDODGE,ATTK1,ATTK2,ATTK3,
@@ -53,9 +51,6 @@ public class Scott {
             public void onKeyDown(Keyboard.Event event) {
                switch (event.key()) {
                     case UP:
-                        relaya = relaya - 0.9f;
-                        b=Math.round(relaya);
-                        System.out.println(b);
                         if(state == State.SLEEP){
                             state = State.COMEBACK;
                         }
@@ -106,11 +101,13 @@ public class Scott {
                         if(state == State.WALK || state == State.RUN || state == State.IDLE){
                             state = State.JUMP;
                         }
-                        if(state == State.JUMP && (spriteIndex >= 26 && spriteIndex <=30)){
+                        if(state == State.JUMP && (spriteIndex >= 26 && spriteIndex <=30) && Gameplay00.spscott>=50){
                             state=State.ULTIK;
+                            Gameplay00.spscott-=50;
                         }
-                        if(state == State.LJUMP && (spriteIndex >= 264 && spriteIndex <=268)){
+                        if(state == State.LJUMP && (spriteIndex >= 264 && spriteIndex <=268) && Gameplay00.spscott>=50){
                             state=State.LULTIK;
+                            Gameplay00.spscott-=50;
                         }
                         if(state == State.SLEEP){
                             state = State.COMEBACK;
@@ -123,12 +120,14 @@ public class Scott {
                         }
                         break;
                     case A:
-                            if (eventstate == 1 && state == State.IDLE) {
+                            if (eventstate == 1 && state == State.IDLE && Gameplay00.spscott>=40) {
                                 state = State.HEADBUTT;
+                                Gameplay00.spscott-=40;
                                 eventstate = 0;
                             }
-                            if (eventstate == 1 && state == State.LIDLE) {
+                            if (eventstate == 1 && state == State.LIDLE && Gameplay00.spscott>=40) {
                                 state = State.LHEADBUTT;
+                                Gameplay00.spscott-=40;
                                 eventstate = 0;
                             }
                             if (state == State.ATTK2 && (spriteIndex >= 48 && spriteIndex <= 50)) {
@@ -220,6 +219,13 @@ public class Scott {
                         state = State.LWASATK3;
                         break;
                     case ENTER:
+                        if(state==State.CEL1){
+                            ss.remove(ss.top());
+                            ss.push(new Gameplay01(ss));
+                        }else if(state==State.CEL2){
+                            ss.remove(ss.top());
+                            ss.push(new Gameplay02(ss));
+                        }
                         break;
                    case ESCAPE:
                        ss.remove(ss.top());
@@ -267,7 +273,7 @@ public class Scott {
             @Override
             public void onSuccess(Sprite result) {
                 sprite.setSprite(spriteIndex);
-                sprite.layer().setOrigin(sprite.width()/2f,(sprite.height()/2f) +40);
+                sprite.layer().setOrigin(sprite.width()/2f,(sprite.height()/2f) +50);
                 sprite.layer().setTranslation(x,y);
 
                 body = initPhysicsBody(world,
@@ -294,15 +300,21 @@ public class Scott {
         bodyDef.position = new Vec2(0,0);
         Body body = world.createBody(bodyDef);
 
+        Vec2[] vertices = {
+                new Vec2(0.0f, - 2f),
+                new Vec2(+ 1.0f, + 1.0f),
+                new Vec2(- 1.0f, + 1.0f)
+        };
+
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width()-80)* Gameplay00.M_PER_PIXEL/2,
-                (sprite.layer().height()-90)*Gameplay00.M_PER_PIXEL/2);
+        shape.set(vertices, vertices.length);
+//        shape.setAsBox((sprite.layer().width()-80)* Gameplay00.M_PER_PIXEL/2,
+//                (sprite.layer().height()-90)*Gameplay00.M_PER_PIXEL/2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1.3f;
+        fixtureDef.density = 2.3f;
         fixtureDef.friction = 1f;
-        //fixtureDef.restitution = 1f;
 
         body.createFixture(fixtureDef);
         body.setLinearDamping(0.2f);
@@ -386,8 +398,6 @@ public class Scott {
                     }
                     if(spriteIndex>=76&&spriteIndex<=77){
                         spriteIndex=76;
-                        ss.remove(ss.top());
-                        ss.push(new Gameplay02(ss));
                     }
                     break;
                 case GUITAR:
@@ -401,8 +411,6 @@ public class Scott {
                     }
                     if(spriteIndex>=91&&spriteIndex<=92){
                         spriteIndex=91;
-                        ss.remove(ss.top());
-                        ss.push(new Gameplay01(ss));
                     }
                     break;
                 case CEL3:
@@ -411,8 +419,6 @@ public class Scott {
                     }
                     if(spriteIndex>=109&&spriteIndex<=110){
                         spriteIndex=109;
-                        ss.remove(ss.top());
-                        ss.push(new TopScore(ss));
                     }
                     break;
                 case ULTIK:
@@ -714,12 +720,12 @@ try{
     if (state != State.DEF && state != State.LDEF) {
         if (contacted == true && (matt.spriteIndex == 36 || matt.spriteIndex == 43)) {
             state = State.LWASATK1;
-            Gameplay00.score -= 2;
+            Gameplay00.score -= 1;
             Gameplay01.spmatt +=2;
         }
         if (contacted == true && (matt.spriteIndex == 50 || matt.spriteIndex == 57)) {
             state = State.WASATK1;
-            Gameplay00.score -= 2;
+            Gameplay00.score -= 1;
             Gameplay01.spmatt +=2;
         }
         if (contacted == true && (matt.spriteIndex >= 74 && matt.spriteIndex <= 76)) {
@@ -742,9 +748,8 @@ try{
             Gameplay00.score -= 20;
             Gameplay01.spmatt -=50;
         }
-        if(Gameplay01.scorem <= 0 && (matt.spriteIndex==105 || matt.spriteIndex==92)){
+        if(Gameplay01.scorem <= 0){
             state = State.CEL2;
-
         }
     }
 
@@ -765,7 +770,6 @@ try{
         case LRUN:
             body.applyForce(new Vec2(-100f, 0f), body.getPosition());
             break;
-
         case JUMP:
             if (spriteIndex == 23) {
                 body.applyLinearImpulse(new Vec2(0f, -30f), body.getPosition());
@@ -780,17 +784,11 @@ try{
         case CHARGE:
             if (spriteIndex == 189) {
                 body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(20, -20f), other.getPosition());
-                }
             }
             break;
         case LCHARGE:
             if (spriteIndex == 381) {
                 body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                }
             }
             break;
         case ATTK1:
@@ -826,17 +824,11 @@ try{
         case HEADBUTT:
             if (spriteIndex == 196) {
                 body.applyLinearImpulse(new Vec2(10f, 0f), body.getPosition());
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                }
             }
             break;
         case LHEADBUTT:
             if (spriteIndex == 388) {
                 body.applyLinearImpulse(new Vec2(-10f, 0f), body.getPosition());
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                }
             }
             break;
         case KICK1:
@@ -863,54 +855,32 @@ try{
             if (spriteIndex == 139) {
                 body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
             }
-
             break;
         case LJKICK:
             if (spriteIndex == 331) {
                 body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
             }
             break;
-        case ULTIB1:
-            if (spriteIndex == 147) {
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                }
-            }
-            break;
-        case LULTIB1:
-            if (spriteIndex == 339) {
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                }
-            }
-            break;
         case ULTIB2:
             if (spriteIndex == 167) {
                 body.applyLinearImpulse(new Vec2(10f, -5f), body.getPosition());
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                }
             }
             break;
         case LULTIB2:
             if (spriteIndex == 359) {
                 body.applyLinearImpulse(new Vec2(-10f, -5f), body.getPosition());
-                if (contacted == true) {
-                    other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                }
             }
             break;
         case ULTIK:
             if (spriteIndex == 113) {
-                body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+                body.applyLinearImpulse(new Vec2(20f, 20f), body.getPosition());
             }
             break;
         case LULTIK:
             if (spriteIndex == 288) {
-                body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+                body.applyLinearImpulse(new Vec2(-20f, 20f), body.getPosition());
             }
             break;
-
     }
 
 }catch (Exception e){
@@ -999,10 +969,8 @@ try{
                     if(!(spriteIndex>=65 && spriteIndex<=79)){
                         spriteIndex=65;
                     }
-                    if(spriteIndex>=78&&spriteIndex<=79){
-                       spriteIndex=78;
-                        ss.remove(ss.top());
-                        ss.push(new Gameplay02(ss));
+                    if(spriteIndex>=76&&spriteIndex<=77){
+                        spriteIndex=76;
                     }
                     break;
                 case GUITAR:
@@ -1016,8 +984,6 @@ try{
                     }
                     if(spriteIndex>=91&&spriteIndex<=92){
                         spriteIndex=91;
-                        ss.remove(ss.top());
-                        ss.push(new Gameplay01(ss));
                     }
                     break;
                 case CEL3:
@@ -1026,8 +992,6 @@ try{
                     }
                     if(spriteIndex>=109&&spriteIndex<=110){
                         spriteIndex=109;
-                        ss.remove(ss.top());
-                        ss.push(new TopScore(ss));
                     }
                     break;
                 case ULTIK:
@@ -1329,12 +1293,12 @@ try{
             if (state != State.DEF && state != State.LDEF) {
                 if (contacted == true && (tom.spriteIndex == 59 || tom.spriteIndex == 65)) {
                     state = State.WASATK1;
-                    Gameplay00.score -= 2;
+                    Gameplay00.score -= 1;
                     Gameplay00.sptom += 2;
                 }
                 if (contacted == true && (tom.spriteIndex == 34 || tom.spriteIndex == 40)) {
                     state = State.LWASATK1;
-                    Gameplay00.score -= 2;
+                    Gameplay00.score -= 1;
                     Gameplay00.sptom +=2;
                 }
                 if (contacted == true && (tom.spriteIndex >= 98 && tom.spriteIndex <= 101)) {
@@ -1347,7 +1311,7 @@ try{
                     Gameplay00.score -= 10;
                     Gameplay00.sptom -= 50;
                 }
-                if(Gameplay00.scoret <= 0 && (tom.spriteIndex==127 || tom.spriteIndex==151)){
+                if(Gameplay00.scoret <= 0){
                     state = State.CEL1;
                 }
             }
@@ -1383,17 +1347,11 @@ try{
                 case CHARGE:
                     if (spriteIndex == 189) {
                         body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(20, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LCHARGE:
                     if (spriteIndex == 381) {
                         body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case ATTK1:
@@ -1429,17 +1387,11 @@ try{
                 case HEADBUTT:
                     if (spriteIndex == 196) {
                         body.applyLinearImpulse(new Vec2(10f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LHEADBUTT:
                     if (spriteIndex == 388) {
                         body.applyLinearImpulse(new Vec2(-10f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case KICK1:
@@ -1466,51 +1418,30 @@ try{
                     if (spriteIndex == 139) {
                         body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
                     }
-
                     break;
                 case LJKICK:
                     if (spriteIndex == 331) {
                         body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
                     }
                     break;
-                case ULTIB1:
-                    if (spriteIndex == 147) {
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
-                    }
-                    break;
-                case LULTIB1:
-                    if (spriteIndex == 339) {
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
-                    }
-                    break;
                 case ULTIB2:
                     if (spriteIndex == 167) {
                         body.applyLinearImpulse(new Vec2(10f, -5f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
                     }
                     break;
                 case LULTIB2:
                     if (spriteIndex == 359) {
                         body.applyLinearImpulse(new Vec2(-10f, -5f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
                     }
                     break;
                 case ULTIK:
                     if (spriteIndex == 113) {
-                        body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+                        body.applyLinearImpulse(new Vec2(20f, 20f), body.getPosition());
                     }
                     break;
                 case LULTIK:
                     if (spriteIndex == 288) {
-                        body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-20f, 20f), body.getPosition());
                     }
                     break;
             }
@@ -1597,10 +1528,8 @@ try{
                     if(!(spriteIndex>=65 && spriteIndex<=79)){
                         spriteIndex=65;
                     }
-                    if(spriteIndex>=78&&spriteIndex<=79){
-                        spriteIndex=78;
-                        ss.remove(ss.top());
-                        ss.push(new Gameplay02(ss));
+                    if(spriteIndex>=76&&spriteIndex<=77){
+                        spriteIndex=76;
                     }
                     break;
                 case GUITAR:
@@ -1614,8 +1543,6 @@ try{
                     }
                     if(spriteIndex>=91&&spriteIndex<=92){
                         spriteIndex=91;
-                        ss.remove(ss.top());
-                        ss.push(new Gameplay01(ss));
                     }
                     break;
                 case CEL3:
@@ -1928,13 +1855,13 @@ try{
                 if (contacted == true && (gideon.spriteIndex == 64 || gideon.spriteIndex == 71
                         || gideon.spriteIndex == 92 || gideon.spriteIndex == 94 || gideon.spriteIndex == 117)) {
                     state = State.WASATK1;
-                    Gameplay00.score -= 2;
+                    Gameplay00.score -= 1;
                     Gameplay02.spgideon +=2;
                 }
                 if (contacted == true && (gideon.spriteIndex == 49 || gideon.spriteIndex == 56
                         || gideon.spriteIndex == 80 || gideon.spriteIndex == 82 || gideon.spriteIndex == 104)) {
                     state = State.LWASATK1;
-                    Gameplay00.score -= 2;
+                    Gameplay00.score -= 1;
                     Gameplay02.spgideon +=2;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 122 && gideon.spriteIndex <= 126)
@@ -1951,7 +1878,7 @@ try{
                     Gameplay00.score -= 15;
                     Gameplay02.spgideon -=20;
                 }
-                if(Gameplay02.scoreg <= 0 && (gideon.spriteIndex==18 || gideon.spriteIndex==44)){
+                if(Gameplay02.scoreg <= 0){
                     state = State.CEL3;
                 }
             }
@@ -1986,17 +1913,11 @@ try{
                 case CHARGE:
                     if (spriteIndex == 189) {
                         body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(20, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LCHARGE:
                     if (spriteIndex == 381) {
                         body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case ATTK1:
@@ -2032,17 +1953,11 @@ try{
                 case HEADBUTT:
                     if (spriteIndex == 196) {
                         body.applyLinearImpulse(new Vec2(10f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LHEADBUTT:
                     if (spriteIndex == 388) {
                         body.applyLinearImpulse(new Vec2(-10f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case KICK1:
@@ -2069,51 +1984,30 @@ try{
                     if (spriteIndex == 139) {
                         body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
                     }
-
                     break;
                 case LJKICK:
                     if (spriteIndex == 331) {
                         body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
                     }
                     break;
-                case ULTIB1:
-                    if (spriteIndex == 147) {
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
-                    }
-                    break;
-                case LULTIB1:
-                    if (spriteIndex == 339) {
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
-                    }
-                    break;
                 case ULTIB2:
                     if (spriteIndex == 167) {
                         body.applyLinearImpulse(new Vec2(10f, -5f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
                     }
                     break;
                 case LULTIB2:
                     if (spriteIndex == 359) {
                         body.applyLinearImpulse(new Vec2(-10f, -5f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(0f, -30f), other.getPosition());
-                        }
                     }
                     break;
                 case ULTIK:
                     if (spriteIndex == 113) {
-                        body.applyLinearImpulse(new Vec2(15f, 15f), body.getPosition());
+                        body.applyLinearImpulse(new Vec2(20f, 20f), body.getPosition());
                     }
                     break;
                 case LULTIK:
                     if (spriteIndex == 288) {
-                        body.applyLinearImpulse(new Vec2(-15f, 15f), body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-20f, 20f), body.getPosition());
                     }
                     break;
             }

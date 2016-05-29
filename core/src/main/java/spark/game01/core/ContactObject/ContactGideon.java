@@ -1,5 +1,6 @@
 package spark.game01.core.ContactObject;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 import spark.game01.core.Screen.Gameplay02;
@@ -55,13 +56,16 @@ public class ContactGideon {
         }
         if(scott.spriteIndex>=380&&scott.spriteIndex<=382){   //wasattk2
             if(gideon.state == Gideon.State.LIDLE){
+                //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
                 gideon.state = Gideon.State.LWASATTK2;
                 Gameplay02.scoreg -= 10;
             }else if(gideon.state == Gideon.State.IDLE){
+               // gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
                 gideon.state = Gideon.State.WASATTK2;
                 Gameplay02.scoreg -= 10;
             }else{
                 gideon.state = Gideon.State.WASATTK2;
+               // gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
                 Gameplay02.scoreg -= 10;
             }
         }
@@ -72,10 +76,12 @@ public class ContactGideon {
             gideon.state = Gideon.State.WASATTK1;
         }
         if(scott.spriteIndex>=192&&scott.spriteIndex<=201){     //wasHeadputt
+            //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             gideon.state = Gideon.State.LWASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=384&&scott.spriteIndex<=393){     //wasHeadputt
+            //gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             gideon.state = Gideon.State.WASATTK2;
             Gameplay02.scoreg -= 10;
         }
@@ -86,34 +92,42 @@ public class ContactGideon {
             gideon.state = Gideon.State.WASATTK1;
         }
         if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
+            //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             gideon.state = Gideon.State.LWASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=329&&scott.spriteIndex<=335){
+            //gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             gideon.state = Gideon.State.WASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=147&&scott.spriteIndex<=152){
+            //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             gideon.state = Gideon.State.LWASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=339&&scott.spriteIndex<=344){
+            //gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             gideon.state = Gideon.State.WASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=167&&scott.spriteIndex<=170){
+            //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             gideon.state = Gideon.State.LWASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
+           // gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             gideon.state = Gideon.State.WASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
+            //gideon.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             gideon.state = Gideon.State.LWASATTK2;
             Gameplay02.scoreg -= 10;
         }
         if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
+            //gideon.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             gideon.state = Gideon.State.WASATTK2;
             Gameplay02.scoreg -= 10;
         }

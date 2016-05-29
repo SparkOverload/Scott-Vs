@@ -25,17 +25,16 @@ public class ContactMotion2 {
                 Body a = contact.getFixtureA().getBody();
                 Body b = contact.getFixtureB().getBody();
 
-                //System.out.println(bodies.get(a)+" contact "+bodies.get(b));
 
                 if(bodies.get(a)=="ground"&&b==scott.body || bodies.get(b)=="ground"&&a==scott.body){
-                    ContactScott.contact(contact,scott);
+                    ContactScott.contact1(contact,scott);
                 }
                 if(bodies.get(a)=="ground"&&b==matt.body || bodies.get(b)=="ground"&&a==matt.body){
                     ContactMatt.contact(contact,scott,matt);
                 }
 
                 if((a==scott.body&&b==matt.body) || (b==scott.body&&a==matt.body)){
-                    ContactScott.contact(contact,scott);
+                    ContactScott.contact1(contact,scott);
                     ContactMatt.contact(contact,scott,matt);
                 }
             }

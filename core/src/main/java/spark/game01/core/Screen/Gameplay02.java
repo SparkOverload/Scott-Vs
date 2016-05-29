@@ -33,7 +33,7 @@ public class Gameplay02 extends Screen{
     private static float height = 18;
     private World world;
     private ScreenStack ss;
-    public  static ImageLayer bg;
+    private ImageLayer bg;
     private ImageLayer tagew3;
     private ImageLayer scotthead;
     private ImageLayer gideonhead;
@@ -49,8 +49,12 @@ public class Gameplay02 extends Screen{
     public static String debugSring3 = "";
     public static int scoreg;
     public static int spgideon;
+    private Body ground;
+    private Body ground1;
     private float x = -180;
     private float y =0;
+    private float xg = 0;
+    private float yg =0;
     private ToolsG toolg = new ToolsG();
     private Layer hp1;
     private Layer hp2;
@@ -61,6 +65,7 @@ public class Gameplay02 extends Screen{
     private float alphaStart = 0.00f;
     private float alphaEnd = 0.00f;
     public static Boolean wingame = false;
+    private Layer nextw;
 
     public Gameplay02(final ScreenStack ss){
 
@@ -69,15 +74,23 @@ public class Gameplay02 extends Screen{
         world.setWarmStarting(true);
         world.setAutoClearForces(true);
 
-        Body ground = world.createBody(new BodyDef());
+        ground = world.createBody(new BodyDef());
         EdgeShape groundShape = new EdgeShape();
-        groundShape.set(new Vec2(2,height-4.5f),new Vec2(width,height-4.5f));
-
+        groundShape.set(new Vec2(width/2+3,height-4.5f),new Vec2(width+50,height-4.5f));
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.friction = 0.65f;
         fixtureDef.shape = groundShape;
         ground.createFixture(fixtureDef);
         bodies.put(ground,"ground");
+
+        ground1 = world.createBody(new BodyDef());
+        EdgeShape groundShape1 = new EdgeShape();
+        groundShape1.set(new Vec2(-50,height-4.5f),new Vec2(width/2-3,height-4.5f));
+        FixtureDef fixtureDef1 = new FixtureDef();
+        fixtureDef1.friction = 0.65f;
+        fixtureDef1.shape = groundShape1;
+        ground1.createFixture(fixtureDef1);
+        bodies.put(ground1,"ground");
 
         this.ss = ss;
         Image bgImage = assets().getImage("images/Screen_bg/screen08.png");
@@ -108,7 +121,7 @@ public class Gameplay02 extends Screen{
         });
 
         scott = new Scott(ss,world,250f,300f);
-        gideon = new Gideon(world,350f,300f);
+        gideon = new Gideon(world,450f,300f);
 
         Image hscottImage = assets().getImage("images/scott_all/scott_h.png");
         scotthead = graphics().createImageLayer(hscottImage);
@@ -130,6 +143,10 @@ public class Gameplay02 extends Screen{
         debugSring2 = "SP gideon = "+spgideon;
         debugSring3 = "SP scott = "+Gameplay00.spscott;
 
+        gameover = toolg.genText("GAME OVER",70, Colors.RED,120,200);
+        gameover.setVisible(false);
+        nextw = toolg.genText("AWESOME !",60, Colors.RED,180,200);
+        nextw.setVisible(false);
     }
 
 
@@ -150,6 +167,8 @@ public class Gameplay02 extends Screen{
         this.layer.add(hp2);
         this.layer.add(sp1);
         this.layer.add(sp2);
+        this.layer.add(gameover);
+        this.layer.add(nextw);
 
 
         if(Gameplay00.showDebugDraw){
@@ -182,15 +201,21 @@ public class Gameplay02 extends Screen{
                 scott.update(delta, gideon);
                 hpscott.Hp(Gameplay00.score);
                 hpgideon.Hp(scoreg);
-                updatehp();
-                cgx();
+                if(Gameplay00.score>=0 || scoreg>=0) {
+                    updatehp();
+                }
+                if(alphaStart<=1) {
+                    cgx();
+                }
                 if(scoreg<=0){
                     wingame=true;
                 }
-                if(Gameplay00.score<=0){
-                    gameover = toolg.genText("GAME OVER",70, Colors.RED,120,200);
-                    this.layer.add(gameover);
-                    gameover.setAlpha(alphaEnd);
+                if(Gameplay00.score<=0 || scott.body.getPosition().y>15f){
+                    Gameplay00.score=0;
+                    if(alphaStart<=1) {
+                        gameover.setVisible(true);
+                        gameover.setAlpha(alphaEnd);
+                    }
                 }
             } else if (pause == true) {
                 super.update(0);
@@ -214,24 +239,10 @@ public class Gameplay02 extends Screen{
             super.paint(clock);
             scott.paint(clock);
             gideon.paint(clock);
-            switch (scott.state) {
-                case WALK:
-                    if (x >= -350 && x <= 350) {
-                        if (x == -350) {
-                            x = -345;
-                        }
-                        x -= 5;
-                        bg.setTranslation(x, y);
-                    }
-                    break;
-                case LWALK:
-                    if (x >= -350 && x <= -10) {
-                        x += 5;
-                        bg.setTranslation(x, y);
-                    }
-                    break;
-            }
+            controlbg();
             if(Gameplay00.score<=0){
+                alphaEnd = toolg.fade(alphaEnd);
+            }else if(scoreg<=0){
                 alphaEnd = toolg.fade(alphaEnd);
             }
         }else if(pause==true){
@@ -250,6 +261,27 @@ public class Gameplay02 extends Screen{
         }
     }
 
+    public void controlbg(){
+        try{
+            x = -(105+scott.body.getPosition().x*8);
+            xg = -(scott.body.getPosition().x/3.5f);
+            ground.setTransform(new Vec2(xg+2.7f,yg),ground.getAngle());
+            ground1.setTransform(new Vec2(xg+2.7f,yg),ground1.getAngle());
+            bg.setTranslation(x,y);
+            System.out.println(scott.body.getPosition());
+
+            if(gideon.body.getPosition().x>=8&&gideon.body.getPosition().x<=15){
+                if(gideon.state== Gideon.State.LWALK) {
+                    gideon.body.setTransform(new Vec2(-2, gideon.body.getPosition().y), gideon.body.getAngle());
+                }else if(gideon.state== Gideon.State.WALK){
+                    gideon.body.setTransform(new Vec2(25, gideon.body.getPosition().y), gideon.body.getAngle());
+                }
+            }
+        }catch (Exception e){
+
+        }
+    }
+
     public void updatehp(){
         this.layer.remove(hp1);
         this.layer.remove(hp2);
@@ -263,10 +295,12 @@ public class Gameplay02 extends Screen{
         this.layer.add(hp2);
         this.layer.add(sp1);
         this.layer.add(sp2);
-        hp1.setAlpha(alphaStart);
-        hp2.setAlpha(alphaStart);
-        sp1.setAlpha(alphaStart);
-        sp2.setAlpha(alphaStart);
+        if(alphaStart<=1) {
+            hp1.setAlpha(alphaStart);
+            hp2.setAlpha(alphaStart);
+            sp1.setAlpha(alphaStart);
+            sp2.setAlpha(alphaStart);
+        }
     }
 
     public void cgx(){
