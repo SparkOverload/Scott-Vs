@@ -7,6 +7,7 @@ import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.contacts.Contact;
+import spark.game01.core.Screen.Gameplay00;
 import spark.game01.core.character.Scott_char.Scott;
 import spark.game01.core.character.Tom_char.Tom;
 
@@ -22,7 +23,6 @@ public class ContactMotion1 {
                 Body a = contact.getFixtureA().getBody();
                 Body b = contact.getFixtureB().getBody();
 
-                //System.out.println(bodies.get(a)+" contact "+bodies.get(b));
 
                 if(bodies.get(a)=="ground"&&b==scott.body || bodies.get(b)=="ground"&&a==scott.body){
                     ContactScott.contact(contact,scott);
@@ -34,6 +34,13 @@ public class ContactMotion1 {
                 if((a==scott.body&&b==tom.body) || (b==scott.body&&a==tom.body)){
                     ContactScott.contact(contact,scott);
                     ContactTom.contact(contact,scott,tom);
+                }
+
+                if(bodies.get(a)=="ground1"&&b==scott.body || bodies.get(b)=="ground1"&&a==scott.body){
+                    scott.state= Scott.State.LOSE;
+                    Gameplay00.score=0;
+                }else if(bodies.get(a)=="ground1"&&b==tom.body || bodies.get(b)=="ground1"&&a==tom.body){
+                    Gameplay00.scoret=0;
                 }
             }
 

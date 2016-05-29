@@ -34,7 +34,7 @@ public class ToolsG extends UIScreen {
 
     public float fade(float alphaTest) {
         if(alphaTest < 1f)
-            return alphaTest + (float)0.05;
+            return alphaTest + (float)0.1;
         else
             return 1f;
     }

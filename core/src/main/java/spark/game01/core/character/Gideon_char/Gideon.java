@@ -40,7 +40,7 @@ public class Gideon {
             @Override
             public void onSuccess(Sprite result) {
                 sprite.setSprite(spriteIndex);
-                sprite.layer().setOrigin(sprite.width()/2f,sprite.height()/2f+50);
+                sprite.layer().setOrigin(sprite.width()/2f,sprite.height()/2f+60);
                 sprite.layer().setTranslation(x,y);
 
                 body = initPhysicsBody(world,
@@ -67,14 +67,18 @@ public class Gideon {
         bodyDef.position = new Vec2(0,0);
         Body body = world.createBody(bodyDef);
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox((sprite.layer().width()-165)* Gameplay02.M_PER_PIXEL/2,
-                (sprite.layer().height()-110)*Gameplay02.M_PER_PIXEL/2);
+        Vec2[] vertices = {
+                new Vec2(0.0f, - 2f),
+                new Vec2(+ 1.0f, + 1.0f),
+                new Vec2(- 1.0f, + 1.0f)
+        };
 
+        PolygonShape shape = new PolygonShape();
+        shape.set(vertices, vertices.length);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1.3f;
+        fixtureDef.density = 2.3f;
         fixtureDef.friction = 1f;
 
         body.createFixture(fixtureDef);
@@ -261,20 +265,18 @@ public class Gideon {
 
         try {
             i++;
-            if ((scott.state == Scott.State.SLEEP) || (scott.state == Scott.State.LOSE)) {
-                state = State.LIDLE;
-                body.setActive(true);
-            } else if (scott.state == Scott.State.LSLEEP) {
+            if ((scott.spriteIndex>=227&& scott.spriteIndex<=235)||(scott.state == Scott.State.SLEEP) || (scott.state == Scott.State.LOSE)) {
                 state = State.IDLE;
                 body.setActive(true);
-            }
-            if ((body.getPosition().x >= (scott.body.getPosition().x + 4))
+            }else if(state==State.LWALK && contacted==true){
+                state=State.LIDLE;
+            }else if ((body.getPosition().x >= (scott.body.getPosition().x + 3.1))
                     && (state != State.LWASATTK2 && state != State.WASATTK2)) {
                 state = State.LWALK;
-            } else if (((body.getPosition().x <= (scott.body.getPosition().x + 3))
-                    && (body.getPosition().x >= (scott.body.getPosition().x)))
+            } else if ((body.getPosition().x <= (scott.body.getPosition().x + 3))
+                    &&(body.getPosition().x >= (scott.body.getPosition().x))
                     && (state != State.LWASATTK2 && state != State.WASATTK2)) {
-                /*if (i == 30) {
+                if (i == 30) {
                     switch (random.nextInt(6)) {
                         case 0:
                             state = State.LATTK1;
@@ -301,10 +303,11 @@ public class Gideon {
                             }
                             break;
                     }
-                }*/
+                }
 
                 if (contacted == true && (scott.spriteIndex == 189 || scott.spriteIndex == 381)) { // lwasattk2
                     state = State.LWASATTK2;
+                    body.applyLinearImpulse(new Vec2(40f, -30f), other.getPosition());
                     Gameplay02.scoreg -= 15;
                 }
                 if (contacted == true && (scott.spriteIndex == 42
@@ -316,6 +319,7 @@ public class Gideon {
                 }
                 if (contacted == true && (scott.spriteIndex == 196 || scott.spriteIndex == 388)) {             //lheadbutt
                     state = State.LWASATTK2;
+                    body.applyLinearImpulse(new Vec2(40f, -30f), other.getPosition());
                     Gameplay02.scoreg -= 10;
                 }
                 if (contacted == true && (scott.spriteIndex == 125
@@ -328,6 +332,7 @@ public class Gideon {
                 if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
                         || scott.spriteIndex == 167)) {
                     state = State.LWASATTK2;
+                    body.applyLinearImpulse(new Vec2(0f, -100f), other.getPosition());
                     Gameplay02.scoreg -= 20;
                 }
                 if (Gameplay02.scoreg <= 0) {
@@ -336,12 +341,17 @@ public class Gideon {
                 }
             }
             //##########################  LEFT   ##########################################
-            if ((body.getPosition().x <= (scott.body.getPosition().x - 4))
+            if ((scott.spriteIndex>=408&& scott.spriteIndex<=416)||(scott.state == Scott.State.LSLEEP)) {
+                state = State.LIDLE;
+                body.setActive(true);
+            }else if(state==State.WALK && contacted==true){
+                state=State.IDLE;
+            }else if ((body.getPosition().x <= (scott.body.getPosition().x - 3.1))
                     && (state != State.WASATTK2) && (state != State.LWASATTK2)) {
                 state = State.WALK;
-            } else if (((body.getPosition().x >= (scott.body.getPosition().x - 3)) &&
-                    (body.getPosition().x <= (scott.body.getPosition().x)))
-                    && (state != State.WASATTK2) && (state != State.LWASATTK2)) {
+            } else if ((body.getPosition().x >= (scott.body.getPosition().x - 3))
+                    &&(body.getPosition().x <= (scott.body.getPosition().x))
+                    && (state != State.WASATTK2 && state != State.LWASATTK2)) {
                 if (i == 30) {
                     switch (random.nextInt(6)) {
                         case 0:
@@ -373,6 +383,7 @@ public class Gideon {
                 if (contacted == true && (scott.spriteIndex == 381
                         || scott.spriteIndex == 189)) {                                    // wasattk2
                     state = State.WASATTK2;
+                    body.applyLinearImpulse(new Vec2(-40f, -30f), other.getPosition());
                     Gameplay02.scoreg -= 15;
                 }
                 if (contacted == true && (scott.spriteIndex == 299
@@ -384,6 +395,7 @@ public class Gideon {
                 }
                 if (contacted == true && (scott.spriteIndex == 388 || scott.spriteIndex == 196)) {             //headbutt
                     state = State.WASATTK2;
+                    body.applyLinearImpulse(new Vec2(-40f, -30f), other.getPosition());
                     Gameplay02.scoreg -= 10;
                 }
                 if (contacted == true && (scott.spriteIndex == 317
@@ -396,6 +408,7 @@ public class Gideon {
                 if (contacted == true && (scott.spriteIndex == 147 || scott.spriteIndex == 339
                         || scott.spriteIndex == 359)) {
                     state = State.WASATTK2;
+                    body.applyLinearImpulse(new Vec2(0f, -100f), other.getPosition());
                     Gameplay02.scoreg -= 20;
                 }
                 if (Gameplay02.scoreg <= 0) {
@@ -407,10 +420,10 @@ public class Gideon {
 
             switch(state){
                 case WALK:
-                    body.applyForce(new Vec2(80f,0f),body.getPosition());
+                    body.applyForce(new Vec2(66f,0f),body.getPosition());
                     break;
                 case LWALK:
-                    body.applyForce(new Vec2(-80f,0f),body.getPosition());
+                    body.applyForce(new Vec2(-66f,0f),body.getPosition());
                     break;
                 case ATTK1:
                     body.applyLinearImpulse(new Vec2(5f,0f),body.getPosition());

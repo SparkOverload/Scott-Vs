@@ -24,14 +24,14 @@ public class ContactMotion3 {
 
 
                 if(bodies.get(a)=="ground"&&b==scott.body || bodies.get(b)=="ground"&&a==scott.body){
-                    ContactScott.contact(contact,scott);
+                    ContactScott.contact2(contact,scott);
                 }
                 if(bodies.get(a)=="ground"&&b==gideon.body || bodies.get(b)=="ground"&&a==gideon.body){
                     ContactGideon.contact(contact,scott,gideon);
                 }
 
                 if((a==scott.body&&b==gideon.body) || (b==scott.body&&a==gideon.body)){
-                    ContactScott.contact(contact,scott);
+                    ContactScott.contact2(contact,scott);
                     ContactGideon.contact(contact,scott,gideon);
                 }
             }

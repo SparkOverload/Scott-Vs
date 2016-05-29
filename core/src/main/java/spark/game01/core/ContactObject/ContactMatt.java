@@ -78,11 +78,14 @@ public class ContactMatt {
             matt.state = Matt.State.WASATTK1;
         }
         if(scott.spriteIndex>=192&&scott.spriteIndex<=201){     //wasHeadputt
+            matt.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             matt.state = Matt.State.LWASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=384&&scott.spriteIndex<=393){     //wasHeadputt
+            matt.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             matt.state = Matt.State.WASATTK2;
+            Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=123&&scott.spriteIndex<=136){     //waskick
             matt.state = Matt.State.LWASATTK1;
@@ -91,34 +94,42 @@ public class ContactMatt {
             matt.state = Matt.State.WASATTK1;
         }
         if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
+            matt.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             matt.state = Matt.State.LWASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=329&&scott.spriteIndex<=335){
+            matt.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             matt.state = Matt.State.WASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=147&&scott.spriteIndex<=152){
+            matt.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             matt.state = Matt.State.LWASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=339&&scott.spriteIndex<=344){
+            matt.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             matt.state = Matt.State.WASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=167&&scott.spriteIndex<=170){
+            matt.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             matt.state = Matt.State.LWASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
+            matt.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             matt.state = Matt.State.WASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
+            matt.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             matt.state = Matt.State.LWASATTK2;
             Gameplay01.scorem -=10;
         }
         if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
+            matt.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
             matt.state = Matt.State.WASATTK2;
             Gameplay01.scorem -=10;
         }

@@ -31,8 +31,8 @@ public class Gameplay00 extends Screen{
     private static float height = 18;
     private World world;
     private final ScreenStack ss;
-    public  static ImageLayer bg;
-    public  static ImageLayer gndfight;
+    private ImageLayer bg;
+    private ImageLayer gndfight;
     private ImageLayer tagew1;
     private ImageLayer scotthead;
     private ImageLayer tomhead;
@@ -51,9 +51,14 @@ public class Gameplay00 extends Screen{
     public static int spscott = 50;
     public static int scoret;
     public static int sptom;
-    private float x = -140;
+    private float x = -175;
     private float y =0;
+    private float xg = 0;
+    private float yg = 0;
+    private float xgf = 20;
+    private float ygf = 360;
     private Body ground;
+    private Body ground1;
     private ToolsG toolg = new ToolsG();
     private Layer hp1;
     private Layer hp2;
@@ -63,6 +68,7 @@ public class Gameplay00 extends Screen{
     private float alphaStart = 0.00f;
     private float alphaEnd = 0.00f;
     private Pauselayer pauselayer;
+    private Layer nextw;
 
 
   public Gameplay00(final ScreenStack ss) {
@@ -73,14 +79,21 @@ public class Gameplay00 extends Screen{
 
       ground = world.createBody(new BodyDef());
       EdgeShape groundShape = new EdgeShape();
-      groundShape.set(new Vec2(2,height-2.5f),new Vec2(width,height-2.5f));
-      //ground.createFixture(groundShape,0.0f);
-
+      groundShape.set(new Vec2(1.5f,height-2.5f),new Vec2(width-1.5f,height-2.5f));
       FixtureDef fixtureDef = new FixtureDef();
       fixtureDef.friction = 0.65f;
       fixtureDef.shape = groundShape;
       ground.createFixture(fixtureDef);
       bodies.put(ground,"ground");
+
+      ground1 = world.createBody(new BodyDef());
+      EdgeShape groundShape1 = new EdgeShape();
+      groundShape1.set(new Vec2(-10,height-1.5f),new Vec2(width+10,height-1.5f));
+      FixtureDef fixtureDef1 = new FixtureDef();
+      fixtureDef1.friction = 0.65f;
+      fixtureDef1.shape = groundShape1;
+      ground1.createFixture(fixtureDef1);
+      bodies.put(ground1,"ground1");
 
       score=100;
       scoret=100;
@@ -93,9 +106,9 @@ public class Gameplay00 extends Screen{
 
       Image gndfightImage = assets().getImage("images/gndfight.png");
       gndfight = graphics().createImageLayer(gndfightImage);
-      gndfight.setTranslation(0,360);
+      gndfight.setTranslation(xgf,ygf);
 
-      tom = new Tom(world,350f,350f);
+      tom = new Tom(world,450f,360f);
       scott = new Scott(ss,world,250f,350f);
 
       Image tagw1Image = assets().getImage("images/w1.png");
@@ -141,6 +154,14 @@ public class Gameplay00 extends Screen{
       debugSring3 = "SP scott = "+spscott;
 
 
+      nextw = toolg.genText("GOOD JOB !", 60, Colors.MAGENTA, 180, 200);
+      nextw.setVisible(false);
+
+      gameover = toolg.genText("GAME OVER", 70, Colors.PINK, 120, 200);
+      gameover.setVisible(false);
+
+
+
 
   }
 
@@ -162,7 +183,8 @@ public class Gameplay00 extends Screen{
       this.layer.add(hp2);
       this.layer.add(sp1);
       this.layer.add(sp2);
-
+      this.layer.add(gameover);
+      this.layer.add(nextw);
       if(showDebugDraw){
           CanvasImage image = graphics().createImage(
                   (int) (width / Gameplay00.M_PER_PIXEL),
@@ -194,12 +216,22 @@ public class Gameplay00 extends Screen{
                 scott.update(delta, tom);
                 hpscott.Hp(score);
                 hptom.Hp(scoret);
-                cgx();
-                updatehp();
+                if(alphaStart<=1) {
+                    cgx();
+                }
+                if(score>=0 || scoret>=0){
+                    updatehp();
+                }
                 if(score<=0){
-                    gameover = toolg.genText("GAME OVER",70, Colors.PINK,120,200);
-                    this.layer.add(gameover);
-                    gameover.setAlpha(alphaEnd);
+                    if(alphaEnd<=1) {
+                        gameover.setVisible(true);
+                        gameover.setAlpha(alphaEnd);
+                    }
+                }else if(scoret<=0){
+                    if(alphaEnd<=1) {
+                        nextw.setVisible(true);
+                        nextw.setAlpha(alphaEnd);
+                    }
                 }
             } else if (pause == true) {
                 super.update(0);
@@ -222,24 +254,10 @@ public class Gameplay00 extends Screen{
             super.paint(clock);
             tom.paint(clock);
             scott.paint(clock);
-            switch (scott.state) {
-                case WALK:
-                    if (x >= -350 && x <= 350) {
-                        if (x == -350) {
-                            x = -345;
-                        }
-                        x -= 5;
-                        bg.setTranslation(x, y);
-                    }
-                    break;
-                case LWALK:
-                    if (x >= -350 && x <= -10) {
-                        x += 5;
-                        bg.setTranslation(x, y);
-                    }
-                    break;
-            }
+            controlbg();
             if(score<=0){
+                alphaEnd = toolg.fade(alphaEnd);
+            }else if(scoret<=0){
                 alphaEnd = toolg.fade(alphaEnd);
             }
         }else if(pause==true){
@@ -257,27 +275,44 @@ public class Gameplay00 extends Screen{
         }
     }
 
+    public void controlbg(){
+        try{
+                x = -(138 + scott.body.getPosition().x * 4);
+                xgf = -((-58) + scott.body.getPosition().x * 4);
+                xg = -(scott.body.getPosition().x / 7);
+                ground.setTransform(new Vec2(xg + 1.3f, yg), ground.getAngle());
+                bg.setTranslation(x, y);
+                gndfight.setTranslation(xgf, ygf);
+        }catch (Exception e){
+
+        }
+    }
+
+
     public void updatehp(){
-        this.layer.remove(hp1);
-        this.layer.remove(hp2);
-        this.layer.remove(sp1);
-        this.layer.remove(sp2);
-        hp1 = toolg.genText("HP : "+score,22, Colors.CYAN,30,90);
-        hp2 = toolg.genText("HP : "+scoret,22, Colors.CYAN,530,90);
-        sp1 = toolg.genText("SP : "+spscott,22, Colors.WHITE,30,110);
-        sp2 = toolg.genText("SP : "+sptom,22, Colors.WHITE,530,110);
-        this.layer.add(hp1);
-        this.layer.add(hp2);
-        this.layer.add(sp1);
-        this.layer.add(sp2);
-        hp1.setAlpha(alphaStart);
-        hp2.setAlpha(alphaStart);
-        sp1.setAlpha(alphaStart);
-        sp2.setAlpha(alphaStart);
+            this.layer.remove(hp1);
+            this.layer.remove(hp2);
+            this.layer.remove(sp1);
+            this.layer.remove(sp2);
+            hp1 = toolg.genText("HP : " + score, 22, Colors.CYAN, 30, 90);
+            hp2 = toolg.genText("HP : " + scoret, 22, Colors.CYAN, 530, 90);
+            sp1 = toolg.genText("SP : " + spscott, 22, Colors.WHITE, 30, 110);
+            sp2 = toolg.genText("SP : " + sptom, 22, Colors.WHITE, 530, 110);
+            this.layer.add(hp1);
+            this.layer.add(hp2);
+            this.layer.add(sp1);
+            this.layer.add(sp2);
+        if(alphaStart<=1) {
+            hp1.setAlpha(alphaStart);
+            hp2.setAlpha(alphaStart);
+            sp1.setAlpha(alphaStart);
+            sp2.setAlpha(alphaStart);
+        }
     }
 
     public void cgx(){
         bg.setAlpha(alphaStart);
+        gndfight.setAlpha(alphaStart);
         scotthead.setAlpha(alphaStart);
         tomhead.setAlpha(alphaStart);
         tagew1.setAlpha(alphaStart);
