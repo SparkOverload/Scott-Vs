@@ -55,7 +55,6 @@ public class Ramona {
                     if(!(spriteIndex>=0&&spriteIndex<=5)){
                         spriteIndex=0;
                     }
-                    System.out.println(spriteIndex);
                     break;
             }
             sprite.setSprite(spriteIndex);

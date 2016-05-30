@@ -24,6 +24,7 @@ public class ContactMotion1 {
                 Body b = contact.getFixtureB().getBody();
 
 
+
                 if(bodies.get(a)=="ground"&&b==scott.body || bodies.get(b)=="ground"&&a==scott.body){
                     ContactScott.contact(contact,scott);
                 }

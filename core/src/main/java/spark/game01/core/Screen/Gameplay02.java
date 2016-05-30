@@ -103,6 +103,7 @@ public class Gameplay02 extends Screen{
         vfixtureDef1.friction = 0.65f;
         vfixtureDef1.shape = vgroundShape1;
         vground1.createFixture(vfixtureDef1);
+        //bodies.put(vground1,"ground");
 
 
         vground2 = world.createBody(new BodyDef());
@@ -112,6 +113,7 @@ public class Gameplay02 extends Screen{
         vfixtureDef2.friction = 0.65f;
         vfixtureDef2.shape = vgroundShape2;
         vground2.createFixture(vfixtureDef2);
+        ///bodies.put(vground2,"ground");
 
 
         this.ss = ss;
@@ -186,9 +188,9 @@ public class Gameplay02 extends Screen{
         ///////////////////////////////////////// SpriteLayer
         this.layer.add(hpscott.layer());
         this.layer.add(hpgideon.layer());
+        this.layer.add(ramona.layer());
         this.layer.add(scott.layer());
         this.layer.add(gideon.layer());
-        this.layer.add(ramona.layer());
         /////////////////////////////////////////////
         this.layer.add(hp1);
         this.layer.add(hp2);
@@ -296,7 +298,7 @@ public class Gameplay02 extends Screen{
 
     public void controlbg(){
         try{
-            System.out.println(ramona.layer().tx());
+
             x = -(105+scott.body.getPosition().x*8);
             xg = -(scott.body.getPosition().x/3.5f);
             ramona.layer().setTranslation(x+730,150f);
@@ -309,9 +311,9 @@ public class Gameplay02 extends Screen{
 
             if(gideon.body.getPosition().x>=8&&gideon.body.getPosition().x<=15){
                 if(gideon.state== Gideon.State.LWALK) {
-                    gideon.body.setTransform(new Vec2(0, gideon.body.getPosition().y), gideon.body.getAngle());
+                    gideon.body.setTransform(new Vec2(0, gideon.body.getPosition().y-0.5f), gideon.body.getAngle());
                 }else if(gideon.state== Gideon.State.WALK){
-                    gideon.body.setTransform(new Vec2(23, gideon.body.getPosition().y), gideon.body.getAngle());
+                    gideon.body.setTransform(new Vec2(23, gideon.body.getPosition().y-0.5f), gideon.body.getAngle());
                 }
             }
         }catch (Exception e){

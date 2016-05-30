@@ -144,11 +144,13 @@ public class Scott {
                             }
                         break;
                     case S:
-                        if(state == State.JUMP){
+                        if(state == State.JUMP && Gameplay00.spscott>=15){
                             state = State.JKICK;
+                            Gameplay00.spscott-=15;
                         }
-                        if(state == State.LJUMP){
+                        if(state == State.LJUMP && Gameplay00.spscott>=15){
                             state = State.LJKICK;
+                            Gameplay00.spscott-=15;
                         }
                         if(state == State.KICK1 && (spriteIndex>=127 && spriteIndex<=129)){
                             state = State.KICK2;
@@ -1548,6 +1550,7 @@ try{
                     }
                     if(spriteIndex>=109&&spriteIndex<=110){
                         spriteIndex=109;
+                        MyGame.world03.stop();
                         ss.remove(ss.top());
                         ss.push(new TopScore(ss));
                     }

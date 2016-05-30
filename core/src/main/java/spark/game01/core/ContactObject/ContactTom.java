@@ -23,24 +23,6 @@ public class ContactTom {
         }
 
         switch (tom.state){
-            case LSS:
-                if (tom.spriteIndex>=98&&tom.spriteIndex<=101) {
-                    if (a == tom.body) {
-                        b.applyLinearImpulse(new Vec2(-10f, -10f), b.getPosition());
-                    } else {
-                        a.applyLinearImpulse(new Vec2(-10f, -10f), a.getPosition());
-                    }
-                }
-                break;
-            case SS:
-                if (tom.spriteIndex>=78&&tom.spriteIndex<=81) {
-                    if (a == tom.body) {
-                        b.applyLinearImpulse(new Vec2(10f, -10f), b.getPosition());
-                    } else {
-                        a.applyLinearImpulse(new Vec2(10f, -10f), a.getPosition());
-                    }
-                }
-                break;
             case LWASATTK2:
                 if((tom.body==a && (Gameplay00.bodies.get(b))== "ground")||
                         (tom.body==b && (Gameplay00.bodies.get(a))== "ground")){
@@ -58,87 +40,70 @@ public class ContactTom {
         }
 
 
-
         // ###################  WasAttk   ######################
         if((tom.body==a && scott.body== b)||
                 (tom.body==b && scott.body==a)){
-        if(scott.spriteIndex>=189&&scott.spriteIndex<=191){   //lwasattk2
-            if(tom.state == Tom.State.IDLE){
-                tom.state = Tom.State.WASATTK2;
-                Gameplay00.scoret -=10;
-            }else if(tom.state == Tom.State.LIDLE){
+        if(scott.spriteIndex>189&&scott.spriteIndex<=192){   //lwasattk2
+                tom.body.applyLinearImpulse(new Vec2(30f, -50f), tom.body.getPosition());
                 tom.state = Tom.State.LWASATTK2;
                 Gameplay00.scoret -=10;
-            }else{
-                tom.state = Tom.State.LWASATTK2;
-                Gameplay00.scoret -=10;
-            }
-
         }
-        if(scott.spriteIndex>=380&&scott.spriteIndex<=382){   //wasattk2
-            if(tom.state == Tom.State.LIDLE){
-                tom.state = Tom.State.LWASATTK2;
-                Gameplay00.scoret -=10;
-            }else if(tom.state == Tom.State.IDLE){
+        if(scott.spriteIndex>380&&scott.spriteIndex<=383){   //wasattk2
+                tom.body.applyLinearImpulse(new Vec2(-30f, -50f), tom.body.getPosition());
                 tom.state = Tom.State.WASATTK2;
                 Gameplay00.scoret -=10;
-            }else{
-                tom.state = Tom.State.WASATTK2;
-                Gameplay00.scoret -=10;
-            }
         }
-        if(scott.spriteIndex>=192&&scott.spriteIndex<=201){     //wasHeadputt
-            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+        if(scott.spriteIndex>192&&scott.spriteIndex<=202){     //wasHeadputt
+            tom.body.applyLinearImpulse(new Vec2(30f, -50f), tom.body.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=384&&scott.spriteIndex<=393){     //wasHeadputt
-           // tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+        if(scott.spriteIndex>384&&scott.spriteIndex<=394){     //wasHeadputt
+            tom.body.applyLinearImpulse(new Vec2(-30f, -50f), tom.body.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
-            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+        if(scott.spriteIndex>137&&scott.spriteIndex<=144){
+            tom.body.applyLinearImpulse(new Vec2(30f, -50f), tom.body.getPosition());
             tom.state = Tom.State.LWASATTK2;
-            System.out.println("dddddddd");
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=329&&scott.spriteIndex<=335){
-            //tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+        if(scott.spriteIndex>329&&scott.spriteIndex<=336){
+            tom.body.applyLinearImpulse(new Vec2(-30f, -50f), tom.body.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=147&&scott.spriteIndex<=152){
-            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+        if(scott.spriteIndex>147&&scott.spriteIndex<=153){
+            tom.body.applyLinearImpulse(new Vec2(0f, -50f), tom.body.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=339&&scott.spriteIndex<=344){
-            //tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+        if(scott.spriteIndex>339&&scott.spriteIndex<=345){
+            tom.body.applyLinearImpulse(new Vec2(0f, -50f), tom.body.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=167&&scott.spriteIndex<=170){
-           // tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+        if(scott.spriteIndex>167&&scott.spriteIndex<=171){
+            tom.body.applyLinearImpulse(new Vec2(0f, -50f), tom.body.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=359&&scott.spriteIndex<=361){
-            //tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+        if(scott.spriteIndex>359&&scott.spriteIndex<=362){
+            tom.body.applyLinearImpulse(new Vec2(0f, -50f), tom.body.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=111&&scott.spriteIndex<=122){
-            //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
+        if(scott.spriteIndex>111&&scott.spriteIndex<=123){
+            tom.body.applyLinearImpulse(new Vec2(30f, -50f), tom.body.getPosition());
             tom.state = Tom.State.LWASATTK2;
             Gameplay00.scoret -=10;
         }
-        if(scott.spriteIndex>=286&&scott.spriteIndex<=297){
-           // tom.body.applyLinearImpulse(new Vec2(-5f, -10f), a.getPosition());
+        if(scott.spriteIndex>286&&scott.spriteIndex<=298){
+            tom.body.applyLinearImpulse(new Vec2(-30f, -50f), tom.body.getPosition());
             tom.state = Tom.State.WASATTK2;
             Gameplay00.scoret -=10;
         }
         // ###################  WasAttk   ######################
-
-    }}
+    }
+    }
 }
