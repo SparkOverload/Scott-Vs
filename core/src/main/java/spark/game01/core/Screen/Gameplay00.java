@@ -41,7 +41,7 @@ public class Gameplay00 extends Screen{
     private Hpbar hptom = new Hpbar(490f,55f);
     private Tom tom;
     private DebugDrawBox2D debugDraw;
-    public static Boolean showDebugDraw = false;
+    public static Boolean showDebugDraw = true;
     public  static HashMap<Body, String> bodies;
     public static String debugSring = "";
     public static String debugSring1 = "";

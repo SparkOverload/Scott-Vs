@@ -85,7 +85,6 @@ public class HomeScreen extends UIScreen{
   }
 
     public void update(int delta){
-        System.out.println(ss.size());
         super.update(delta);
         bg.setAlpha(alphaStart);
         gname.setAlpha(alphaStart);

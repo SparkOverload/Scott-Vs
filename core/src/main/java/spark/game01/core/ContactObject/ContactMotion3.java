@@ -22,6 +22,7 @@ public class ContactMotion3 {
                 Body a = contact.getFixtureA().getBody();
                 Body b = contact.getFixtureB().getBody();
 
+                System.out.println(bodies.get(a)+" with "+bodies.get(b));
 
                 if(bodies.get(a)=="ground"&&b==scott.body || bodies.get(b)=="ground"&&a==scott.body){
                     ContactScott.contact2(contact,scott);
