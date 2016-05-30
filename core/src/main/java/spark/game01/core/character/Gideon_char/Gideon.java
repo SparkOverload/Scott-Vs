@@ -197,6 +197,9 @@ public class Gideon {
                     if(!(spriteIndex>=101 && spriteIndex<=113)){
                         spriteIndex=101;
                     }
+                    if(spriteIndex==109){
+                        Gameplay02.spgideon -=20;
+                    }
                     if(spriteIndex==113){
                         state=State.IDLE;
                     }
@@ -204,6 +207,9 @@ public class Gideon {
                 case LATTK4:
                     if(!(spriteIndex>=114 && spriteIndex<=126)){
                         spriteIndex=114;
+                    }
+                    if(spriteIndex==122){
+                        Gameplay02.spgideon -=20;
                     }
                     if(spriteIndex==126){
                         state=State.LIDLE;
@@ -213,6 +219,9 @@ public class Gideon {
                     if(!(spriteIndex>=127 && spriteIndex<=134)){
                         spriteIndex=127;
                     }
+                    if(spriteIndex==129){
+                        Gameplay02.spgideon -=20;
+                    }
                     if(spriteIndex==134){
                         state=State.IDLE;
                     }
@@ -220,6 +229,9 @@ public class Gideon {
                 case CHARGE:
                     if(!(spriteIndex>=135 && spriteIndex<=141)){
                         spriteIndex=135;
+                    }
+                    if(spriteIndex==138){
+                        Gameplay02.spgideon -=20;
                     }
                     if(spriteIndex==141){
                         state=State.IDLE;
@@ -229,6 +241,9 @@ public class Gideon {
                     if(!(spriteIndex>=142 && spriteIndex<=149)){
                         spriteIndex=142;
                     }
+                    if(spriteIndex==144){
+                        Gameplay02.spgideon -=20;
+                    }
                     if(spriteIndex==149){
                         state=State.LIDLE;
                     }
@@ -236,6 +251,9 @@ public class Gideon {
                 case LCHARGE:
                     if(!(spriteIndex>=150 && spriteIndex<=156)){
                         spriteIndex=150;
+                    }
+                    if(spriteIndex==153){
+                        Gameplay02.spgideon -=20;
                     }
                     if(spriteIndex==156){
                         state=State.LIDLE;

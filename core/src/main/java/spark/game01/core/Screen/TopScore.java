@@ -32,6 +32,7 @@ public class TopScore extends Screen{
   private int tmp;
 
 
+
   public TopScore(final ScreenStack ss) {
     this.ss = ss;
       Image bgImage = assets().getImage("images/Screen_bg/screen06.png");
@@ -49,6 +50,7 @@ public class TopScore extends Screen{
       @Override
       public void onKeyDown(Keyboard.Event event) {
         if(event.key()==Key.ESCAPE){
+          MyGame.topbgm.stop();
           Gameplay02.wingame=false;
           ss.remove(ss.top());
           ss.push(new HomeScreen(ss));
@@ -136,6 +138,9 @@ public class TopScore extends Screen{
   @Override
   public void wasShown(){
     super.wasShown();
+    MyGame.topbgm.play();
+    MyGame.topbgm.setLooping(true);
+    //////////////////////////////////////////////bgm
     this.layer.add(bg);
     this.layer.add(tagsb);
     this.layer.add(board);

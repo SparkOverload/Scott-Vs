@@ -87,12 +87,6 @@ public class Scott {
                         }
                         break;
                     case DOWN:
-                        if(state == State.WALK || state == State.RUN){
-                            state = State.DODGE;
-                        }
-                        if(state == State.LWALK || state == State.LRUN){
-                            state = State.LDODGE;
-                        }
                         if(state == State.IDLE || state == State.LIDLE){
                             eventstate=1;
                         }
@@ -220,14 +214,23 @@ public class Scott {
                         break;
                     case ENTER:
                         if(state==State.CEL1){
+                            MyGame.world01.stop();
                             ss.remove(ss.top());
                             ss.push(new Gameplay01(ss));
                         }else if(state==State.CEL2){
+                            MyGame.world02.stop();
                             ss.remove(ss.top());
                             ss.push(new Gameplay02(ss));
+                        }else if(state==State.CEL3){
+                            MyGame.world03.stop();
+                            ss.remove(ss.top());
+                            ss.push(new TopScore(ss));
                         }
                         break;
                    case ESCAPE:
+                       MyGame.world01.stop();
+                       MyGame.world02.stop();
+                       MyGame.world03.stop();
                        ss.remove(ss.top());
                        ss.push(new HomeScreen(ss));
                        break;
@@ -731,22 +734,18 @@ try{
         if (contacted == true && (matt.spriteIndex >= 74 && matt.spriteIndex <= 76)) {
             state = State.WASATK3;
             Gameplay00.score -= 10;
-            Gameplay01.spmatt -=40;
         }
         if (contacted == true && (matt.spriteIndex >= 63 && matt.spriteIndex <= 65)) {
             state = State.LWASATK3;
             Gameplay00.score -= 10;
-            Gameplay01.spmatt -=40;
         }
         if (contacted == true && (matt.spriteIndex >= 148 && matt.spriteIndex <= 153)) {
             state = State.WASATK3;
             Gameplay00.score -= 20;
-            Gameplay01.spmatt -=50;
         }
         if (contacted == true && (matt.spriteIndex >= 136 && matt.spriteIndex <= 141)) {
             state = State.LWASATK3;
             Gameplay00.score -= 20;
-            Gameplay01.spmatt -=50;
         }
         if(Gameplay01.scorem <= 0){
             state = State.CEL2;
@@ -1304,12 +1303,10 @@ try{
                 if (contacted == true && (tom.spriteIndex >= 98 && tom.spriteIndex <= 101)) {
                     state = State.WASATK3;
                     Gameplay00.score -= 10;
-                    Gameplay00.sptom -=50;
                 }
                 if (contacted == true && (tom.spriteIndex >= 78 && tom.spriteIndex <= 81)) {
                     state = State.LWASATK3;
                     Gameplay00.score -= 10;
-                    Gameplay00.sptom -= 50;
                 }
                 if(Gameplay00.scoret <= 0){
                     state = State.CEL1;
@@ -1868,15 +1865,13 @@ try{
                         || (gideon.spriteIndex >= 144 && gideon.spriteIndex <= 149)
                         || (gideon.spriteIndex >= 153 && gideon.spriteIndex <= 156) )) {
                     state = State.WASATK3;
-                    Gameplay00.score -= 25;
-                    Gameplay02.spgideon -=20;
+                    Gameplay00.score -= 15;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 109 && gideon.spriteIndex <= 113)
                         || (gideon.spriteIndex >= 129 && gideon.spriteIndex <= 134)
                         || (gideon.spriteIndex >= 138 && gideon.spriteIndex <= 141) )) {
                     state = State.LWASATK3;
                     Gameplay00.score -= 15;
-                    Gameplay02.spgideon -=20;
                 }
                 if(Gameplay02.scoreg <= 0){
                     state = State.CEL3;

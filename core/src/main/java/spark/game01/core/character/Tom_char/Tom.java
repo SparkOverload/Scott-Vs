@@ -179,6 +179,9 @@ public class Tom {
                     if(!(spriteIndex>=74 && spriteIndex<=87)){
                         spriteIndex=74;
                     }
+                    if(spriteIndex==78){
+                        Gameplay00.sptom -=50;
+                    }
                     if(spriteIndex==87){
                         state=State.IDLE;
                     }
@@ -202,6 +205,9 @@ public class Tom {
                 case LSS:
                     if(!(spriteIndex>=94 && spriteIndex<=107)){
                         spriteIndex=94;
+                    }
+                    if(spriteIndex==98){
+                        Gameplay00.sptom -=50;
                     }
                     if(spriteIndex==107){
                         state=State.LIDLE;
@@ -288,7 +294,6 @@ public class Tom {
                             break;
                     }
                 }
-
                 if(contacted == true && (scott.spriteIndex==189|| scott.spriteIndex==381)){ // lwasattk2
                     state=State.LWASATTK2;
                     body.applyLinearImpulse(new Vec2(40f, -30f), other.getPosition());

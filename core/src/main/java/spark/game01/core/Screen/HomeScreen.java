@@ -32,6 +32,7 @@ public class HomeScreen extends UIScreen{
     private ButtonC0 bt3 = new ButtonC0(190f,340f,"b3");
 
   public HomeScreen(final ScreenStack ss) {
+
     this.ss = ss;
     this.bgImage = assets().getImage("images/Screen_bg/screen05.png");
     this.bg = graphics().createImageLayer(bgImage);
@@ -43,6 +44,7 @@ public class HomeScreen extends UIScreen{
       bt1.layer().addListener(new Mouse.LayerAdapter() {
           @Override
           public void onMouseDown(Mouse.ButtonEvent event) {
+              MyGame.homebgm.stop();
               ss.remove(ss.top());
               ss.push(new Gameplay00(ss));
           }
@@ -50,6 +52,7 @@ public class HomeScreen extends UIScreen{
       bt2.layer().addListener(new Mouse.LayerAdapter() {
           @Override
           public void onMouseDown(Mouse.ButtonEvent event) {
+              MyGame.homebgm.stop();
               ss.remove(ss.top());
               ss.push(new HowtoScreen(ss));
           }
@@ -57,6 +60,7 @@ public class HomeScreen extends UIScreen{
       bt3.layer().addListener(new Mouse.LayerAdapter() {
           @Override
           public void onMouseDown(Mouse.ButtonEvent event) {
+              MyGame.homebgm.stop();
               ss.remove(ss.top());
               ss.push(new TopScore(ss));
           }
@@ -69,6 +73,9 @@ public class HomeScreen extends UIScreen{
   @Override
   public void wasShown(){
     super.wasShown();
+      MyGame.homebgm.play();
+      MyGame.homebgm.setLooping(true);
+      //////////////////////////////////////////BGM
       this.layer.add(bg);
       this.layer.add(gname);
       this.layer.add(bt1.layer());
@@ -78,6 +85,7 @@ public class HomeScreen extends UIScreen{
   }
 
     public void update(int delta){
+        System.out.println(ss.size());
         super.update(delta);
         bg.setAlpha(alphaStart);
         gname.setAlpha(alphaStart);
