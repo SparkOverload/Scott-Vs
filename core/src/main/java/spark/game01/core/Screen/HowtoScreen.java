@@ -21,7 +21,9 @@ public class HowtoScreen extends Screen{
     private float alphaStart = 0.00f;
 
 
+
   public HowtoScreen(final ScreenStack ss) {
+
       this.ss = ss;
       Image bgImage = assets().getImage("images/Screen_bg/screen03.png");
       this.bg = graphics().createImageLayer(bgImage);
@@ -42,6 +44,7 @@ public class HowtoScreen extends Screen{
           @Override
           public void onKeyDown(Keyboard.Event event) {
               if(event.key()==Key.ESCAPE){
+                  MyGame.howtobgm.stop();
                   Gameplay02.wingame=false;
                   ss.remove(ss.top());
                   ss.push(new HomeScreen(ss));
@@ -55,11 +58,13 @@ public class HowtoScreen extends Screen{
   @Override
   public void wasShown(){
     super.wasShown();
+      MyGame.howtobgm.play();
+      MyGame.howtobgm.setLooping(true);
+      //////////////////////////////////////////////bgm
     this.layer.add(bg);
     this.layer.add(key);
       this.layer.add(htc);
       this.layer.add(board1);
-
 
   }
 

@@ -60,7 +60,8 @@ public class ContactTom {
 
 
         // ###################  WasAttk   ######################
-
+        if((tom.body==a && scott.body== b)||
+                (tom.body==b && scott.body==a)){
         if(scott.spriteIndex>=189&&scott.spriteIndex<=191){   //lwasattk2
             if(tom.state == Tom.State.IDLE){
                 tom.state = Tom.State.WASATTK2;
@@ -99,6 +100,7 @@ public class ContactTom {
         if(scott.spriteIndex>=137&&scott.spriteIndex<=143){
             //tom.body.applyLinearImpulse(new Vec2(5f, -10f), a.getPosition());
             tom.state = Tom.State.LWASATTK2;
+            System.out.println("dddddddd");
             Gameplay00.scoret -=10;
         }
         if(scott.spriteIndex>=329&&scott.spriteIndex<=335){
@@ -138,5 +140,5 @@ public class ContactTom {
         }
         // ###################  WasAttk   ######################
 
-    }
+    }}
 }

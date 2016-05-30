@@ -154,6 +154,9 @@ public class Matt {
                     if(!(spriteIndex>=60 && spriteIndex<=65)){
                         spriteIndex=60;
                     }
+                    if(spriteIndex==63){
+                        Gameplay01.spmatt -=40;
+                    }
                     if(spriteIndex==65){
                         state=State.IDLE;
                     }
@@ -169,6 +172,9 @@ public class Matt {
                 case LULTI1:
                     if(!(spriteIndex>=71 && spriteIndex<=76)){
                         spriteIndex=71;
+                    }
+                    if(spriteIndex==74){
+                        Gameplay01.spmatt -=40;
                     }
                     if(spriteIndex==76){
                         state=State.LIDLE;
@@ -218,6 +224,9 @@ public class Matt {
                     if(!(spriteIndex>=130 && spriteIndex<=141)){
                         spriteIndex=130;
                     }
+                    if(spriteIndex==136){
+                        Gameplay01.spmatt -=50;
+                    }
                     if(spriteIndex==141){
                         state=State.IDLE;
                     }
@@ -225,6 +234,9 @@ public class Matt {
                 case LULTI2:
                     if(!(spriteIndex>=142 && spriteIndex<=153)){
                         spriteIndex=142;
+                    }
+                    if(spriteIndex == 148){
+                        Gameplay01.spmatt -=50;
                     }
                     if(spriteIndex==153){
                         state=State.LIDLE;

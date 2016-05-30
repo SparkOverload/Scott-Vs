@@ -45,7 +45,8 @@ public class ContactMatt {
 
 
         // ###################  WasAttk   ######################
-
+        if((matt.body==a && scott.body== b)||
+                (matt.body==b && scott.body==a)){
         if(scott.spriteIndex>=189&&scott.spriteIndex<=191){   //lwasattk2
             if(matt.state == Matt.State.IDLE){
                 matt.state = Matt.State.WASATTK2;
@@ -123,5 +124,5 @@ public class ContactMatt {
         }
         // ###################  WasAttk   ######################
 
-    }
+    }}
 }

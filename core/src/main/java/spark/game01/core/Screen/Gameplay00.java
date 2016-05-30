@@ -42,7 +42,7 @@ public class Gameplay00 extends Screen{
     private Tom tom;
     private DebugDrawBox2D debugDraw;
     public static Boolean showDebugDraw = false;
-    public  static HashMap<Body, String> bodies = new HashMap<Body,String>();
+    public  static HashMap<Body, String> bodies;
     public static String debugSring = "";
     public static String debugSring1 = "";
     public static String debugSring2 = "";
@@ -71,7 +71,9 @@ public class Gameplay00 extends Screen{
     private Layer nextw;
 
 
+
   public Gameplay00(final ScreenStack ss) {
+      bodies = new HashMap<Body,String>();
       Vec2 gravity = new Vec2(0.0f,10.0f);
       world = new World(gravity);
       world.setWarmStarting(true);
@@ -160,14 +162,14 @@ public class Gameplay00 extends Screen{
       gameover = toolg.genText("GAME OVER", 70, Colors.PINK, 120, 200);
       gameover.setVisible(false);
 
-
-
-
   }
 
   @Override
   public void wasShown(){
     super.wasShown();
+      MyGame.world01.play();
+      MyGame.world01.setLooping(true);
+      //////////////////////////////////////////BGM
       this.layer.add(bg);
       this.layer.add(gndfight);
       this.layer.add(scotthead);
