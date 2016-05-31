@@ -26,7 +26,6 @@ import static playn.core.PlayN.graphics;
 
 public class Gameplay01 extends Screen{
 
-    private Boolean pause = false;
     private Clock.Source stoptime = new Clock.Source(0);
     public static  float M_PER_PIXEL = 1 / 26.666667f;
     private static float width = 24;
@@ -104,13 +103,13 @@ public class Gameplay01 extends Screen{
         tagew2.addListener(new Mouse.LayerAdapter(){
             @Override
             public void onMouseDown(Mouse.ButtonEvent event){
-                if(pause==false){
+                if(Gameplay00.pause==false){
                     pauselayer = new Pauselayer(310f,240f);
                     layer.add(pauselayer.layer());
-                    pause = true;
+                    Gameplay00.pause = true;
                 }else{
                     layer.remove(pauselayer.layer());
-                    pause = false;
+                    Gameplay00.pause = false;
                 }
 
             }
@@ -193,7 +192,7 @@ public class Gameplay01 extends Screen{
     @Override
     public void update(int delta) {
         try {
-            if (pause == false) {
+            if (Gameplay00.pause == false) {
                 super.update(delta);
                 world.step(0.066f, 10, 10);
                 hpscott.update(delta);
@@ -221,7 +220,7 @@ public class Gameplay01 extends Screen{
                         nextw.setAlpha(alphaEnd);
                     }
                 }
-            } else if (pause == true) {
+            } else if (Gameplay00.pause == true) {
                 super.update(0);
                 pauselayer.update(delta);
                 world.step(0f, 10, 10);
@@ -238,7 +237,7 @@ public class Gameplay01 extends Screen{
 
     @Override
     public void paint(Clock clock) {
-        if(pause==false) {
+        if(Gameplay00.pause==false) {
             alphaStart = toolg.fade(alphaStart);
             super.paint(clock);
             scott.paint(clock);
@@ -249,7 +248,7 @@ public class Gameplay01 extends Screen{
             }else if(scorem<=0){
                 alphaEnd = toolg.fade(alphaEnd);
             }
-        }else if(pause==true){
+        }else if(Gameplay00.pause==true){
             super.paint(stoptime);
             scott.paint(stoptime);
             matt.paint(stoptime);

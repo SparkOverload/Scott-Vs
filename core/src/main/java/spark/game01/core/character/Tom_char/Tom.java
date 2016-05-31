@@ -415,9 +415,6 @@ public class Tom {
                 case LSS:
                     if(spriteIndex==98){
                         body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
-                        if(contacted==true){
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case ATTK1:
@@ -433,9 +430,6 @@ public class Tom {
                 case SS:
                     if(spriteIndex==78){
                         body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
-                        if(contacted==true){
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case WASATTK2:

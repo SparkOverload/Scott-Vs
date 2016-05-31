@@ -24,7 +24,7 @@ import tripleplay.util.Colors;
 
 public class Gameplay00 extends Screen{
 
-    private Boolean pause = false;
+    public static Boolean pause = false;
     private Clock.Source stoptime = new Clock.Source(0);
     public static  float M_PER_PIXEL = 1 / 26.666667f;
     private static float width = 24;
@@ -41,7 +41,7 @@ public class Gameplay00 extends Screen{
     private Hpbar hptom = new Hpbar(490f,55f);
     private Tom tom;
     private DebugDrawBox2D debugDraw;
-    public static Boolean showDebugDraw = true;
+    public static Boolean showDebugDraw = false;
     public  static HashMap<Body, String> bodies;
     public static String debugSring = "";
     public static String debugSring1 = "";

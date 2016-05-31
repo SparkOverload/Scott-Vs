@@ -3,11 +3,9 @@ package spark.game01.core.ContactObject;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
-import spark.game01.core.Screen.Gameplay00;
 import spark.game01.core.Screen.Gameplay01;
 import spark.game01.core.character.Matt_char.Matt;
 import spark.game01.core.character.Scott_char.Scott;
-import spark.game01.core.character.Tom_char.Tom;
 
 
 /**

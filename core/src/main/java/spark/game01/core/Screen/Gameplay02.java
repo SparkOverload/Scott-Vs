@@ -27,7 +27,6 @@ import static playn.core.PlayN.graphics;
 
 public class Gameplay02 extends Screen{
 
-    private Boolean pause = false;
     private Clock.Source stoptime = new Clock.Source(0);
     public static  float M_PER_PIXEL = 1 / 26.666667f;
     private static float width = 24;
@@ -66,6 +65,7 @@ public class Gameplay02 extends Screen{
     private Layer sp2;
     private Pauselayer pauselayer;
     private Layer gameover;
+    public static Layer helpr;
     private float alphaStart = 0.00f;
     private float alphaEnd = 0.00f;
     public static Boolean wingame = false;
@@ -131,13 +131,13 @@ public class Gameplay02 extends Screen{
         tagew3.addListener(new Mouse.LayerAdapter(){
             @Override
             public void onMouseDown(Mouse.ButtonEvent event){
-                if(pause==false){
+                if(Gameplay00.pause==false){
                     pauselayer = new Pauselayer(310f,240f);
                     layer.add(pauselayer.layer());
-                    pause = true;
+                    Gameplay00.pause = true;
                 }else{
                     layer.remove(pauselayer.layer());
-                    pause = false;
+                    Gameplay00.pause = false;
                 }
 
             }
@@ -168,6 +168,7 @@ public class Gameplay02 extends Screen{
         debugSring2 = "SP gideon = "+spgideon;
         debugSring3 = "SP scott = "+Gameplay00.spscott;
 
+        helpr = toolg.genText("Help Me !",20, Colors.MAGENTA,500,130);
         gameover = toolg.genText("GAME OVER",70, Colors.RED,120,200);
         gameover.setVisible(false);
         nextw = toolg.genText("AWESOME !",60, Colors.RED,180,200);
@@ -196,6 +197,7 @@ public class Gameplay02 extends Screen{
         this.layer.add(hp2);
         this.layer.add(sp1);
         this.layer.add(sp2);
+        this.layer.add(helpr);
         this.layer.add(gameover);
         this.layer.add(nextw);
 
@@ -221,7 +223,7 @@ public class Gameplay02 extends Screen{
     @Override
     public void update(int delta) {
         try {
-            if (pause == false) {
+            if (Gameplay00.pause == false) {
                 super.update(delta);
                 world.step(0.066f, 10, 10);
                 hpscott.update(delta);
@@ -252,7 +254,7 @@ public class Gameplay02 extends Screen{
                         gameover.setAlpha(alphaEnd);
                     }
                 }
-            } else if (pause == true) {
+            } else if (Gameplay00.pause == true) {
                 super.update(0);
                 pauselayer.update(delta);
                 world.step(0f, 10, 10);
@@ -269,7 +271,7 @@ public class Gameplay02 extends Screen{
 
     @Override
     public void paint(Clock clock) {
-        if(pause==false) {
+        if(Gameplay00.pause==false) {
             alphaStart = toolg.fade(alphaStart);
             super.paint(clock);
             scott.paint(clock);
@@ -280,7 +282,7 @@ public class Gameplay02 extends Screen{
             }else if(scoreg<=0){
                 alphaEnd = toolg.fade(alphaEnd);
             }
-        }else if(pause==true){
+        }else if(Gameplay00.pause==true){
             super.paint(stoptime);
             scott.paint(stoptime);
             gideon.paint(stoptime);
@@ -298,10 +300,10 @@ public class Gameplay02 extends Screen{
 
     public void controlbg(){
         try{
-
             x = -(105+scott.body.getPosition().x*8);
             xg = -(scott.body.getPosition().x/3.5f);
             ramona.layer().setTranslation(x+730,150f);
+            helpr.setTranslation(x+180,helpr.ty());
             ground.setTransform(new Vec2(xg+2.7f,yg),ground.getAngle());
             ground1.setTransform(new Vec2(xg+2.7f,yg),ground1.getAngle());
             vground1.setTransform(new Vec2(xg+2.7f,yg),ground.getAngle());
@@ -319,6 +321,7 @@ public class Gameplay02 extends Screen{
         }catch (Exception e){
 
         }
+
     }
 
     public void updatehp(){

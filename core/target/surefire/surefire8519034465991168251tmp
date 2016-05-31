@@ -1,5 +1,5 @@
 #surefire
-#Tue May 31 04:25:32 ICT 2016
+#Tue May 31 18:17:56 ICT 2016
 testClassesDirectory=C\:\\Scott-Vs\\core\\target\\test-classes
 classPathUrl.4=C\:\\Users\\SPARK.O\\.m2\\repository\\com\\googlecode\\playn\\playn-core\\1.9\\playn-core-1.9.jar
 forkMode=once
