@@ -275,12 +275,25 @@ public class Tom {
                 state=State.LIDLE;
             }else if((body.getPosition().x >= (scott.body.getPosition().x+3.1))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
+                if(i==20) {
+                    switch (random.nextInt(3)) {
+                        case 0:
+                            state = State.LWALK;
+                            break;
+                        case 1:
+                            state = State.LWALK;
+                            break;
+                        case 2:
+                            state = State.LIDLE;
+                            break;
+                    }
+                }
                 state=State.LWALK;
             }else if((body.getPosition().x <= (scott.body.getPosition().x+3))
                     &&(body.getPosition().x >= (scott.body.getPosition().x))
                     &&(state!=State.LWASATTK2&&state!=State.WASATTK2)){
                 if(i==20) {
-                    switch (random.nextInt(3)) {
+                    switch (random.nextInt(4)) {
                         case 0:
                             state = State.LATTK1;
                             break;
@@ -291,6 +304,9 @@ public class Tom {
                             if(Gameplay00.sptom>=80) {
                                 state = State.LSS;
                             }
+                            break;
+                        case 3:
+                            state = State.LIDLE;
                             break;
                     }
                 }
@@ -337,12 +353,24 @@ public class Tom {
                 state=State.IDLE;
             }else if((body.getPosition().x <= (scott.body.getPosition().x-3.1))
                     &&(state!=State.WASATTK2)&&(state!=State.LWASATTK2)){
-                state=State.WALK;
+                if(i==20) {
+                    switch (random.nextInt(3)) {
+                        case 0:
+                            state = State.WALK;
+                            break;
+                        case 1:
+                            state = State.WALK;
+                            break;
+                        case 2:
+                            state = State.IDLE;
+                            break;
+                    }
+                }
             }else if((body.getPosition().x >= (scott.body.getPosition().x-3))
                     &&(body.getPosition().x <= (scott.body.getPosition().x))
                     &&(state!=State.WASATTK2&&state!=State.LWASATTK2)){
                 if(i==20) {
-                    switch (random.nextInt(3)) {
+                    switch (random.nextInt(4)) {
                         case 0:
                             state = State.ATTK1;
                             break;
@@ -353,6 +381,9 @@ public class Tom {
                             if(Gameplay00.sptom>=80) {
                                 state = State.SS;
                             }
+                            break;
+                        case 3:
+                            state = State.IDLE;
                             break;
                     }
                 }
