@@ -59,6 +59,7 @@ public class TopScore extends Screen{
     });
 
 
+
     if(Gameplay02.wingame==true) {
       hff.add(Gameplay00.score);
     }

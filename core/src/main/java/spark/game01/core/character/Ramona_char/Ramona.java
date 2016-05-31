@@ -3,6 +3,7 @@ package spark.game01.core.character.Ramona_char;
 import playn.core.Layer;
 import playn.core.PlayN;
 import playn.core.util.Callback;
+import spark.game01.core.Screen.Gameplay02;
 import spark.game01.core.sprite.Sprite;
 import spark.game01.core.sprite.SpriteLoader;
 
@@ -54,6 +55,10 @@ public class Ramona {
                 case IDLE:
                     if(!(spriteIndex>=0&&spriteIndex<=5)){
                         spriteIndex=0;
+                        Gameplay02.helpr.setVisible(false);
+                    }
+                    if(spriteIndex>=3) {
+                        Gameplay02.helpr.setVisible(true);
                     }
                     break;
             }

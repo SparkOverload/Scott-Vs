@@ -429,33 +429,21 @@ public class Matt {
                 case ULTI1:
                     if(spriteIndex==63) {
                         body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LULTI1:
                     if(spriteIndex==74) {
                         body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case ULTI2:
                     if(spriteIndex==136) {
                         body.applyLinearImpulse(new Vec2(15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(15f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LULTI2:
                     if(spriteIndex==148) {
                         body.applyLinearImpulse(new Vec2(-15f, 0f), body.getPosition());
-                        if (contacted == true) {
-                            other.applyLinearImpulse(new Vec2(-15f, -20f), other.getPosition());
-                        }
                     }
                     break;
             }

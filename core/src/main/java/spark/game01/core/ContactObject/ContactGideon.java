@@ -3,10 +3,8 @@ package spark.game01.core.ContactObject;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
-import spark.game01.core.Screen.Gameplay01;
 import spark.game01.core.Screen.Gameplay02;
 import spark.game01.core.character.Gideon_char.Gideon;
-import spark.game01.core.character.Matt_char.Matt;
 import spark.game01.core.character.Scott_char.Scott;
 
 public class ContactGideon {

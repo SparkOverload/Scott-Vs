@@ -468,49 +468,31 @@ public class Gideon {
                 case ATTK4:
                     if(spriteIndex==109){
                         body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
-                        if(contacted == true){
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LATTK4:
                     if(spriteIndex==122){
                         body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
-                        if(contacted == true){
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case ATTK5:
                     if(spriteIndex==129){
                         body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
-                        if(contacted == true){
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LATTK5:
                     if(spriteIndex==144){
                         body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
-                        if(contacted == true){
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case CHARGE:
                     if(spriteIndex==138){
                         body.applyLinearImpulse(new Vec2(15f,0f),body.getPosition());
-                        if(contacted == true){
-                            other.applyLinearImpulse(new Vec2(20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case LCHARGE:
                     if(spriteIndex==153){
                         body.applyLinearImpulse(new Vec2(-15f,0f),body.getPosition());
-                        if(contacted == true){
-                            other.applyLinearImpulse(new Vec2(-20f, -20f), other.getPosition());
-                        }
                     }
                     break;
                 case WASATTK2:

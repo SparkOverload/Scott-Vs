@@ -1,7 +1,6 @@
 package spark.game01.core.character.Scott_char;
 
 import com.sun.javafx.css.StyleCache;
-import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
@@ -201,18 +200,6 @@ public class Scott {
                         break;
                     case NP5:
                         state = State.GUITAR;
-                        break;
-                    case NP7:
-                        state = State.LOSE;
-                        break;
-                    case NP8:
-                        state = State.LWASATK1;
-                        break;
-                    case NP9:
-                        state = State.WASATK3;
-                        break;
-                    case NP6:
-                        state = State.LWASATK3;
                         break;
                     case ENTER:
                         if(state==State.CEL1){
@@ -735,18 +722,22 @@ try{
         }
         if (contacted == true && (matt.spriteIndex >= 74 && matt.spriteIndex <= 76)) {
             state = State.WASATK3;
+            body.applyLinearImpulse(new Vec2(-20f, -20f), body.getPosition());
             Gameplay00.score -= 10;
         }
         if (contacted == true && (matt.spriteIndex >= 63 && matt.spriteIndex <= 65)) {
             state = State.LWASATK3;
+            body.applyLinearImpulse(new Vec2(20f, -20f), body.getPosition());
             Gameplay00.score -= 10;
         }
         if (contacted == true && (matt.spriteIndex >= 148 && matt.spriteIndex <= 153)) {
             state = State.WASATK3;
+            body.applyLinearImpulse(new Vec2(-20f, -20f), body.getPosition());
             Gameplay00.score -= 20;
         }
         if (contacted == true && (matt.spriteIndex >= 136 && matt.spriteIndex <= 141)) {
             state = State.LWASATK3;
+            body.applyLinearImpulse(new Vec2(20f, -20f), body.getPosition());
             Gameplay00.score -= 20;
         }
         if(Gameplay01.scorem <= 0){
@@ -1304,10 +1295,12 @@ try{
                 }
                 if (contacted == true && (tom.spriteIndex >= 98 && tom.spriteIndex <= 101)) {
                     state = State.WASATK3;
+                    body.applyLinearImpulse(new Vec2(-20f, -20f), body.getPosition());
                     Gameplay00.score -= 10;
                 }
                 if (contacted == true && (tom.spriteIndex >= 78 && tom.spriteIndex <= 81)) {
                     state = State.LWASATK3;
+                    body.applyLinearImpulse(new Vec2(20f, -20f), body.getPosition());
                     Gameplay00.score -= 10;
                 }
                 if(Gameplay00.scoret <= 0){
@@ -1868,12 +1861,14 @@ try{
                         || (gideon.spriteIndex >= 144 && gideon.spriteIndex <= 149)
                         || (gideon.spriteIndex >= 153 && gideon.spriteIndex <= 156) )) {
                     state = State.WASATK3;
+                    body.applyLinearImpulse(new Vec2(-20f, -20f), body.getPosition());
                     Gameplay00.score -= 15;
                 }
                 if (contacted == true && ((gideon.spriteIndex >= 109 && gideon.spriteIndex <= 113)
                         || (gideon.spriteIndex >= 129 && gideon.spriteIndex <= 134)
                         || (gideon.spriteIndex >= 138 && gideon.spriteIndex <= 141) )) {
                     state = State.LWASATK3;
+                    body.applyLinearImpulse(new Vec2(20f, -20f), body.getPosition());
                     Gameplay00.score -= 15;
                 }
                 if(Gameplay02.scoreg <= 0){
