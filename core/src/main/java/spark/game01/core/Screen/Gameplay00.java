@@ -25,6 +25,7 @@ import tripleplay.util.Colors;
 public class Gameplay00 extends Screen{
 
     public static Boolean pause = false;
+    public static Boolean checkcpause = false;
     private Clock.Source stoptime = new Clock.Source(0);
     public static  float M_PER_PIXEL = 1 / 26.666667f;
     private static float width = 24;
@@ -67,7 +68,7 @@ public class Gameplay00 extends Screen{
     private Layer gameover;
     private float alphaStart = 0.00f;
     private float alphaEnd = 0.00f;
-    private Pauselayer pauselayer;
+    public static Pauselayer pauselayer;
     private Layer nextw;
 
 
@@ -117,21 +118,6 @@ public class Gameplay00 extends Screen{
       tagew1 = graphics().createImageLayer(tagw1Image);
       tagew1.setTranslation(170,25);
 
-      tagew1.addListener(new Mouse.LayerAdapter(){
-          @Override
-          public void onMouseDown(Mouse.ButtonEvent event){
-              if(pause==false){
-                  pauselayer = new Pauselayer(310f,240f);
-                  layer.add(pauselayer.layer());
-                  pause = true;
-              }else{
-                 layer.remove(pauselayer.layer());
-                  pause = false;
-              }
-
-          }
-
-      });
 
       Image hscottImage = assets().getImage("images/scott_all/scott_h.png");
       scotthead = graphics().createImageLayer(hscottImage);
@@ -210,6 +196,10 @@ public class Gameplay00 extends Screen{
     public void update(int delta) {
         try {
             if (pause == false) {
+                if(checkcpause==true){
+                    layer.remove(pauselayer.layer());
+                    checkcpause=false;
+                }
                 super.update(delta);
                 world.step(0.066f, 10, 10);
                 hpscott.update(delta);
@@ -236,6 +226,11 @@ public class Gameplay00 extends Screen{
                     }
                 }
             } else if (pause == true) {
+                if(checkcpause==false){
+                    pauselayer = new Pauselayer(310f,240f);
+                    layer.add(pauselayer.layer());
+                    checkcpause=true;
+                }
                 super.update(0);
                 pauselayer.update(delta);
                 world.step(0f, 10, 10);

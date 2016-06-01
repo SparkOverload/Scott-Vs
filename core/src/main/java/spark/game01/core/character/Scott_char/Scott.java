@@ -189,30 +189,29 @@ public class Scott {
                             state = State.LDEF;
                         }
                         break;
-                    case NP1:
-                        state = State.CEL1;
-                        break;
-                    case NP2:
-                        state = State.CEL2;
-                        break;
-                    case NP3:
-                        state = State.CEL3;
-                        break;
                     case NP5:
                         state = State.GUITAR;
                         break;
                     case ENTER:
+                        if(Gameplay00.pause==false){
+                            Gameplay00.pause=true;
+                        }else if(Gameplay00.pause==true){
+                            Gameplay00.pause=false;
+                        }
                         if(state==State.CEL1){
                             MyGame.world01.stop();
                             ss.remove(ss.top());
+                            Gameplay00.pause=false;
                             ss.push(new Gameplay01(ss));
                         }else if(state==State.CEL2){
                             MyGame.world02.stop();
                             ss.remove(ss.top());
+                            Gameplay00.pause=false;
                             ss.push(new Gameplay02(ss));
                         }else if(state==State.CEL3){
                             MyGame.world03.stop();
                             ss.remove(ss.top());
+                            Gameplay00.pause=false;
                             ss.push(new TopScore(ss));
                         }
                         break;

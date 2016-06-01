@@ -60,7 +60,6 @@ public class Gameplay01 extends Screen{
     private Layer hp2;
     private Layer sp1;
     private Layer sp2;
-    private Pauselayer pauselayer;
     private Layer gameover;
     private float alphaStart = 0.00f;
     private float alphaEnd = 0.00f;
@@ -100,21 +99,6 @@ public class Gameplay01 extends Screen{
         tagew2 = graphics().createImageLayer(tagw2Image);
         tagew2.setTranslation(170,25);
 
-        tagew2.addListener(new Mouse.LayerAdapter(){
-            @Override
-            public void onMouseDown(Mouse.ButtonEvent event){
-                if(Gameplay00.pause==false){
-                    pauselayer = new Pauselayer(310f,240f);
-                    layer.add(pauselayer.layer());
-                    Gameplay00.pause = true;
-                }else{
-                    layer.remove(pauselayer.layer());
-                    Gameplay00.pause = false;
-                }
-
-            }
-
-        });
 
         scott = new Scott(ss,world,250f,350f);
         matt = new Matt(world,450f,350f);
@@ -193,6 +177,10 @@ public class Gameplay01 extends Screen{
     public void update(int delta) {
         try {
             if (Gameplay00.pause == false) {
+                if(Gameplay00.checkcpause==true){
+                    layer.remove(Gameplay00.pauselayer.layer());
+                    Gameplay00.checkcpause=false;
+                }
                 super.update(delta);
                 world.step(0.066f, 10, 10);
                 hpscott.update(delta);
@@ -221,8 +209,13 @@ public class Gameplay01 extends Screen{
                     }
                 }
             } else if (Gameplay00.pause == true) {
+                if(Gameplay00.checkcpause==false){
+                    Gameplay00.pauselayer = new Pauselayer(310f,240f);
+                    layer.add(Gameplay00.pauselayer.layer());
+                    Gameplay00.checkcpause=true;
+                }
                 super.update(0);
-                pauselayer.update(delta);
+                Gameplay00.pauselayer.update(delta);
                 world.step(0f, 10, 10);
                 hpscott.update(0);
                 hpmatt.update(0);
