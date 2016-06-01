@@ -216,11 +216,13 @@ public class Scott {
                         }
                         break;
                    case ESCAPE:
-                       MyGame.world01.stop();
-                       MyGame.world02.stop();
-                       MyGame.world03.stop();
-                       ss.remove(ss.top());
-                       ss.push(new HomeScreen(ss));
+                       if(Gameplay00.pause==false) {
+                           MyGame.world01.stop();
+                           MyGame.world02.stop();
+                           MyGame.world03.stop();
+                           ss.remove(ss.top());
+                           ss.push(new HomeScreen(ss));
+                       }
                        break;
                }
             }
